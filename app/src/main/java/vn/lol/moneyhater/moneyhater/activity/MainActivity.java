@@ -1,4 +1,4 @@
-package vn.lol.moneyhater.momeyhater.activity;
+package vn.lol.moneyhater.moneyhater.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,11 +19,11 @@ import java.util.List;
 import java.util.Vector;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.momeyhater.adapter.BudgetFragment;
-import vn.lol.moneyhater.momeyhater.adapter.FragmentPageAdapter;
-import vn.lol.moneyhater.momeyhater.fragment.AccountFragment;
-import vn.lol.moneyhater.momeyhater.fragment.ListFragment;
-import vn.lol.moneyhater.momeyhater.fragment.NavigationDrawerFragment;
+import vn.lol.moneyhater.moneyhater.adapter.FragmentPageAdapter;
+import vn.lol.moneyhater.moneyhater.fragment.AccountFragment;
+import vn.lol.moneyhater.moneyhater.fragment.BudgetFragment;
+import vn.lol.moneyhater.moneyhater.fragment.ListFragment;
+import vn.lol.moneyhater.moneyhater.fragment.NavigationDrawerFragment;
 
 
 public class MainActivity extends ActionBarActivity

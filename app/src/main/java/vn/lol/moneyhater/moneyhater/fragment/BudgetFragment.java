@@ -1,4 +1,4 @@
-package vn.lol.moneyhater.momeyhater.fragment;
+package vn.lol.moneyhater.moneyhater.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 
 import vn.lol.moneyhater.momeyhater.R;
 
-public class AccountFragment extends Fragment {
+public class BudgetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_account, container,
+        View rootView = inflater.inflate(R.layout.fragment_budget, container,
                 false);
         return rootView;
     }
+
 }

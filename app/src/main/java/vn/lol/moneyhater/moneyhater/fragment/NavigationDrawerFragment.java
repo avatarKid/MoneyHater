@@ -1,4 +1,4 @@
-package vn.lol.moneyhater.momeyhater.fragment;
+package vn.lol.moneyhater.moneyhater.fragment;
 
 import android.app.Activity;
 import android.content.SharedPreferences;

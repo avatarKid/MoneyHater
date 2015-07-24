@@ -1,4 +1,4 @@
-package vn.lol.moneyhater.momeyhater;
+package vn.lol.moneyhater.moneyhater;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

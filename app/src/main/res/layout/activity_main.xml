@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/navigation_drawer"
-        android:name="vn.lol.moneyhater.momeyhater.fragment.NavigationDrawerFragment"
+        android:name="vn.lol.moneyhater.moneyhater.fragment.NavigationDrawerFragment"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"

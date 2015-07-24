@@ -1,4 +1,4 @@
-package vn.lol.moneyhater.momeyhater.adapter;
+package vn.lol.moneyhater.moneyhater.adapter;
 
 
 import android.support.v4.app.Fragment;
