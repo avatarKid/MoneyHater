@@ -22,6 +22,7 @@ import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.adapter.FragmentPageAdapter;
 import vn.lol.moneyhater.moneyhater.fragment.AccountFragment;
 import vn.lol.moneyhater.moneyhater.fragment.BudgetFragment;
+import vn.lol.moneyhater.moneyhater.fragment.ChartFragment;
 import vn.lol.moneyhater.moneyhater.fragment.ListFragment;
 import vn.lol.moneyhater.moneyhater.fragment.NavigationDrawerFragment;
 
@@ -53,8 +54,8 @@ public class MainActivity extends ActionBarActivity
         fragments.add(Fragment.instantiate(this, ListFragment.class.getName()));
         fragments.add(Fragment.instantiate(this, AccountFragment.class.getName()));
         fragments.add(Fragment.instantiate(this, BudgetFragment.class.getName()));
-//        fragments.add(Fragment.instantiate(this, ChartFragment.class.getName()));
-//        fragments.add(Fragment.instantiate(this, SettingFragment.class.getName()));
+        fragments.add(Fragment.instantiate(this, ChartFragment.class.getName()));
+
         this.mPagerAdapter  = new FragmentPageAdapter(super.getSupportFragmentManager(), fragments);
         //
         this.mViewPager.setAdapter(this.mPagerAdapter);
@@ -90,6 +91,9 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
+                break;
+            case 4:
+                mTitle = getString(R.string.title_section4);
                 break;
         }
     }
