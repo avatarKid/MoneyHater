@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Vector;
@@ -28,11 +30,13 @@ import vn.lol.moneyhater.moneyhater.fragment.NavigationDrawerFragment;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewPager.OnPageChangeListener  {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewPager.OnPageChangeListener {
     private ViewPager mViewPager;
     private FragmentPageAdapter mPagerAdapter;
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
+    private Button mButtonAdd;
+    private int StateSeleced = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,8 @@ public class MainActivity extends ActionBarActivity
         setContentView(R.layout.activity_main);
         initView();
         intialiseViewPager();
+        mButtonAdd = (Button) findViewById(R.id.add_button);
+        EventButtonAdd();
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -47,6 +53,29 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+
+    }
+
+
+    private void EventButtonAdd(){
+        mButtonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (StateSeleced){
+                    case 1:
+                        //Account
+                        Toast.makeText(getBaseContext(),"Account",Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        //Budget
+                        Toast.makeText(getBaseContext(),"Budget",Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
+
+            }
+        });
     }
 
     private void intialiseViewPager() {
@@ -56,7 +85,7 @@ public class MainActivity extends ActionBarActivity
         fragments.add(Fragment.instantiate(this, BudgetFragment.class.getName()));
         fragments.add(Fragment.instantiate(this, ChartFragment.class.getName()));
 
-        this.mPagerAdapter  = new FragmentPageAdapter(super.getSupportFragmentManager(), fragments);
+        this.mPagerAdapter = new FragmentPageAdapter(super.getSupportFragmentManager(), fragments);
         //
         this.mViewPager.setAdapter(this.mPagerAdapter);
         this.mViewPager.addOnPageChangeListener(this);
@@ -75,7 +104,7 @@ public class MainActivity extends ActionBarActivity
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
         Log.i("KID", position + "");
-        if(mViewPager != null){
+        if (mViewPager != null) {
             mViewPager.setCurrentItem(position);
         }
 
@@ -85,17 +114,26 @@ public class MainActivity extends ActionBarActivity
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
+                //Turn Off ButtonAdd
+                mButtonAdd.setVisibility(View.INVISIBLE);
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
+                //Turn On ButtonAdd
+                mButtonAdd.setVisibility(View.VISIBLE);
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
+                //Turn On ButtonAdd
+                mButtonAdd.setVisibility(View.VISIBLE);
                 break;
             case 4:
                 mTitle = getString(R.string.title_section4);
+                //Turn Off ButtonAdd
+                mButtonAdd.setVisibility(View.INVISIBLE);
                 break;
         }
+        StateSeleced = number-1;
     }
 
     public void restoreActionBar() {
@@ -134,7 +172,30 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onPageSelected(int position) {
-
+        switch (position) {
+            case 0:
+                mTitle = getString(R.string.title_section1);
+                //Turn Off ButtonAdd
+                mButtonAdd.setVisibility(View.INVISIBLE);
+                break;
+            case 1:
+                mTitle = getString(R.string.title_section2);
+                //Turn On ButtonAdd
+                mButtonAdd.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                mTitle = getString(R.string.title_section3);
+                //Turn On ButtonAdd
+                mButtonAdd.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                mTitle = getString(R.string.title_section4);
+                //Turn Off ButtonAdd
+                mButtonAdd.setVisibility(View.INVISIBLE);
+                break;
+        }
+        StateSeleced = position;
+        restoreActionBar();
     }
 
     @Override
