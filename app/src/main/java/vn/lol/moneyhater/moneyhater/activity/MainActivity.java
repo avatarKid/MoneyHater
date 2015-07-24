@@ -1,6 +1,7 @@
 package vn.lol.moneyhater.moneyhater.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.List;
@@ -66,14 +68,14 @@ public class MainActivity extends ActionBarActivity
                     case 1:
                         //Account
                         Toast.makeText(getBaseContext(),"Account",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, NewBudgetActivity.class);
+                        startActivity(intent);
                         break;
                     case 2:
                         //Budget
                         Toast.makeText(getBaseContext(),"Budget",Toast.LENGTH_SHORT).show();
                         break;
                 }
-
-
             }
         });
     }
@@ -111,6 +113,11 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void onSectionAttached(int number) {
+        handleButtonState(number);
+        StateSeleced = number-1;
+    }
+
+    private void handleButtonState(int number) {
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
@@ -133,7 +140,6 @@ public class MainActivity extends ActionBarActivity
                 mButtonAdd.setVisibility(View.INVISIBLE);
                 break;
         }
-        StateSeleced = number-1;
     }
 
     public void restoreActionBar() {
@@ -172,29 +178,8 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onPageSelected(int position) {
-        switch (position) {
-            case 0:
-                mTitle = getString(R.string.title_section1);
-                //Turn Off ButtonAdd
-                mButtonAdd.setVisibility(View.INVISIBLE);
-                break;
-            case 1:
-                mTitle = getString(R.string.title_section2);
-                //Turn On ButtonAdd
-                mButtonAdd.setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section3);
-                //Turn On ButtonAdd
-                mButtonAdd.setVisibility(View.VISIBLE);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section4);
-                //Turn Off ButtonAdd
-                mButtonAdd.setVisibility(View.INVISIBLE);
-                break;
-        }
-        StateSeleced = position;
+        handleButtonState(position);
+        StateSeleced = position -1;
         restoreActionBar();
     }
 
