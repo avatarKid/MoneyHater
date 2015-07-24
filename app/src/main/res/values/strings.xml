@@ -14,11 +14,4 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="tvOverview">Overview</string>
-    <string name="tvInflow">Inflow</string>
-    <string name="tvDateSet">22/7/2015</string>
-    <string name="tvDateSetSumMoney">100,000</string>
-    <string name="tvCategoryName">Selling</string>
-    <string name="tvNote">Sell Tivi</string>
-    <string name="tvTransactionMoney">100,000</string>
 </resources>

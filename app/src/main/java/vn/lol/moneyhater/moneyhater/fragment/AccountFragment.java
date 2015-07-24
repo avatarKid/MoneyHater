@@ -32,6 +32,10 @@ public class AccountFragment extends Fragment {
         mlistAccount.setAdapter(mAdapterAccount);
         mTotalMoney = (TextView) rootView.findViewById(R.id.tvAccTotalMoney);
         int total = 0;
+        for(int i=0;i<money.length;i++){
+            total += money[i];
+        }
+        mTotalMoney.setText(total+"");
         return rootView;
     }
 
