@@ -11,7 +11,10 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#33ad34">
+        android:background="@drawable/label_drawable"
+        android:paddingTop="5dp"
+        android:paddingBottom="15dp"
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,14 +42,13 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/tvInflow"
-                android:id="@+id/tvInflow" />
+                />
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="0"
-                android:id="@+id/tvInflow"
                 android:gravity="right"
                 android:textColor="#ff63a4ff" />
 

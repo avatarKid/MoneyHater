@@ -17,10 +17,12 @@ public class AccountFragment extends Fragment {
     ListView mlistAccount;
     TextView mTotalMoney;
     private final String[] name = {
-            "ABC"
+            "ABC",
+            "VINA"
     };
     private final int[] money = {
-            1000000
+            1000000,
+            500000
     };
 
     @Override

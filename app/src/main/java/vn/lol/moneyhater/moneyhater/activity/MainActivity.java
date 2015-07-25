@@ -65,15 +65,15 @@ public class MainActivity extends ActionBarActivity
             @Override
             public void onClick(View v) {
                 switch (StateSeleced){
-                    case 1:
+                    case 0:
                         //Account
-                        Toast.makeText(getBaseContext(),"Account",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getBaseContext(),"Account",Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        //Budget
+                        //Toast.makeText(getBaseContext(),"Budget",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, NewBudgetActivity.class);
                         startActivity(intent);
-                        break;
-                    case 2:
-                        //Budget
-                        Toast.makeText(getBaseContext(),"Budget",Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -179,7 +179,7 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onPageSelected(int position) {
-        handleButtonState(position);
+        handleButtonState(position + 1);
         StateSeleced = position -1;
         restoreActionBar();
     }

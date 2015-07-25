@@ -14,10 +14,12 @@ public class BudgetFragment extends Fragment {
     private ListBudgetAdapter mAdapterBudget;
     ListView mlistBudget;
     private final String[] name = {
-            "Project"
+            "Project",
+            "Party"
     };
     private final int[] money = {
-            500000
+            500000,
+            1000000
     };
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
