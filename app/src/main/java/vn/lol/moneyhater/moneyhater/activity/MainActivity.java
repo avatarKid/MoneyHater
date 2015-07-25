@@ -64,15 +64,22 @@ public class MainActivity extends ActionBarActivity
         mButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent;
                 switch (StateSeleced){
                     case 0:
-                        //Account
-                        //Toast.makeText(getBaseContext(),"Account",Toast.LENGTH_SHORT).show();
+                        //List
+                        Toast.makeText(getBaseContext(),"List",Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
+                        //Account
+                        //Toast.makeText(getBaseContext(),"Account",Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, NewAccountActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
                         //Budget
                         //Toast.makeText(getBaseContext(),"Budget",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MainActivity.this, NewBudgetActivity.class);
+                        intent = new Intent(MainActivity.this, NewBudgetActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -122,7 +129,7 @@ public class MainActivity extends ActionBarActivity
             case 1:
                 mTitle = getString(R.string.title_section1);
                 //Turn Off ButtonAdd
-                mButtonAdd.setVisibility(View.INVISIBLE);
+                mButtonAdd.setVisibility(View.VISIBLE);
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
@@ -180,7 +187,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onPageSelected(int position) {
         handleButtonState(position + 1);
-        StateSeleced = position -1;
+        StateSeleced = position;
         restoreActionBar();
     }
 
