@@ -12,8 +12,9 @@
     <string name="action_bar_setting">Settings</string>
     <string name="action_settings">Settings</string>
 
-    <string name="tvOverview">Overview</string>
-    <string name="tvInflow">Inflow</string>
+    <string name="tvOverview">OVERVIEW</string>
+    <string name="tvInCome">Income</string>
+    <string name="tvExpense">Expense</string>
     <string name="tvDateSet">22/7/2015</string>
     <string name="tvDateSetSumMoney">100,000</string>
     <string name="tvCategoryName">Selling</string>

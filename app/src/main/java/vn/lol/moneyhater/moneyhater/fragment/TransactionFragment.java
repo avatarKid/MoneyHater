@@ -6,21 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.adapter.ListAccountAdapter;
 import vn.lol.moneyhater.moneyhater.adapter.ListTransactionAdapter;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
 
-public class ListFragment extends Fragment {
+public class TransactionFragment extends Fragment {
     private ListTransactionAdapter mAdapterTransaction;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_list, container,
+        View rootView = inflater.inflate(R.layout.fragment_transaction, container,
                 false);
         ArrayList al = new ArrayList();
         al.add(new SupportTransaction("27/7/2015","500,000"));

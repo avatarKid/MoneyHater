@@ -27,7 +27,7 @@ import vn.lol.moneyhater.moneyhater.adapter.FragmentPageAdapter;
 import vn.lol.moneyhater.moneyhater.fragment.AccountFragment;
 import vn.lol.moneyhater.moneyhater.fragment.BudgetFragment;
 import vn.lol.moneyhater.moneyhater.fragment.ChartFragment;
-import vn.lol.moneyhater.moneyhater.fragment.ListFragment;
+import vn.lol.moneyhater.moneyhater.fragment.TransactionFragment;
 import vn.lol.moneyhater.moneyhater.fragment.NavigationDrawerFragment;
 
 
@@ -82,7 +82,7 @@ public class MainActivity extends ActionBarActivity
 
     private void intialiseViewPager() {
         List<Fragment> fragments = new Vector<Fragment>();
-        fragments.add(Fragment.instantiate(this, ListFragment.class.getName()));
+        fragments.add(Fragment.instantiate(this, TransactionFragment.class.getName()));
         fragments.add(Fragment.instantiate(this, AccountFragment.class.getName()));
         fragments.add(Fragment.instantiate(this, BudgetFragment.class.getName()));
         fragments.add(Fragment.instantiate(this, ChartFragment.class.getName()));
