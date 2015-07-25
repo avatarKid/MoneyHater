@@ -102,6 +102,7 @@ public class MainActivity extends ActionBarActivity
 
     public void initView() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setPageMargin(60);
         mPagerAdapter = new FragmentPageAdapter(getSupportFragmentManager());
     }
 
@@ -128,7 +129,7 @@ public class MainActivity extends ActionBarActivity
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
-                //Turn Off ButtonAdd
+                //Turn On ButtonAdd
                 mButtonAdd.setVisibility(View.VISIBLE);
                 break;
             case 2:

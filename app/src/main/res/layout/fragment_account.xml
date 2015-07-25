@@ -27,7 +27,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tổng tiền hiện có: "
+                android:text="Total "
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
@@ -37,6 +40,9 @@
                 android:singleLine="true"
                 android:id="@+id/tvAccTotalMoney"
                 android:text="0"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
@@ -44,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="đ"
+                android:textColor="@color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
 
