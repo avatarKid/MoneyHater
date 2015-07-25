@@ -1,0 +1,35 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_category_display">
+        <ListPreference
+            android:title="@string/pref_setting_language"
+            android:entries="@array/pref_language_title"
+            android:entryValues="@array/pref_language_value"
+            android:key="pref_language"
+            android:summary="%s"
+            android:defaultValue="1"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_system">
+        <ListPreference
+            android:title="@string/pref_setting_currency"
+            android:entries="@array/pref_currency_title"
+            android:entryValues="@array/pref_currency_value"
+            android:key="pref_currency"
+            android:summary="%s"
+            android:defaultValue="1"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_backup">
+        <CheckBoxPreference
+            android:title="@string/pref_backup_title"
+            android:key="pref_backup"
+            android:enabled="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_about">
+        <Preference
+            android:title="@string/pref_about"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -20,6 +20,10 @@
             android:name="vn.lol.moneyhater.moneyhater.activity.NewBudgetActivity"
             android:label="@string/title_activity_new_budget" >
         </activity>
+        <activity
+            android:name="vn.lol.moneyhater.moneyhater.activity.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>
