@@ -64,15 +64,18 @@ public class MainActivity extends ActionBarActivity
         mButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent;
                 switch (StateSeleced){
                     case 0:
                         //Account
                         //Toast.makeText(getBaseContext(),"Account",Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, NewAccountActivity.class);
+                        startActivity(intent);
                         break;
                     case 1:
                         //Budget
                         //Toast.makeText(getBaseContext(),"Budget",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MainActivity.this, NewBudgetActivity.class);
+                        intent = new Intent(MainActivity.this, NewBudgetActivity.class);
                         startActivity(intent);
                         break;
                 }
