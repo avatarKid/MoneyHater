@@ -15,7 +15,9 @@
     <string name="tvOverview">OVERVIEW</string>
     <string name="tvInCome">Income</string>
     <string name="tvExpense">Expense</string>
-    <string name="tvDateSet">22/7/2015</string>
+    <string name="tvDateSet">22</string>
+    <string name="tvMonthSet">July</string>
+    <string name="tvYearSet">2015</string>
     <string name="tvDateSetSumMoney">100,000</string>
     <string name="tvCategoryName">Selling</string>
     <string name="tvNote">Sell Tivi</string>
