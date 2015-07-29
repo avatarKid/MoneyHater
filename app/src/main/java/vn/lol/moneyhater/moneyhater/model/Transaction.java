@@ -1,20 +1,92 @@
 package vn.lol.moneyhater.moneyhater.model;
 
+import android.text.format.Time;
+
+import java.security.Principal;
+
 import java.util.Date;
 
 /**
  * Created by huy on 7/24/2015.
  */
 public class Transaction {
-    public String date;
-    public String category;
-    public String money;
-    public String note;
+    private int mTransactionID;
+    private String mTransactionName;
+    private int mType;
+    private Date mCash;
+    private int mCategoryID;
+    private int mBudgetID;
+    private int mAccountID;
+//    private Time mDate;
 
-    public Transaction(String date, String category, String money, String note) {
-        this.date = date;
-        this.category = category;
-        this.money = money;
-        this.note = note;
+    public Transaction() {
     }
+
+    public Transaction(String transactionName, int type, Date cash, int categoryID, int budgetID, int accountID) {
+        mTransactionName = transactionName;
+        mType = type;
+        mCash = cash;
+        mCategoryID = categoryID;
+        mBudgetID = budgetID;
+        mAccountID = accountID;
+//        mDate= new Time(Time.getCurrentTimezone());
+//        today.setToNow();
+    }
+
+    public int getTransactionID() {
+        return mTransactionID;
+    }
+
+    public void setTransactionID(int transactionID) {
+        mTransactionID = transactionID;
+    }
+
+    public String getTransactionName() {
+        return mTransactionName;
+    }
+
+    public void setTransactionName(String transactionName) {
+        mTransactionName = transactionName;
+    }
+
+    public int getType() {
+        return mType;
+    }
+
+    public void setType(int type) {
+        mType = type;
+    }
+
+    public Date getCash() {
+        return mCash;
+    }
+
+    public void setCash(Date cash) {
+        mCash = cash;
+    }
+
+    public int getCategoryID() {
+        return mCategoryID;
+    }
+
+    public void setCategoryID(int categoryID) {
+        mCategoryID = categoryID;
+    }
+
+    public int getBudgetID() {
+        return mBudgetID;
+    }
+
+    public void setBudgetID(int budgetID) {
+        mBudgetID = budgetID;
+    }
+
+    public int getAccountID() {
+        return mAccountID;
+    }
+
+    public void setAccountID(int accountID) {
+        mAccountID = accountID;
+    }
+
 }

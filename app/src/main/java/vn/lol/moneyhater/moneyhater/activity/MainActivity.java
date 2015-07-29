@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Vector;
 
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.adapter.FragmentPageAdapter;
 import vn.lol.moneyhater.moneyhater.fragment.AccountFragment;
 import vn.lol.moneyhater.moneyhater.fragment.BudgetFragment;
@@ -39,6 +40,8 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
     private Button mButtonAdd;
     private int StateSeleced = 0;
+    private DatabaseHelper mDb;
+    private final String TAG=this.getClass().getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +104,10 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void initView() {
+        mDb = new DatabaseHelper(getApplicationContext());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setPageMargin(60);
+        mViewPager.setTag(R.id.TAG_DB_HELPER,mDb);
         mPagerAdapter = new FragmentPageAdapter(getSupportFragmentManager());
     }
 
@@ -195,6 +200,17 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            mDb.close();
+        } catch (Exception e) {
+            Log.e(TAG,"onStop");
+            e.printStackTrace();
+        }
     }
 
     /**

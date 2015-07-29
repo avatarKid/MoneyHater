@@ -85,9 +85,9 @@ public class ListTransactionAdapter extends BaseAdapter {
                 case TYPE_TRANSACTION:
                     convertView = mInflater.inflate(R.layout.item_transaction, null);
                     Transaction transaction = (Transaction) getItem(position);
-                    ((TextView) convertView.findViewById(R.id.tvCategoryname)).setText(transaction.category);
-                    ((TextView) convertView.findViewById(R.id.tvNote)).setText(transaction.note);
-                    ((TextView) convertView.findViewById(R.id.tvTransacsionMoney)).setText(transaction.money);
+//                    ((TextView) convertView.findViewById(R.id.tvCategoryname)).setText(transaction.category);
+//                    ((TextView) convertView.findViewById(R.id.tvNote)).setText(transaction.note);
+//                    ((TextView) convertView.findViewById(R.id.tvTransacsionMoney)).setText(transaction.money);
                     break;
             }
 

@@ -21,12 +21,12 @@ public class TransactionFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_transaction, container,
                 false);
         ArrayList al = new ArrayList();
-        al.add(new SupportTransaction("27","500,000"));
-        al.add(new Transaction("27/7/2015","Selling","400,000","Sell Tivi"));
-        al.add(new Transaction("27/7/2015","Selling","100,000","Sell Laptop"));
-        al.add(new SupportTransaction("29","1,000,000"));
-        al.add(new Transaction("29/7/2015","Selling","600,000","Sell Telephone"));
-        al.add(new Transaction("29/7/2015","Selling","400,000","Sell Fan"));
+//        al.add(new SupportTransaction("27","500,000"));
+//        al.add(new Transaction("27/7/2015","Selling","400,000","Sell Tivi"));
+//        al.add(new Transaction("27/7/2015","Selling","100,000","Sell Laptop"));
+//        al.add(new SupportTransaction("29","1,000,000"));
+//        al.add(new Transaction("29/7/2015","Selling","600,000","Sell Telephone"));
+//        al.add(new Transaction("29/7/2015","Selling","400,000","Sell Fan"));
         mAdapterTransaction = new ListTransactionAdapter(getActivity(),al);
         ListView mlistAccount = (ListView)rootView.findViewById(R.id.lvTransaction);
         mlistAccount.setAdapter(mAdapterTransaction);
