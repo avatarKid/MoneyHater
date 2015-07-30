@@ -13,7 +13,7 @@ public class Transaction {
     private int mTransactionID;
     private String mTransactionName;
     private int mType;
-    private Date mCash;
+    private double mCash;
     private int mCategoryID;
     private int mBudgetID;
     private int mAccountID;
@@ -22,7 +22,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(String transactionName, int type, Date cash, int categoryID, int budgetID, int accountID) {
+    public Transaction(String transactionName, int type, double cash, int categoryID, int budgetID, int accountID) {
         mTransactionName = transactionName;
         mType = type;
         mCash = cash;
@@ -57,11 +57,11 @@ public class Transaction {
         mType = type;
     }
 
-    public Date getCash() {
+    public double getCash() {
         return mCash;
     }
 
-    public void setCash(Date cash) {
+    public void setCash(double cash) {
         mCash = cash;
     }
 
