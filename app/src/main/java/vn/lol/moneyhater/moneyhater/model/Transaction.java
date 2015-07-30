@@ -4,7 +4,10 @@ import android.text.format.Time;
 
 import java.security.Principal;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by huy on 7/24/2015.
@@ -17,7 +20,7 @@ public class Transaction {
     private int mCategoryID;
     private int mBudgetID;
     private int mAccountID;
-//    private Time mDate;
+    private Calendar mDate;
 
     public Transaction() {
     }
@@ -29,8 +32,28 @@ public class Transaction {
         mCategoryID = categoryID;
         mBudgetID = budgetID;
         mAccountID = accountID;
-//        mDate= new Time(Time.getCurrentTimezone());
-//        today.setToNow();
+        mDate = Calendar.getInstance();
+    }
+
+    public String getDay(){
+        String day = "";
+        SimpleDateFormat dayFormat = new SimpleDateFormat("DD", Locale.US);
+        day = dayFormat.format(mDate.getTime());
+        return day;
+    }
+
+    public String getMonth(){
+        String month = "";
+        SimpleDateFormat dayFormat = new SimpleDateFormat("MMMM", Locale.US);
+        month = dayFormat.format(mDate.getTime());
+        return month;
+    }
+
+    public String getYear(){
+        String year = "";
+        SimpleDateFormat dayFormat = new SimpleDateFormat("YYYY", Locale.US);
+        year = dayFormat.format(mDate.getTime());
+        return year;
     }
 
     public int getTransactionID() {

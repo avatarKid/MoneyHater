@@ -26,7 +26,7 @@ public class TransactionFragment extends Fragment {
         ArrayList al = new ArrayList();
         mDbHelper = (DatabaseHelper) container.getTag(R.id.TAG_DB_HELPER);
         al.add(new SupportTransaction("30","July", "2015", "500,000"));
-        al.add(new Transaction("Oc cho",1, new Date(),1,1,1 ));
+        al.add(new Transaction("Oc cho",1, 1800000 ,1,1,1 ));
 //        al.add(new Transaction("27/7/2015","Selling","100,000","Sell Laptop"));
 //        al.add(new SupportTransaction("29","1,000,000"));
 //        al.add(new Transaction("29/7/2015","Selling","600,000","Sell Telephone"));
@@ -40,7 +40,7 @@ public class TransactionFragment extends Fragment {
     public void addTransaction(){
         /*Hard code*/
 
-        Transaction transaction1 = new Transaction("Name",1, new Date(),1,1,1 );
+//        Transaction transaction1 = new Transaction("Name",1, new Date(),1,1,1 );
 
     }
 }
