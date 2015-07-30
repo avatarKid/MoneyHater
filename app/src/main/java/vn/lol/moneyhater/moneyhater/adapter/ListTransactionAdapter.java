@@ -79,15 +79,18 @@ public class ListTransactionAdapter extends BaseAdapter {
                 case TYPE_DATE:
                     convertView = mInflater.inflate(R.layout.item_date_transaction, null);
                     SupportTransaction support = (SupportTransaction) getItem(position);
-                    ((TextView) convertView.findViewById(R.id.tvDateSet)).setText(support.date);
-                    ((TextView) convertView.findViewById(R.id.tvDateSetSumMoney)).setText(support.money);
+                    ((TextView) convertView.findViewById(R.id.tvTransactionDay)).setText(support.day);
+                    ((TextView) convertView.findViewById(R.id.tvTransacsionMonth)).setText(support.month);
+                    ((TextView) convertView.findViewById(R.id.tvTransactionYear)).setText(support.year);
+                    ((TextView) convertView.findViewById(R.id.tvTransactionDaySum)).setText(support.money);
                     break;
                 case TYPE_TRANSACTION:
                     convertView = mInflater.inflate(R.layout.item_transaction, null);
                     Transaction transaction = (Transaction) getItem(position);
-//                    ((TextView) convertView.findViewById(R.id.tvCategoryname)).setText(transaction.category);
-//                    ((TextView) convertView.findViewById(R.id.tvNote)).setText(transaction.note);
-//                    ((TextView) convertView.findViewById(R.id.tvTransacsionMoney)).setText(transaction.money);
+                    ((TextView) convertView.findViewById(R.id.tvTransactionName)).setText(transaction.getTransactionName());
+                    /* TODO get account name of transaction via Account ID */
+                    ((TextView) convertView.findViewById(R.id.tvTransactionAccount)).setText(transaction.getTransactionName());
+                    ((TextView) convertView.findViewById(R.id.tvTransactionMoney)).setText(transaction.getCash()+"");
                     break;
             }
 

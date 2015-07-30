@@ -18,14 +18,14 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvCategoryname"
+                android:id="@+id/tvTransactionName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tvCategoryName"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/tvNote"
+                android:id="@+id/tvTransactionAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tvNote"
@@ -33,7 +33,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tvTransacsionMoney"
+            android:id="@+id/tvTransactionMoney"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="right|end"

@@ -14,7 +14,7 @@
 
         <!-- Date -->
         <TextView
-            android:id="@+id/tvDateSet"
+            android:id="@+id/tvTransactionDay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -34,6 +34,7 @@
 
             <!-- Month-->
             <TextView
+                android:id="@+id/tvTransacsionMonth"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -43,6 +44,7 @@
 
             <!-- Year-->
             <TextView
+                android:id="@+id/tvTransactionYear"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -54,7 +56,7 @@
 
         <!-- Money-->
         <TextView
-            android:id="@+id/tvDateSetSumMoney"
+            android:id="@+id/tvTransactionDaySum"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="4"

@@ -13,9 +13,13 @@
     <string name="action_settings">Settings</string>
 
     <!-- Transaction screen-->
-    <string name="tvOverview">OVERVIEW</string>
     <string name="tvInCome">Income</string>
     <string name="tvExpense">Expense</string>
+    <string name="tvIncomeCash">0</string>
+    <string name="tvExpenseCash">0</string>
+    <string name="tvSumCash">0</string>
+
+
     <string name="tvDateSet">22</string>
     <string name="tvMonthSet">July</string>
     <string name="tvYearSet">2015</string>
