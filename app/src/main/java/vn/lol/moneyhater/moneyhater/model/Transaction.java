@@ -6,13 +6,14 @@ import java.security.Principal;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
 /**
  * Created by huy on 7/24/2015.
  */
-public class Transaction {
+public class Transaction implements TransactionDate {
     private int mTransactionID;
     private String mTransactionName;
     private int mType;
@@ -25,19 +26,23 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(String transactionName, int type, double cash, int categoryID, int budgetID, int accountID) {
+    public Transaction(String transactionName, int type, double cash, int categoryID, int budgetID, int accountID, Calendar date) {
         mTransactionName = transactionName;
         mType = type;
         mCash = cash;
         mCategoryID = categoryID;
         mBudgetID = budgetID;
         mAccountID = accountID;
-        mDate = Calendar.getInstance();
+        mDate = date;
+    }
+
+    public Date getTime(){
+        return mDate.getTime();
     }
 
     public String getDay(){
         String day = "";
-        SimpleDateFormat dayFormat = new SimpleDateFormat("DD", Locale.US);
+        SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.US);
         day = dayFormat.format(mDate.getTime());
         return day;
     }
@@ -51,7 +56,7 @@ public class Transaction {
 
     public String getYear(){
         String year = "";
-        SimpleDateFormat dayFormat = new SimpleDateFormat("YYYY", Locale.US);
+        SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy", Locale.US);
         year = dayFormat.format(mDate.getTime());
         return year;
     }
@@ -84,6 +89,14 @@ public class Transaction {
         return mCash;
     }
 
+    public Calendar getCalendar() {
+        return mDate;
+    }
+
+    public String getDate(){
+        return getDay() + getMonth() + getYear();
+    }
+
     public void setCash(double cash) {
         mCash = cash;
     }
@@ -112,4 +125,8 @@ public class Transaction {
         mAccountID = accountID;
     }
 
+    @Override
+    public int compareTo(TransactionDate another) {
+        return getTime().compareTo(another.getTime());
+    }
 }

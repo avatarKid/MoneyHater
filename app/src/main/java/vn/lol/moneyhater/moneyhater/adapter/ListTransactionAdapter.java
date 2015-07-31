@@ -9,10 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
+import vn.lol.moneyhater.moneyhater.model.TransactionDate;
 
 /**
  * Created by huy on 7/24/2015.
@@ -23,7 +25,8 @@ public class ListTransactionAdapter extends BaseAdapter {
     private static final int TYPE_TRANSACTION = 1;
     private static final int TYPE_MAX_COUNT = TYPE_TRANSACTION + 1;
 
-    private ArrayList mData = new ArrayList();
+    private ArrayList<TransactionDate> mData = new ArrayList();
+    private ArrayList<String> listDate = new ArrayList<>();
     private LayoutInflater mInflater;
 
     public ListTransactionAdapter(Activity activity,ArrayList lstTrans) {
@@ -32,7 +35,28 @@ public class ListTransactionAdapter extends BaseAdapter {
     }
 
     public void addItem(final Transaction item) {
+        boolean dateExist = false;
+        String date = item.getDate();
+        if(mData.size() == 0){
+            mData.add( new SupportTransaction(item.getDay(), item.getMonth(),item.getYear(),item.getCalendar()));
+            listDate.add(date);
+        }
+
+
+        for(int i = 0; i < listDate.size(); i++){
+            if(date.equals(listDate.get(i))){
+                dateExist = true;
+            }
+        }
+
+        if(!dateExist){
+            mData.add( new SupportTransaction(item.getDay(), item.getMonth(),item.getYear(), item.getCalendar()));
+            listDate.add(date);
+        }
+
         mData.add(item);
+        Collections.sort(mData);
+
         notifyDataSetChanged();
     }
 
@@ -82,7 +106,6 @@ public class ListTransactionAdapter extends BaseAdapter {
                     ((TextView) convertView.findViewById(R.id.tvTransactionDay)).setText(support.day);
                     ((TextView) convertView.findViewById(R.id.tvTransacsionMonth)).setText(support.month);
                     ((TextView) convertView.findViewById(R.id.tvTransactionYear)).setText(support.year);
-                    ((TextView) convertView.findViewById(R.id.tvTransactionDaySum)).setText(support.money);
                     break;
                 case TYPE_TRANSACTION:
                     convertView = mInflater.inflate(R.layout.item_transaction, null);

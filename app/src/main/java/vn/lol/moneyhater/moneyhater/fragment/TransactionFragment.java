@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import vn.lol.moneyhater.momeyhater.R;
@@ -23,15 +24,9 @@ public class TransactionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_transaction, container,
                 false);
-        ArrayList al = new ArrayList();
         mDbHelper = (DatabaseHelper) container.getTag(R.id.TAG_DB_HELPER);
-        al.add(new SupportTransaction("30","July", "2015", "500,000"));
-        al.add(new Transaction("Oc cho",1, 1800000 ,1,1,1 ));
-//        al.add(new Transaction("27/7/2015","Selling","100,000","Sell Laptop"));
-//        al.add(new SupportTransaction("29","1,000,000"));
-//        al.add(new Transaction("29/7/2015","Selling","600,000","Sell Telephone"));
-//        al.add(new Transaction("29/7/2015","Selling","400,000","Sell Fan"));
-        mAdapterTransaction = new ListTransactionAdapter(getActivity(),al);
+        mAdapterTransaction = new ListTransactionAdapter(getActivity(),new ArrayList());
+        addTransaction();
         ListView mlistAccount = (ListView)rootView.findViewById(R.id.lvTransaction);
         mlistAccount.setAdapter(mAdapterTransaction);
         return rootView;
@@ -39,8 +34,14 @@ public class TransactionFragment extends Fragment {
 
     public void addTransaction(){
         /*Hard code*/
-
-//        Transaction transaction1 = new Transaction("Name",1, new Date(),1,1,1 );
-
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2015, 07, 19);
+        mAdapterTransaction.addItem(new Transaction("Oc Lon 1", 1, 1800000, 1, 1, 1, calendar));
+        mAdapterTransaction.addItem(new Transaction("Oc cho 1", 1, 1800000, 1, 1, 1, Calendar.getInstance()));
+        mAdapterTransaction.addItem(new Transaction("Oc cho 2", 1, 1800000, 1, 1, 1, Calendar.getInstance()));
+        mAdapterTransaction.addItem(new Transaction("Oc cho 3", 1, 1800000, 1, 1, 1, Calendar.getInstance()));
+        mAdapterTransaction.addItem(new Transaction("Oc Lon 2", 1, 1800000, 1, 1, 1, calendar));
+        mAdapterTransaction.addItem(new Transaction("Oc Lon 3",1, 1800000 ,1,1,1, calendar));
+        mAdapterTransaction.addItem(new Transaction("Oc Lon 4",1, 1800000 ,1,1,1, calendar));
     }
 }
