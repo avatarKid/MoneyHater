@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 
 import vn.lol.moneyhater.momeyhater.R;
@@ -40,8 +41,18 @@ public class ListTransactionAdapter extends BaseAdapter {
     public void addItem(final Transaction item) {
         boolean dateExist = false;
         String date = item.getDate();
+        Calendar calendar = item.getCalendar();
+        Log.e("before : ", calendar.toString());
+        int day = calendar.get(Calendar.DAY_OF_YEAR);
+//        calendar.set(Calendar.DAY_OF_YEAR, day);
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMaximum(Calendar.HOUR_OF_DAY));
+//        calendar.set(Calendar.);
+
+//        calendar.set(Calendar.MINUTE, 59);
+//        calendar.set(Calendar.SECOND, 59);
+        Log.e("after : ", calendar.toString());
         if (mData.size() == 0) {
-            mData.add(new SupportTransaction(item.getDay(), item.getMonth(), item.getYear(), item.getCalendar()));
+            mData.add(new SupportTransaction(item.getDay(), item.getMonth(), item.getYear(), calendar));
             listDate.add(date);
         }
 
@@ -53,12 +64,22 @@ public class ListTransactionAdapter extends BaseAdapter {
         }
 
         if (!dateExist) {
-            mData.add(new SupportTransaction(item.getDay(), item.getMonth(), item.getYear(), item.getCalendar()));
+            mData.add(new SupportTransaction(item.getDay(), item.getMonth(), item.getYear(), calendar));
             listDate.add(date);
         }
 
         mData.add(item);
-        Collections.sort(mData, Collections.reverseOrder());
+        Collections.sort(mData);
+
+        for (int i = 0; i< mData.size(); i++){
+            if(mData.get(i) instanceof SupportTransaction){
+                Log.e("Supp", mData.get(i).getDate());
+            } else {
+                Log.e("trans", mData.get(i).getDate());
+            }
+        }
+        Log.e("trans","---------------------");
+
         notifyDataSetChanged();
     }
 
@@ -124,12 +145,12 @@ public class ListTransactionAdapter extends BaseAdapter {
                 SupportTransaction support = (SupportTransaction) getItem(position);
                 holder.tv1.setText(support.day);
                 holder.tv2.setText(support.month);
-                holder.tv3.setText(support.year);
+                holder.tv3.setText(support.year + "pos: " + position);
                 break;
             case TYPE_TRANSACTION:
                 Log.e("Pos: ", position+"");
                 Transaction transaction = (Transaction) getItem(position);
-                holder.tv1.setText(transaction.getTransactionName());
+                holder.tv1.setText(transaction.getTransactionName()+ "pos: " + position);
                 /* TODO get account name of transaction via Account ID */
                 holder.tv2.setText(transaction.getTransactionName());
                 holder.tv3.setText(transaction.getCash() + "");

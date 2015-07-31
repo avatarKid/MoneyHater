@@ -51,6 +51,6 @@ public class SupportTransaction implements TransactionDate {
 
     @Override
     public int compareTo(TransactionDate another) {
-        return getTime().compareTo(another.getTime());
+        return another.getTime().compareTo(getTime());
     }
 }
