@@ -2,10 +2,12 @@ package vn.lol.moneyhater.moneyhater.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,19 +19,20 @@ import vn.lol.moneyhater.moneyhater.model.Transaction;
 import vn.lol.moneyhater.moneyhater.model.TransactionDate;
 
 /**
- * Created by huy on 7/24/2015.
+ * Created by HoangTuan on 7/24/2015.
  */
 public class ListTransactionAdapter extends BaseAdapter {
 
+    int listPosition = 0;
     private static final int TYPE_DATE = 0;
     private static final int TYPE_TRANSACTION = 1;
     private static final int TYPE_MAX_COUNT = TYPE_TRANSACTION + 1;
 
-    private ArrayList<TransactionDate> mData = new ArrayList();
+    private ArrayList<TransactionDate> mData = new ArrayList<TransactionDate>();
     private ArrayList<String> listDate = new ArrayList<>();
     private LayoutInflater mInflater;
 
-    public ListTransactionAdapter(Activity activity,ArrayList lstTrans) {
+    public ListTransactionAdapter(Activity activity, ArrayList<TransactionDate> lstTrans) {
         mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mData = lstTrans;
     }
@@ -37,39 +40,31 @@ public class ListTransactionAdapter extends BaseAdapter {
     public void addItem(final Transaction item) {
         boolean dateExist = false;
         String date = item.getDate();
-        if(mData.size() == 0){
-            mData.add( new SupportTransaction(item.getDay(), item.getMonth(),item.getYear(),item.getCalendar()));
+        if (mData.size() == 0) {
+            mData.add(new SupportTransaction(item.getDay(), item.getMonth(), item.getYear(), item.getCalendar()));
             listDate.add(date);
         }
 
 
-        for(int i = 0; i < listDate.size(); i++){
-            if(date.equals(listDate.get(i))){
+        for (int i = 0; i < listDate.size(); i++) {
+            if (date.equals(listDate.get(i))) {
                 dateExist = true;
             }
         }
 
-        if(!dateExist){
-            mData.add( new SupportTransaction(item.getDay(), item.getMonth(),item.getYear(), item.getCalendar()));
+        if (!dateExist) {
+            mData.add(new SupportTransaction(item.getDay(), item.getMonth(), item.getYear(), item.getCalendar()));
             listDate.add(date);
         }
 
         mData.add(item);
-        Collections.sort(mData);
-
-        notifyDataSetChanged();
-    }
-
-    public void addSeparatorItem(final Transaction item) {
-        mData.add(item);
-        // save separator position
-//        mSeparatorsSet.add(mData.size() - 1);
+        Collections.sort(mData, Collections.reverseOrder());
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return mData.get(position) instanceof Transaction ? TYPE_TRANSACTION : TYPE_DATE;
+        return mData.get(position) instanceof SupportTransaction ? TYPE_DATE : TYPE_TRANSACTION;
     }
 
     @Override
@@ -79,6 +74,9 @@ public class ListTransactionAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if(mData.size() <= 0){
+            return 1;
+        }
         return mData.size();
     }
 
@@ -94,33 +92,56 @@ public class ListTransactionAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        ViewHolder holder = null;
+        ViewHolder holder = new ViewHolder();
         int type = getItemViewType(position);
-        System.out.println("getView " + position + " " + convertView + " type = " + type);
         if (convertView == null) {
-//            holder = new ViewHolder();
             switch (type) {
                 case TYPE_DATE:
+                    holder = new ViewHolder();
                     convertView = mInflater.inflate(R.layout.item_date_transaction, null);
-                    SupportTransaction support = (SupportTransaction) getItem(position);
-                    ((TextView) convertView.findViewById(R.id.tvTransactionDay)).setText(support.day);
-                    ((TextView) convertView.findViewById(R.id.tvTransacsionMonth)).setText(support.month);
-                    ((TextView) convertView.findViewById(R.id.tvTransactionYear)).setText(support.year);
+                    holder.tv1 = (TextView) convertView.findViewById(R.id.tvTransactionDay);
+                    holder.tv2 = (TextView) convertView.findViewById(R.id.tvTransacsionMonth);
+                    holder.tv3 = (TextView) convertView.findViewById(R.id.tvTransactionYear);
+                    convertView.setTag(holder);
                     break;
                 case TYPE_TRANSACTION:
+                    holder = new ViewHolder();
                     convertView = mInflater.inflate(R.layout.item_transaction, null);
-                    Transaction transaction = (Transaction) getItem(position);
-                    ((TextView) convertView.findViewById(R.id.tvTransactionName)).setText(transaction.getTransactionName());
+                    holder.tv1 = (TextView) convertView.findViewById(R.id.tvTransactionName);
                     /* TODO get account name of transaction via Account ID */
-                    ((TextView) convertView.findViewById(R.id.tvTransactionAccount)).setText(transaction.getTransactionName());
-                    ((TextView) convertView.findViewById(R.id.tvTransactionMoney)).setText(transaction.getCash()+"");
+                    holder.tv2 = (TextView) convertView.findViewById(R.id.tvTransactionAccount);
+                    holder.tv3 = (TextView) convertView.findViewById(R.id.tvTransactionMoney);
+                    convertView.setTag(holder);
                     break;
             }
 
         } else {
-
+            holder = (ViewHolder) convertView.getTag();
         }
+
+        switch (type) {
+            case TYPE_DATE:
+                SupportTransaction support = (SupportTransaction) getItem(position);
+                holder.tv1.setText(support.day);
+                holder.tv2.setText(support.month);
+                holder.tv3.setText(support.year);
+                break;
+            case TYPE_TRANSACTION:
+                Log.e("Pos: ", position+"");
+                Transaction transaction = (Transaction) getItem(position);
+                holder.tv1.setText(transaction.getTransactionName());
+                /* TODO get account name of transaction via Account ID */
+                holder.tv2.setText(transaction.getTransactionName());
+                holder.tv3.setText(transaction.getCash() + "");
+                break;
+        }
+
         return convertView;
+    }
+    private class ViewHolder {
+        public TextView tv1;
+        public TextView tv2;
+        public TextView tv3;
     }
 
 }

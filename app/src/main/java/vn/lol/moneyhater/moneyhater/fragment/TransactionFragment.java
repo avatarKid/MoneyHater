@@ -35,13 +35,32 @@ public class TransactionFragment extends Fragment {
     public void addTransaction(){
         /*Hard code*/
         Calendar calendar = Calendar.getInstance();
+        Calendar calendar2 = Calendar.getInstance();
+        Calendar calendar3 = Calendar.getInstance();
         calendar.set(2015, 07, 19);
-        mAdapterTransaction.addItem(new Transaction("Oc Lon 1", 1, 1800000, 1, 1, 1, calendar));
+        calendar2.set(2015, 07, 17);
+        calendar3.set(2015, 07, 11);
+        mAdapterTransaction.addItem(new Transaction("17 4", 1, 1800000, 1, 1, 1, calendar2));
+        mAdapterTransaction.addItem(new Transaction("19 1", 1, 1800000, 1, 1, 1, calendar));
+        mAdapterTransaction.addItem(new Transaction("11 4", 1, 1800000, 1, 1, 1, calendar3));
         mAdapterTransaction.addItem(new Transaction("Oc cho 1", 1, 1800000, 1, 1, 1, Calendar.getInstance()));
         mAdapterTransaction.addItem(new Transaction("Oc cho 2", 1, 1800000, 1, 1, 1, Calendar.getInstance()));
+        mAdapterTransaction.addItem(new Transaction("11 4",1, 1800000 ,1,1,1, calendar3));
         mAdapterTransaction.addItem(new Transaction("Oc cho 3", 1, 1800000, 1, 1, 1, Calendar.getInstance()));
-        mAdapterTransaction.addItem(new Transaction("Oc Lon 2", 1, 1800000, 1, 1, 1, calendar));
-        mAdapterTransaction.addItem(new Transaction("Oc Lon 3",1, 1800000 ,1,1,1, calendar));
-        mAdapterTransaction.addItem(new Transaction("Oc Lon 4",1, 1800000 ,1,1,1, calendar));
+
+        mAdapterTransaction.addItem(new Transaction("17 4",1, 1800000 ,1,1,1, calendar2));
+        mAdapterTransaction.addItem(new Transaction("19 2", 1, 1800000, 1, 1, 1, calendar));
+        mAdapterTransaction.addItem(new Transaction("19 3",1, 1800000 ,1,1,1, calendar));
+        mAdapterTransaction.addItem(new Transaction("19 4",1, 1800000 ,1,1,1, calendar));
+
+        mAdapterTransaction.addItem(new Transaction("17 4",1, 1800000 ,1,1,1, calendar2));
+
+
+        mAdapterTransaction.addItem(new Transaction("17 4",1, 1800000 ,1,1,1, calendar2));
+
+        mAdapterTransaction.addItem(new Transaction("11 4",1, 1800000 ,1,1,1, calendar3));
+
+        mAdapterTransaction.addItem(new Transaction("11 4",1, 1800000 ,1,1,1, calendar3));
+        mAdapterTransaction.addItem(new Transaction("11 4",1, 1800000 ,1,1,1, calendar3));
     }
 }
