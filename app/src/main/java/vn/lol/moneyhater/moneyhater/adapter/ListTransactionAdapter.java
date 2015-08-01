@@ -42,14 +42,6 @@ public class ListTransactionAdapter extends BaseAdapter {
         boolean dateExist = false;
         String date = item.getDate();
         Calendar calendar = item.getCalendar();
-        Log.e("before : ", calendar.toString());
-        int day = calendar.get(Calendar.DAY_OF_YEAR);
-//        calendar.set(Calendar.DAY_OF_YEAR, day);
-        calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMaximum(Calendar.HOUR_OF_DAY));
-//        calendar.set(Calendar.);
-
-//        calendar.set(Calendar.MINUTE, 59);
-//        calendar.set(Calendar.SECOND, 59);
         Log.e("after : ", calendar.toString());
         if (mData.size() == 0) {
             mData.add(new SupportTransaction(item.getDay(), item.getMonth(), item.getYear(), calendar));

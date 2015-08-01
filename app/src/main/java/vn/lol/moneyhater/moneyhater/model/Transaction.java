@@ -2,6 +2,7 @@ package vn.lol.moneyhater.moneyhater.model;
 
 import android.text.format.Time;
 
+import java.io.Serializable;
 import java.security.Principal;
 
 import java.text.SimpleDateFormat;
@@ -13,7 +14,7 @@ import java.util.Locale;
 /**
  * Created by huy on 7/24/2015.
  */
-public class Transaction implements TransactionDate {
+public class Transaction implements TransactionDate,Serializable {
     private int mTransactionID;
     private String mTransactionName;
     private int mType;
@@ -123,6 +124,10 @@ public class Transaction implements TransactionDate {
 
     public void setAccountID(int accountID) {
         mAccountID = accountID;
+    }
+
+    public void setDate(Calendar mDate) {
+        this.mDate = mDate;
     }
 
     @Override

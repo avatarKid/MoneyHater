@@ -34,6 +34,9 @@
     <string name="title_activity_new_transaction">Adding Transaction</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="lbAddTransName">Name</string>
+    <string name="lbAddTransAccountName">Account</string>
+    <string name="lbAddTransBudgetName">Budget</string>
 
     <!-- Account screen-->
 

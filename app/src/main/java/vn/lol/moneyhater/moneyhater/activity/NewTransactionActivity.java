@@ -1,27 +1,47 @@
 package vn.lol.moneyhater.moneyhater.activity;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Switch;
+
+import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.fragment.TransactionFragment;
+import vn.lol.moneyhater.moneyhater.model.Transaction;
 
 
 public class NewTransactionActivity extends ActionBarActivity {
+
+    EditText etTransactionName;
+    EditText etTransactionMoney;
+    Switch swTransactionType;
+    Spinner spTransactionAccount;
+    Spinner spTransactionBudget;
+    DatePicker dpTransactionDate;
+    Button btAddNewTransaction;
+    Transaction transaction = new Transaction();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_transaction);
-        Button btAddAcc = (Button) findViewById(R.id.btAddNewTran);
-        btAddAcc.setOnClickListener(new View.OnClickListener() {
+        init();
+        btAddNewTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                finish();
+                addTransaction();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("transaction", transaction);
+                startActivity(intent);
             }
         });
     }
@@ -46,5 +66,23 @@ public class NewTransactionActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void init() {
+        btAddNewTransaction = (Button) findViewById(R.id.btAddNewTran);
+        etTransactionName = (EditText) findViewById(R.id.etAddTransName);
+        etTransactionMoney = (EditText) findViewById(R.id.etTransactionMoney);
+        spTransactionBudget = (Spinner) findViewById(R.id.spAddTransBudgetName);
+        spTransactionAccount = (Spinner) findViewById(R.id.spAddTransAccountName);
+        dpTransactionDate = (DatePicker) findViewById(R.id.dpTransactionDate);
+        swTransactionType = (Switch) findViewById(R.id.swTransactionType);
+    }
+
+    public void addTransaction() {
+        transaction.setTransactionName(etTransactionName.getText().toString());
+        transaction.setCash(Double.parseDouble(etTransactionMoney.getText().toString()));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(dpTransactionDate.getYear(), dpTransactionDate.getMonth(), dpTransactionDate.getDayOfMonth());
+        transaction.setDate(calendar);
     }
 }
