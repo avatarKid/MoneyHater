@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +58,16 @@ public class TransactionFragment extends Fragment {
         boolean dateExist = false;
         String date = item.getDate();
         Calendar calendar = item.getCalendar();
-        Log.e("after : ", calendar.toString());
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy:MM:dd:hh:mm:ss");
+        Date d1 = null;
+        try {
+            d1 = df.parse(calendar.get(Calendar.YEAR) + ":" + (calendar.get(Calendar.MONTH) + 1) + ":" + calendar.get(Calendar.DAY_OF_MONTH) + ":23:59:59");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        calendar.setTime(d1);
+
         if (listTransaction.size() == 0) {
             listTransaction.add(new SupportTransaction(item.getDay(), item.getMonth(), item.getYear(), calendar));
             listDate.add(date);
@@ -76,19 +87,20 @@ public class TransactionFragment extends Fragment {
 
         listTransaction.add(item);
         Collections.sort(listTransaction);
-
-        for (int i = 0; i< listTransaction.size(); i++){
-            if(listTransaction.get(i) instanceof SupportTransaction){
-                Log.e("Supp", listTransaction.get(i).getDate());
-            } else {
-                Log.e("trans", listTransaction.get(i).getDate());
-            }
-        }
+//
+//        for (int i = 0; i < listTransaction.size(); i++) {
+//            if (listTransaction.get(i) instanceof SupportTransaction) {
+//                Log.e("Supp", listTransaction.get(i).getTime().toString());
+//            } else {
+//                Log.e("trans", listTransaction.get(i).getTime().toString());
+//            }
+//        }
 
     }
 
     /**
      * Created by expert Huy
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -97,8 +109,8 @@ public class TransactionFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ConstantValue.REQUEST_CODE_ADD_TRANSACTION) {
-            if(resultCode == Activity.RESULT_OK){
-                Transaction transaction= (Transaction) data.getSerializableExtra(ConstantValue.NEW_TRANSACTION);
+            if (resultCode == Activity.RESULT_OK) {
+                Transaction transaction = (Transaction) data.getSerializableExtra(ConstantValue.NEW_TRANSACTION);
                 addItem(transaction);
                 mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction);
                 mlistAccount.setAdapter(mAdapterTransaction);
