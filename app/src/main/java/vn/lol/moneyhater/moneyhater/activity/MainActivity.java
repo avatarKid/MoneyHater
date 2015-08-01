@@ -68,11 +68,11 @@ public class MainActivity extends ActionBarActivity
             @Override
             public void onClick(View v) {
                 Intent intent;
-                switch (StateSeleced){
+                switch (StateSeleced) {
                     case 0:
                         //List
-                        Toast.makeText(getBaseContext(),"List",Toast.LENGTH_SHORT).show();
-                        //TODO
+                        intent = new Intent(MainActivity.this, NewTransactionActivity.class);
+                        startActivity(intent);
                         break;
                     case 1:
                         //Account
@@ -108,7 +108,7 @@ public class MainActivity extends ActionBarActivity
         mDb = new DatabaseHelper(getApplicationContext());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setPageMargin(60);
-        mViewPager.setTag(R.id.TAG_DB_HELPER,mDb);
+        mViewPager.setTag(R.id.TAG_DB_HELPER, mDb);
         mPagerAdapter = new FragmentPageAdapter(getSupportFragmentManager());
     }
 
@@ -179,7 +179,7 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_example) {
-            startActivity(new Intent(this,SettingsActivity.class));
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
