@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final String TAG = this.getClass().getName();
 
     // database version
-    private static final int DATABASE_VERSION=1;
+    private static final int DATABASE_VERSION=3;
 
     // database name
     private static final String DATABASE_NAME = "moneyhater";
@@ -33,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final String TABLE_ACCOUNT = "account";
     private final String TABLE_BUDGET = "budget";
     private final String TABLE_CATEGORY = "category";
-    private final String TABLE_TRANSACTION = "transaction";
+    private final String TABLE_TRANSACTION = "transactionx";
 
     // common key
     private final String FIELD_ID = "id";
@@ -50,10 +50,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final String FIELD_TRANSACTION_ACCOUNT_ID = "account_id";
     private final String FIELD_TRANSACTION_BUDGET_ID = "budget_id";
     private final String FIELD_TRANSACTION_CATEGORY_ID = "category_id";
-    private final String FIELD_DATE = "date_time";
+    private final String FIELD_DATE = "date_create";
 
     // create statement
-    private final String CREATE_TABLE_ACCOUNT = "CREATE TABLE \"account\" (\n" +
+    private final String CREATE_TABLE_ACCOUNT = "CREATE TABLE `account` (\n" +
             "\t`id`\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
             "\t`name`\tTEXT NOT NULL,\n" +
             "\t`cash`\tINTEGER NOT NULL DEFAULT 0,\n" +
@@ -73,7 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "\t`image_id`\tNUMERIC NOT NULL DEFAULT 0\n" +
             ")";
 
-    private final String CREATE_TABLE_TRANSACTION ="CREATE TABLE \"transaction\" (\n" +
+    private final String CREATE_TABLE_TRANSACTION ="CREATE TABLE `transactionx` (\n" +
             "\t`id`\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
             "\t`type`\tINTEGER NOT NULL DEFAULT 0,\n" +
             "\t`name`\tTEXT,\n" +
@@ -81,8 +81,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "\t`category_id`\tINTEGER,\n" +
             "\t`account_id`\tINTEGER,\n" +
             "\t`budget_id`\tINTEGER,\n" +
-            "\t`date_time`\tDATETIME\n" +
-            ")";
+            "\t`date_create`\tTEXT\n" +
+            ");";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -90,8 +90,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
-
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
