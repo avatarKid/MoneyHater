@@ -15,6 +15,7 @@ import android.widget.Switch;
 import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.fragment.TransactionFragment;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
 
@@ -39,9 +40,13 @@ public class NewTransactionActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 addTransaction();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("transaction", transaction);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                intent.putExtra("transaction", transaction);
+//                startActivity(intent);
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(ConstantValue.NEW_TRANSACTION, transaction);
+                setResult(RESULT_OK,returnIntent);
+                finish();
             }
         });
     }
@@ -84,5 +89,6 @@ public class NewTransactionActivity extends ActionBarActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.set(dpTransactionDate.getYear(), dpTransactionDate.getMonth(), dpTransactionDate.getDayOfMonth());
         transaction.setDate(calendar);
+
     }
 }

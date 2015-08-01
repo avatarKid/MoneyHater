@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.FragmentPageAdapter;
 import vn.lol.moneyhater.moneyhater.fragment.AccountFragment;
 import vn.lol.moneyhater.moneyhater.fragment.BudgetFragment;
@@ -70,9 +71,8 @@ public class MainActivity extends ActionBarActivity
                 Intent intent;
                 switch (StateSeleced) {
                     case 0:
-                        //List
                         intent = new Intent(MainActivity.this, NewTransactionActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent, ConstantValue.REQUEST_CODE_ADD_TRANSACTION);
                         break;
                     case 1:
                         //Account
@@ -90,7 +90,15 @@ public class MainActivity extends ActionBarActivity
             }
         });
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case ConstantValue.REQUEST_CODE_ADD_TRANSACTION:
+                TransactionFragment tranFrag = (TransactionFragment) mPagerAdapter.getItem(0);
+                tranFrag.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
+    }
     private void intialiseViewPager() {
         List<Fragment> fragments = new Vector<Fragment>();
         fragments.add(Fragment.instantiate(this, TransactionFragment.class.getName()));

@@ -50,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final String FIELD_TRANSACTION_ACCOUNT_ID = "account_id";
     private final String FIELD_TRANSACTION_BUDGET_ID = "budget_id";
     private final String FIELD_TRANSACTION_CATEGORY_ID = "category_id";
-    private final String FIELD_DATE = "date";
+    private final String FIELD_DATE = "date_time";
 
     // create statement
     private final String CREATE_TABLE_ACCOUNT = "CREATE TABLE \"account\" (\n" +
@@ -81,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "\t`category_id`\tINTEGER,\n" +
             "\t`account_id`\tINTEGER,\n" +
             "\t`budget_id`\tINTEGER,\n" +
-            "\t`date_time`\tBLOB\n" +
+            "\t`date_time`\tDATETIME\n" +
             ")";
 
     public DatabaseHelper(Context context) {
@@ -394,4 +394,106 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // TABLE TRANSACTION insert, add, , delete, find, find all
+    public Transaction SelectTransaction(int transactionID){
+        Transaction transaction=null;
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            String selectQuery = "SELECT * FROM " + TABLE_TRANSACTION + " WHERE "
+                    + FIELD_ID + " = " + transactionID;
+
+            Log.e(TAG, selectQuery);
+
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c != null) {
+                c.moveToFirst();
+                transaction=new Transaction();
+                transaction.setAccountID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_ACCOUNT_ID)));
+                transaction.setBudgetID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_BUDGET_ID)));
+                transaction.setCash(c.getDouble(c.getColumnIndex(FIELD_CASH)));
+                transaction.setCategoryID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_CATEGORY_ID)));
+                transaction.setDate(c.getString(c.getColumnIndex(FIELD_DATE)));
+                transaction.setTransactionID(c.getInt(c.getColumnIndex(FIELD_ID)));
+                transaction.setTransactionName(c.getString(c.getColumnIndex(FIELD_NAME)));
+                transaction.setType(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_TYPE)));
+            }
+        } catch (Exception e) {
+            Log.e(TAG,"SelectBudget");
+            e.printStackTrace();
+        }
+        return transaction;
+    }
+
+    public ArrayList<Transaction> getAllTransactions() {
+        ArrayList<Transaction> lstTransactions= new ArrayList<Transaction>();
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION;
+
+        Log.e(TAG, selectQuery);
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    Transaction transaction=new Transaction();
+                    transaction.setAccountID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_ACCOUNT_ID)));
+                    transaction.setBudgetID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_BUDGET_ID)));
+                    transaction.setCash(c.getDouble(c.getColumnIndex(FIELD_CASH)));
+                    transaction.setCategoryID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_CATEGORY_ID)));
+                    transaction.setDate(c.getString(c.getColumnIndex(FIELD_DATE)));
+                    transaction.setTransactionID(c.getInt(c.getColumnIndex(FIELD_ID)));
+                    transaction.setTransactionName(c.getString(c.getColumnIndex(FIELD_NAME)));
+                    transaction.setType(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_TYPE)));
+
+                    lstTransactions.add(transaction);
+                } while (c.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG,"getAllTransactions");
+            e.printStackTrace();
+        }
+
+        return lstTransactions;
+    }
+
+    public boolean insertTransaction(Transaction transaction) {
+        long categoryID = 0;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(FIELD_TRANSACTION_ACCOUNT_ID, transaction.getAccountID());
+            values.put(FIELD_TRANSACTION_BUDGET_ID, transaction.getBudgetID());
+            values.put(FIELD_CASH, transaction.getCash());
+            values.put(FIELD_TRANSACTION_CATEGORY_ID, transaction.getCategoryID());
+            values.put(FIELD_DATE, transaction.getDateTime());
+            values.put(FIELD_NAME, transaction.getTransactionName());
+            values.put(FIELD_TRANSACTION_TYPE, transaction.getType());
+
+            categoryID = db.insert(TABLE_TRANSACTION, null, values);
+            transaction.setTransactionID(CommonFunction.safeLongToInt(categoryID));
+        } catch (Exception e) {
+            Log.e(TAG,"insertTransaction");
+            e.printStackTrace();
+        }
+        return categoryID>0;
+    }
+
+    public boolean deleteTransaction(int transactionID){
+        int deleteNumber = 0;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            String whereClause = FIELD_ID + "=?";
+            String[] whereArgs = new String[] { String.valueOf(transactionID) };
+            deleteNumber=db.delete(TABLE_TRANSACTION,whereClause,whereArgs);
+        } catch (Exception e) {
+            Log.e(TAG,"deleteTransaction");
+            e.printStackTrace();
+        }
+        return deleteNumber>0;
+    }
 }

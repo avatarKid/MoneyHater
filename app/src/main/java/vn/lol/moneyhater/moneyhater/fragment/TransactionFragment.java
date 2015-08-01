@@ -1,7 +1,9 @@
 package vn.lol.moneyhater.moneyhater.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -18,6 +20,8 @@ import java.util.Date;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
+import vn.lol.moneyhater.moneyhater.activity.NewTransactionActivity;
 import vn.lol.moneyhater.moneyhater.adapter.ListTransactionAdapter;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
@@ -38,6 +42,7 @@ public class TransactionFragment extends Fragment {
         listTransaction = new ArrayList();
         listDate = new ArrayList<>();
         mlistAccount = (ListView) rootView.findViewById(R.id.lvTransaction);
+
         return rootView;
     }
 
@@ -45,29 +50,6 @@ public class TransactionFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        if (addTransaction()) {
-            Log.e("ADD--------", "List: " + listTransaction.size());
-            mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction);
-            mlistAccount.setAdapter(mAdapterTransaction);
-            mAdapterTransaction.notifyDataSetChanged();
-
-        }
-    }
-
-    public boolean addTransaction() {
-        /*Hard code*/
-        if (getActivity().getIntent().getSerializableExtra("transaction") == null) {
-            return false;
-        }
-        Transaction transaction = (Transaction) getActivity().getIntent().getSerializableExtra("transaction");
-        addItem(transaction);
-        addItem(transaction);
-        addItem(transaction);
-        addItem(transaction);
-        addItem(transaction);
-        addItem(transaction);
-        return true;
     }
 
     public void addItem(Transaction item) {
@@ -100,6 +82,28 @@ public class TransactionFragment extends Fragment {
                 Log.e("Supp", listTransaction.get(i).getDate());
             } else {
                 Log.e("trans", listTransaction.get(i).getDate());
+            }
+        }
+
+    }
+
+    /**
+     * Created by expert Huy
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ConstantValue.REQUEST_CODE_ADD_TRANSACTION) {
+            if(resultCode == Activity.RESULT_OK){
+                Transaction transaction= (Transaction) data.getSerializableExtra(ConstantValue.NEW_TRANSACTION);
+                addItem(transaction);
+                mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction);
+                mlistAccount.setAdapter(mAdapterTransaction);
+                mAdapterTransaction.notifyDataSetChanged();
+                mDbHelper.insertTransaction(transaction);
             }
         }
     }

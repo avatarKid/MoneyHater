@@ -1,20 +1,24 @@
 package vn.lol.moneyhater.moneyhater.model;
 
 import android.text.format.Time;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.security.Principal;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /**
  * Created by huy on 7/24/2015.
  */
 public class Transaction implements TransactionDate,Serializable {
+    private final String TAG = this.getClass().getName();
     private int mTransactionID;
     private String mTransactionName;
     private int mType;
@@ -36,7 +40,11 @@ public class Transaction implements TransactionDate,Serializable {
         mAccountID = accountID;
         mDate = date;
     }
-
+    public String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd", Locale.getDefault());
+        return dateFormat.format(mDate.getTime());
+    }
     public Date getTime(){
         return mDate.getTime();
     }
@@ -126,10 +134,20 @@ public class Transaction implements TransactionDate,Serializable {
         mAccountID = accountID;
     }
 
-    public void setDate(Calendar mDate) {
-        this.mDate = mDate;
+    public void setDate(String date) {
+        try {
+            mDate = new GregorianCalendar();
+            SimpleDateFormat dateFormat = new SimpleDateFormat(
+                    "yyyy-MM-dd", Locale.getDefault());
+            this.mDate.setTime(dateFormat.parse(date));
+        } catch (ParseException e) {
+            Log.e(TAG,"setDate ParseException");
+            e.printStackTrace();
+        }
     }
-
+    public void setDate(Calendar date) {
+        this.mDate=date;
+    }
     @Override
     public int compareTo(TransactionDate another) {
         return another.getTime().compareTo(getTime());

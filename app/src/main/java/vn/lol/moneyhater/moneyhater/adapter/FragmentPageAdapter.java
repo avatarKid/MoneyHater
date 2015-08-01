@@ -32,7 +32,7 @@ public class FragmentPageAdapter extends FragmentPagerAdapter {
 
     @Override
     public void destroyItem(View container, int position, Object object) {
-        super.destroyItem(container, position, object);
-        ((ViewPager) container).removeView((View) object);
+//        super.destroyItem(container, position, object);
+//        ((ViewPager) container).removeView((View) object);
     }
 }
