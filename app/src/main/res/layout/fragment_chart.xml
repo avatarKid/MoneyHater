@@ -5,10 +5,9 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <vn.lol.moneyhater.moneyhater.view.PiceChartView
+    <vn.lol.moneyhater.moneyhater.view.BarGraph
         android:id="@+id/charPice"
-        android:layout_marginTop="20dp"
-        android:layout_width="320dp"
-        android:layout_height="match_parent"/>
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
 </LinearLayout>
 
