@@ -4,9 +4,24 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="In Month"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
     <vn.lol.moneyhater.moneyhater.view.BarGraph
-        android:id="@+id/charPice"
+        android:id="@+id/charBar"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="In Year"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+    <vn.lol.moneyhater.moneyhater.view.LineGraph
+        android:id="@+id/charLine"
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
 </LinearLayout>

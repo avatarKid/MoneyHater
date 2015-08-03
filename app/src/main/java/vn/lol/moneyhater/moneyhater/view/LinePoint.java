@@ -16,6 +16,7 @@ public class LinePoint {
     private float mY;
     private int mColor = 0xFF000000;
     private int mSelectedColor = -1;
+    private String mName = null;
 
     public LinePoint() {
         this(0, 0);
@@ -81,6 +82,14 @@ public class LinePoint {
             mSelectedColor &= 0x80FFFFFF;
         }
         return mSelectedColor;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String mName) {
+        this.mName = mName;
     }
 
     public void setSelectedColor(int selectedColor) {

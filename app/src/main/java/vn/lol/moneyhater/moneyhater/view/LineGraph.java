@@ -4,6 +4,7 @@ package vn.lol.moneyhater.moneyhater.view;
  * Created by TuanAnh on 8/2/2015.
  */
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import vn.lol.moneyhater.momeyhater.R;
 
 public class LineGraph extends View {
-
+    private static final int AXIS_LABEL_FONT_SIZE = 15;
     private static final int DEFAULT_PADDING = 10;
     private final int mDipPadding;
     private final int mFillColor;
@@ -316,15 +317,16 @@ public class LineGraph extends View {
     }
 
     public void onDraw(Canvas canvas) {
+        final Resources resources = getContext().getResources();
         if (null == mFullImage) {
             mFullImage = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
             mCanvas = new Canvas(mFullImage);
         }
 
-        mCanvas.drawColor(mBackgroundColor);
+      //  mCanvas.drawColor(mBackgroundColor);
         resetPaintWithAntiAlias(mPaint, true);
-        float bottomPadding = 10, topPadding = 10;
-        float sidePadding = 10;
+        float bottomPadding = 30, topPadding = 10;
+        float sidePadding = 30;
         if (mUseDips) {
             bottomPadding = mDipPadding;
             topPadding = mDipPadding;
@@ -340,66 +342,82 @@ public class LineGraph extends View {
 
 
         int lineCount = 0;
-        for (Line line : mLines) {
-            int count = 0;
-            float lastXPixels = 0, newYPixels = 0;
-            float lastYPixels = 0, newXPixels = 0;
 
-            if (lineCount == mLineToFill) {
-                // Draw lines
-                mPaint.setColor(mFillColor);
-                mPaint.setStrokeWidth(mStrokeWidth);
-                for (int i = 10; i - getWidth() < getHeight(); i = i + mStrokeSpacing) {
-                    mCanvas.drawLine(
-                            i, getHeight() - bottomPadding,
-                            0, getHeight() - bottomPadding - i, mPaint);
-                }
-
-                // Erase lines above the line
-                resetPaintWithAntiAlias(mPaint, true);
-                mPaint.setXfermode(mXfermode);
-                for (LinePoint p : line.getPoints()) {
-                    float yPercent = (p.getY() - minY) / (maxY - minY);
-                    float xPercent = (p.getX() - minX) / (maxX - minX);
-                    if (count == 0) {
-                        lastXPixels = sidePadding + (xPercent * usableWidth);
-                        lastYPixels = getHeight() - bottomPadding - (usableHeight * yPercent);
-                        mPath.moveTo(lastXPixels, lastYPixels);
-                    } else {
-                        newXPixels = sidePadding + (xPercent * usableWidth);
-                        newYPixels = getHeight() - bottomPadding - (usableHeight * yPercent);
-                        mPath.lineTo(newXPixels, newYPixels);
-                        mPath.moveTo(lastXPixels, lastYPixels);
-                        mPath.lineTo(newXPixels, newYPixels);
-                        mPath.lineTo(newXPixels, 0);
-                        mPath.lineTo(lastXPixels, 0);
-                        mPath.close();
-                        mCanvas.drawPath(mPath, mPaint);
-                        lastXPixels = newXPixels;
-                        lastYPixels = newYPixels;
-                    }
-                    count++;
-                }
-
-                mPath.reset();
-                mPath.moveTo(0, getHeight() - bottomPadding);
-                mPath.lineTo(sidePadding, getHeight() - bottomPadding);
-                mPath.lineTo(sidePadding, 0);
-                mPath.lineTo(0, 0);
-                mPath.close();
-                mCanvas.drawPath(mPath, mPaint);
-
-                mPath.reset();
-                mPath.moveTo(getWidth(), getHeight() - bottomPadding);
-                mPath.lineTo(getWidth() - sidePadding, getHeight() - bottomPadding);
-                mPath.lineTo(getWidth() - sidePadding, 0);
-                mPath.lineTo(getWidth(), 0);
-                mPath.close();
-
-                mCanvas.drawPath(mPath, mPaint);
+        // Draw x-axis label text
+        if (true) {
+            mPaint.setColor(mFillColor);
+            mPaint.setTextSize(AXIS_LABEL_FONT_SIZE
+                    * resources.getDisplayMetrics().scaledDensity);
+            for(int i =0;i<12;i++) {
+                float textWidth = mPaint.measureText("T"+(i+1));
+                float xPercent = (i - minX) / (maxX - minX);
+                int x = (int) ((((0 + 10) / 2) - (textWidth / 2) + sidePadding) + (xPercent * usableWidth));
+                int y = (int) (getHeight() - 2 * resources.getDisplayMetrics().scaledDensity);
+                canvas.drawText("T"+(i+1), x, y, mPaint);
             }
-            lineCount++;
         }
+
+
+//        for (Line line : mLines) {
+//            int count = 0;
+//            float lastXPixels = 0, newYPixels = 0;
+//            float lastYPixels = 0, newXPixels = 0;
+//
+//            if (lineCount == mLineToFill) {
+//                // Draw lines
+//                mPaint.setColor(mFillColor);
+//                mPaint.setStrokeWidth(mStrokeWidth);
+//                for (int i = 10; i - getWidth() < getHeight(); i = i + mStrokeSpacing) {
+//                    mCanvas.drawLine(
+//                            i, getHeight() - bottomPadding,
+//                            0, getHeight() - bottomPadding - i, mPaint);
+//                }
+//
+//                // Erase lines above the line
+//                resetPaintWithAntiAlias(mPaint, true);
+//                mPaint.setXfermode(mXfermode);
+//                for (LinePoint p : line.getPoints()) {
+//                    float yPercent = (p.getY() - minY) / (maxY - minY);
+//                    float xPercent = (p.getX() - minX) / (maxX - minX);
+//                    if (count == 0) {
+//                        lastXPixels = sidePadding + (xPercent * usableWidth);
+//                        lastYPixels = getHeight() - bottomPadding - (usableHeight * yPercent);
+//                        mPath.moveTo(lastXPixels, lastYPixels);
+//                    } else {
+//                        newXPixels = sidePadding + (xPercent * usableWidth);
+//                        newYPixels = getHeight() - bottomPadding - (usableHeight * yPercent);
+//                        mPath.lineTo(newXPixels, newYPixels);
+//                        mPath.moveTo(lastXPixels, lastYPixels);
+//                        mPath.lineTo(newXPixels, newYPixels);
+//                        mPath.lineTo(newXPixels, 0);
+//                        mPath.lineTo(lastXPixels, 0);
+//                        mPath.close();
+//                        mCanvas.drawPath(mPath, mPaint);
+//                        lastXPixels = newXPixels;
+//                        lastYPixels = newYPixels;
+//                    }
+//                    count++;
+//                }
+//
+//                mPath.reset();
+//                mPath.moveTo(0, getHeight() - bottomPadding);
+//                mPath.lineTo(sidePadding, getHeight() - bottomPadding);
+//                mPath.lineTo(sidePadding, 0);
+//                mPath.lineTo(0, 0);
+//                mPath.close();
+//                mCanvas.drawPath(mPath, mPaint);
+//
+//                mPath.reset();
+//                mPath.moveTo(getWidth(), getHeight() - bottomPadding);
+//                mPath.lineTo(getWidth() - sidePadding, getHeight() - bottomPadding);
+//                mPath.lineTo(getWidth() - sidePadding, 0);
+//                mPath.lineTo(getWidth(), 0);
+//                mPath.close();
+//
+//                mCanvas.drawPath(mPath, mPaint);
+//            }
+//            lineCount++;
+//        }
 
         // Draw x-axis line
         resetPaintWithAntiAlias(mPaint, true);
@@ -409,9 +427,9 @@ public class LineGraph extends View {
         float height;
         if (minY < 0) {
             // Negative values in serie, set x-axis to zero
-            height = getHeight() - bottomPadding - (usableHeight * (-minY / (maxY - minY)));
+            height = getHeight() - bottomPadding*2 - (usableHeight * (-minY / (maxY - minY)));
         } else {
-            height = getHeight() - bottomPadding;
+            height = getHeight() - bottomPadding*2;
         }
 
         mCanvas.drawLine(
@@ -436,10 +454,10 @@ public class LineGraph extends View {
                 float xPercent = (p.getX() - minX) / (maxX - minX);
                 if (count == 0) {
                     lastXPixels = sidePadding + (xPercent * usableWidth);
-                    lastYPixels = getHeight() - bottomPadding - (usableHeight * yPercent);
+                    lastYPixels = getHeight() - bottomPadding*2 - (usableHeight * yPercent);
                 } else {
                     newXPixels = sidePadding + (xPercent * usableWidth);
-                    newYPixels = getHeight() - bottomPadding - (usableHeight * yPercent);
+                    newYPixels = getHeight() - bottomPadding*2 - (usableHeight * yPercent);
                     mCanvas.drawLine(lastXPixels, lastYPixels, newXPixels, newYPixels, mPaint);
                     lastXPixels = newXPixels;
                     lastYPixels = newYPixels;
@@ -460,7 +478,7 @@ public class LineGraph extends View {
                     float yPercent = (p.getY() - minY) / (maxY - minY);
                     float xPercent = (p.getX() - minX) / (maxX - minX);
                     float xPixels = sidePadding + (xPercent * usableWidth);
-                    float yPixels = getHeight() - bottomPadding - (usableHeight * yPercent);
+                    float yPixels = getHeight() - bottomPadding*2 - (usableHeight * yPercent);
 
                     int outerRadius;
                     if (line.isUsingDips()) {
