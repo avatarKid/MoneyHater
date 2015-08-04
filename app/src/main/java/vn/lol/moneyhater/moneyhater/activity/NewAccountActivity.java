@@ -6,27 +6,42 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.model.Account;
 
 /**
  * Created by TuanAnh on 7/25/2015.
  */
 public class NewAccountActivity extends ActionBarActivity {
 
+    private DatabaseHelper mDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_account);
+
+        mDbHelper = new DatabaseHelper(getApplicationContext());
         Button btAddAcc = (Button) findViewById(R.id.btAddNewAcc);
         btAddAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                addNewAccount();
+                mDbHelper.close();
                 finish();
             }
         });
+    }
 
+    public void addNewAccount(){
+        EditText accountName = (EditText) findViewById(R.id.etAccountName);
+        EditText accountCash = (EditText) findViewById(R.id.etCash);
+        Account newAccount = new Account(accountName.getText().toString(),
+                Double.parseDouble(accountCash.getText().toString()),0);
+        mDbHelper.insertAccount(newAccount);
     }
 
     @Override
