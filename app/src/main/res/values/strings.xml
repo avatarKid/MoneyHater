@@ -37,6 +37,7 @@
     <string name="lbAddTransName">Name</string>
     <string name="lbAddTransAccountName">Account</string>
     <string name="lbAddTransBudgetName">Budget</string>
+    <string name="title_activity_edit_transaction">EditTransaction</string>
 
     <!-- Account screen-->
 

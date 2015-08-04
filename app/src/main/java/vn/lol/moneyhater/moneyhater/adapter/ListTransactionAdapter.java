@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Collections;
 
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
 import vn.lol.moneyhater.moneyhater.model.TransactionDate;
@@ -30,7 +31,6 @@ public class ListTransactionAdapter extends BaseAdapter {
     private static final int TYPE_MAX_COUNT = TYPE_TRANSACTION + 1;
 
     private ArrayList<TransactionDate> mData = new ArrayList<TransactionDate>();
-    private ArrayList<String> listDate = new ArrayList<>();
     private LayoutInflater mInflater;
 
     public ListTransactionAdapter(Activity activity, ArrayList<TransactionDate> lstTrans) {
@@ -38,46 +38,14 @@ public class ListTransactionAdapter extends BaseAdapter {
         mData = lstTrans;
     }
 
-    public void addItem(final Transaction item) {
-        boolean dateExist = false;
-        String date = item.getDate();
-        Calendar calendar = item.getCalendar();
-        Log.e("after : ", calendar.toString());
-        if (mData.size() == 0) {
-            mData.add(new SupportTransaction(item.getDay(), item.getMonth(), item.getYear(), calendar));
-            listDate.add(date);
-        }
-
-
-        for (int i = 0; i < listDate.size(); i++) {
-            if (date.equals(listDate.get(i))) {
-                dateExist = true;
-            }
-        }
-
-        if (!dateExist) {
-            mData.add(new SupportTransaction(item.getDay(), item.getMonth(), item.getYear(), calendar));
-            listDate.add(date);
-        }
-
-        mData.add(item);
-        Collections.sort(mData);
-
-        for (int i = 0; i< mData.size(); i++){
-            if(mData.get(i) instanceof SupportTransaction){
-                Log.e("Supp", mData.get(i).getDate());
-            } else {
-                Log.e("trans", mData.get(i).getDate());
-            }
-        }
-        Log.e("trans","---------------------");
-
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getItemViewType(int position) {
+        Log.e("POS: ",position + "");
         return mData.get(position) instanceof SupportTransaction ? TYPE_DATE : TYPE_TRANSACTION;
+    }
+
+    public void clear(){
+        mData.clear();
     }
 
     @Override
@@ -121,7 +89,6 @@ public class ListTransactionAdapter extends BaseAdapter {
                     holder = new ViewHolder();
                     convertView = mInflater.inflate(R.layout.item_transaction, null);
                     holder.tv1 = (TextView) convertView.findViewById(R.id.tvTransactionName);
-                    /* TODO get account name of transaction via Account ID */
                     holder.tv2 = (TextView) convertView.findViewById(R.id.tvTransactionAccount);
                     holder.tv3 = (TextView) convertView.findViewById(R.id.tvTransactionMoney);
                     convertView.setTag(holder);
@@ -137,17 +104,18 @@ public class ListTransactionAdapter extends BaseAdapter {
                 SupportTransaction support = (SupportTransaction) getItem(position);
                 holder.tv1.setText(support.day);
                 holder.tv2.setText(support.month);
-                holder.tv3.setText(support.year + "pos: " + position);
+                holder.tv3.setText(support.year);
                 break;
             case TYPE_TRANSACTION:
-                Log.e("Pos: ", position+"");
                 Transaction transaction = (Transaction) getItem(position);
-                holder.tv1.setText(transaction.getTransactionName()+ "pos: " + position);
+                holder.tv1.setText(transaction.getTransactionName());
                 /* TODO get account name of transaction via Account ID */
                 holder.tv2.setText(transaction.getTransactionName());
                 holder.tv3.setText(transaction.getCash() + "");
                 break;
         }
+
+
 
         return convertView;
     }

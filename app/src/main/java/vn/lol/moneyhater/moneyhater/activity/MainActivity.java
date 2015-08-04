@@ -92,9 +92,13 @@ public class MainActivity extends ActionBarActivity
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        TransactionFragment tranFrag = (TransactionFragment) mPagerAdapter.getItem(0);
         switch (requestCode){
+
             case ConstantValue.REQUEST_CODE_ADD_TRANSACTION:
-                TransactionFragment tranFrag = (TransactionFragment) mPagerAdapter.getItem(0);
+                tranFrag.onActivityResult(requestCode, resultCode, data);
+                break;
+            case ConstantValue.REQUEST_CODE_EDIT_TRANSACTION:
                 tranFrag.onActivityResult(requestCode, resultCode, data);
                 break;
         }
