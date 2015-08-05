@@ -7,4 +7,11 @@ public class ConstantValue {
 
     public static final int REQUEST_CODE_ADD_TRANSACTION = 241;
     public static final String NEW_TRANSACTION = "new_transaction";
+    public final static String DROPBOX_SHARE_PREFERENCE = "dropbox_prefs";
+    public final static String DROPBOX_APP_KEY = "6xarw436ospag2t";
+    public final static String DROPBOX_APP_SECRET = "zo7stxt03zmw9my";
+    public static final String DROPBOX_FILE_DIR = "/MoneyHater/";
+    public static final int REQUEST_CODE_SETTING = 242;
+    public static final int RESULT_COODE_BACKUP = 521;
+    public static final String DROPBOX_FILE = "file_dropbox";
 }

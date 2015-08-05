@@ -24,7 +24,13 @@
         <CheckBoxPreference
             android:title="@string/pref_backup_title"
             android:key="pref_backup"
-            android:enabled="false"/>
+            android:defaultValue="false"/>
+        <ListPreference
+            android:title="@string/pref_lst_files"
+            android:key="list_backup_file"
+            android:entries="@array/blank"
+            android:entryValues="@array/blank"
+            />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_about">

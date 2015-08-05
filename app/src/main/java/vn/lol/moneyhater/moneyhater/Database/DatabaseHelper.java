@@ -7,6 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
@@ -26,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION=3;
 
     // database name
-    private static final String DATABASE_NAME = "moneyhater";
+    public static final String DATABASE_NAME = "moneyhater";
 
     // table name
 
@@ -83,9 +87,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "\t`budget_id`\tINTEGER,\n" +
             "\t`date_create`\tTEXT\n" +
             ");";
-
+    public static String DB_FILEPATH;
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        DB_FILEPATH=context.getDatabasePath(DATABASE_NAME).getPath();
+
     }
     public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -488,6 +494,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String whereClause = FIELD_ID + "=?";
             String[] whereArgs = new String[] { String.valueOf(transactionID) };
             deleteNumber=db.delete(TABLE_TRANSACTION,whereClause,whereArgs);
+        } catch (Exception e) {
+            Log.e(TAG,"deleteTransaction");
+            e.printStackTrace();
+        }
+        return deleteNumber>0;
+    }
+
+
+    /**
+     * Copies the database file at the specified location over the current
+     * internal application database.
+     * */
+    public boolean importDatabase(String dbPath) {
+
+        // Close the SQLiteOpenHelper so it will commit the created empty
+        // database to internal storage.
+        try {
+            close();
+            File newDb = new File(dbPath);
+            File oldDb = new File(DB_FILEPATH);
+            if (newDb.exists()) {
+                CommonFunction.copyFile(new FileInputStream(newDb), new FileOutputStream(oldDb));
+                // Access the copied database so SQLiteHelper will cache it and mark
+                // it as created.
+                getWritableDatabase().close();
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean deleteAllTransaction() {
+        int deleteNumber = 0;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            deleteNumber=db.delete(TABLE_TRANSACTION,"", new String[]{""});
         } catch (Exception e) {
             Log.e(TAG,"deleteTransaction");
             e.printStackTrace();

@@ -19,11 +19,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Database.DropboxBackup;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.FragmentPageAdapter;
 import vn.lol.moneyhater.moneyhater.fragment.AccountFragment;
@@ -31,10 +34,12 @@ import vn.lol.moneyhater.moneyhater.fragment.BudgetFragment;
 import vn.lol.moneyhater.moneyhater.fragment.ChartFragment;
 import vn.lol.moneyhater.moneyhater.fragment.TransactionFragment;
 import vn.lol.moneyhater.moneyhater.fragment.NavigationDrawerFragment;
+import vn.lol.moneyhater.moneyhater.model.Transaction;
 
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewPager.OnPageChangeListener {
+    private final String TAG = this.getClass().getName();
     private ViewPager mViewPager;
     private FragmentPageAdapter mPagerAdapter;
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -42,7 +47,7 @@ public class MainActivity extends ActionBarActivity
     private Button mButtonAdd;
     private int StateSeleced = 0;
     private DatabaseHelper mDb;
-    private final String TAG=this.getClass().getName();
+    private DropboxBackup mDropbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +64,10 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-
-
     }
 
 
-    private void EventButtonAdd(){
+    private void EventButtonAdd() {
         mButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,14 +93,27 @@ public class MainActivity extends ActionBarActivity
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             case ConstantValue.REQUEST_CODE_ADD_TRANSACTION:
                 TransactionFragment tranFrag = (TransactionFragment) mPagerAdapter.getItem(0);
                 tranFrag.onActivityResult(requestCode, resultCode, data);
                 break;
+            case ConstantValue.REQUEST_CODE_SETTING:
+                if (resultCode == ConstantValue.RESULT_COODE_BACKUP) {
+                    String fileName = data.getStringExtra(ConstantValue.DROPBOX_FILE);
+                    mDb.importDatabase(fileName);
+                    restartActivity();
+                }
+                break;
         }
+    }
+    private void restartActivity() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
     private void intialiseViewPager() {
         List<Fragment> fragments = new Vector<Fragment>();
@@ -114,6 +130,9 @@ public class MainActivity extends ActionBarActivity
 
     public void initView() {
         mDb = new DatabaseHelper(getApplicationContext());
+        ArrayList<Transaction> arr = mDb.getAllTransactions();
+//        mDb.deleteAllTransaction();
+        mDropbox = new DropboxBackup(this);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setPageMargin(60);
         mViewPager.setTag(R.id.TAG_DB_HELPER, mDb);
@@ -136,7 +155,7 @@ public class MainActivity extends ActionBarActivity
 
     public void onSectionAttached(int number) {
         handleButtonState(number);
-        StateSeleced = number-1;
+        StateSeleced = number - 1;
     }
 
     private void handleButtonState(int number) {
@@ -187,8 +206,11 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_example) {
-            startActivity(new Intent(this, SettingsActivity.class));
+            startActivityForResult(new Intent(this, SettingsActivity.class), ConstantValue.REQUEST_CODE_SETTING);
             return true;
+        }
+        if (id == R.id.action_backup) {
+            mDropbox.backupFile(mDb);
         }
 
         return super.onOptionsItemSelected(item);
@@ -217,9 +239,15 @@ public class MainActivity extends ActionBarActivity
         try {
             mDb.close();
         } catch (Exception e) {
-            Log.e(TAG,"onStop");
+            Log.e(TAG, "onStop");
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDropbox.resumeOK();
     }
 
     /**
@@ -232,6 +260,9 @@ public class MainActivity extends ActionBarActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+        public PlaceholderFragment() {
+        }
+
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -242,9 +273,6 @@ public class MainActivity extends ActionBarActivity
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
             return fragment;
-        }
-
-        public PlaceholderFragment() {
         }
 
         @Override
