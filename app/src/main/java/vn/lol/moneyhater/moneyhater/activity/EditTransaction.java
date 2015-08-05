@@ -1,7 +1,9 @@
 package vn.lol.moneyhater.moneyhater.activity;
 
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,44 +12,43 @@ import android.widget.EditText;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
-import vn.lol.moneyhater.moneyhater.model.Account;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
+import vn.lol.moneyhater.moneyhater.model.Transaction;
 
-/**
- * Created by TuanAnh on 7/25/2015.
- */
-public class NewAccountActivity extends ActionBarActivity {
+public class EditTransaction extends AppCompatActivity {
 
-    private DatabaseHelper mDbHelper;
+    Transaction transaction;
+    int transactionID;
+    DatabaseHelper databaseHelper;
+
+    EditText etEditTransactionName, etEditTransactionMoney;
+    Button btSave, btDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_account);
+        setContentView(R.layout.activity_edit_transaction);
+        btSave = (Button) findViewById(R.id.btSaveTransaction);
+        btDelete = (Button) findViewById(R.id.btDeleteTransaction);
 
-        mDbHelper = new DatabaseHelper(getApplicationContext());
-        Button btAddAcc = (Button) findViewById(R.id.btAddNewAcc);
-        btAddAcc.setOnClickListener(new View.OnClickListener() {
+        transaction = (Transaction) getIntent().getSerializableExtra("transaction");
+        transactionID = transaction.getTransactionID();
+        btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewAccount();
-                mDbHelper.close();
+                Intent intent = new Intent();
+                intent.putExtra(ConstantValue.TRANSACTION_ID, transactionID);
+                setResult(ConstantValue.RESULT_CODE_DELETE_TRANSACTION, intent);
                 finish();
             }
         });
-    }
 
-    public void addNewAccount(){
-        EditText accountName = (EditText) findViewById(R.id.etAccountName);
-        EditText accountCash = (EditText) findViewById(R.id.etCash);
-        Account newAccount = new Account(accountName.getText().toString(),
-                Double.parseDouble(accountCash.getText().toString()),0);
-        mDbHelper.insertAccount(newAccount);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_new_account, menu);
+        getMenuInflater().inflate(R.menu.menu_edit_transaction, menu);
         return true;
     }
 

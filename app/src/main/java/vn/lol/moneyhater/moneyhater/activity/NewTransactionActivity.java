@@ -30,6 +30,8 @@ public class NewTransactionActivity extends ActionBarActivity {
     DatePicker dpTransactionDate;
     Button btAddNewTransaction;
     Transaction transaction = new Transaction();
+    private static final int TRANSACTION_TYPE_EXPENSE = 0;
+    private static final int TRANSACTION_TYPE_INCOME = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +91,6 @@ public class NewTransactionActivity extends ActionBarActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.set(dpTransactionDate.getYear(), dpTransactionDate.getMonth(), dpTransactionDate.getDayOfMonth());
         transaction.setDate(calendar);
-
+        transaction.setType(swTransactionType.isChecked()? TRANSACTION_TYPE_INCOME:TRANSACTION_TYPE_EXPENSE);
     }
 }

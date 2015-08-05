@@ -3,18 +3,16 @@ package vn.lol.moneyhater.moneyhater.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -23,7 +21,7 @@ import java.util.Date;
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
-import vn.lol.moneyhater.moneyhater.activity.NewTransactionActivity;
+import vn.lol.moneyhater.moneyhater.activity.EditTransaction;
 import vn.lol.moneyhater.moneyhater.adapter.ListTransactionAdapter;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
@@ -32,26 +30,38 @@ import vn.lol.moneyhater.moneyhater.model.TransactionDate;
 public class TransactionFragment extends Fragment {
     private ListTransactionAdapter mAdapterTransaction;
     DatabaseHelper mDbHelper;
-    ListView mlistAccount;
+    ListView mlistTransaction;
     ArrayList<TransactionDate> listTransaction;
     private ArrayList<String> listDate;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_transaction, container,
                 false);
         mDbHelper = (DatabaseHelper) container.getTag(R.id.TAG_DB_HELPER);
-        listTransaction = new ArrayList();
+        listTransaction = new ArrayList<TransactionDate>();
         listDate = new ArrayList<>();
-        mlistAccount = (ListView) rootView.findViewById(R.id.lvTransaction);
+        mlistTransaction = (ListView) rootView.findViewById(R.id.lvTransaction);
 
+
+        mlistTransaction.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int transactionID = ((Transaction) listTransaction.get(position)).getTransactionID();
+                Intent intent = new Intent(getActivity(), EditTransaction.class);
+                intent.putExtra("transaction", mDbHelper.getTransaction(transactionID));
+                getActivity().startActivityForResult(intent, ConstantValue.REQUEST_CODE_EDIT_TRANSACTION);
+            }
+        });
         return rootView;
     }
+
 
 
     @Override
     public void onResume() {
         super.onResume();
+        loadData();
     }
 
     public void addItem(Transaction item) {
@@ -87,15 +97,6 @@ public class TransactionFragment extends Fragment {
 
         listTransaction.add(item);
         Collections.sort(listTransaction);
-//
-//        for (int i = 0; i < listTransaction.size(); i++) {
-//            if (listTransaction.get(i) instanceof SupportTransaction) {
-//                Log.e("Supp", listTransaction.get(i).getTime().toString());
-//            } else {
-//                Log.e("trans", listTransaction.get(i).getTime().toString());
-//            }
-//        }
-
     }
 
     /**
@@ -112,11 +113,36 @@ public class TransactionFragment extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
                 Transaction transaction = (Transaction) data.getSerializableExtra(ConstantValue.NEW_TRANSACTION);
                 addItem(transaction);
+                Log.e("Transaction type: ", transaction.getType() + "");
                 mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction);
-                mlistAccount.setAdapter(mAdapterTransaction);
+                mlistTransaction.setAdapter(mAdapterTransaction);
                 mAdapterTransaction.notifyDataSetChanged();
                 mDbHelper.insertTransaction(transaction);
             }
+        }
+        if(requestCode == ConstantValue.REQUEST_CODE_EDIT_TRANSACTION){
+            if (resultCode == ConstantValue.RESULT_CODE_DELETE_TRANSACTION){
+                mDbHelper.deleteTransaction(data.getIntExtra(ConstantValue.TRANSACTION_ID, 0));
+                loadData();
+                if(mDbHelper.getAllTransactions().isEmpty()){
+                    listTransaction.clear();
+                    mAdapterTransaction.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+
+    public void loadData() {
+        listTransaction.clear();
+        for (Transaction transaction : mDbHelper.getAllTransactions()) {
+            addItem(transaction);
+            Log.e("IDDD: ", transaction.getTransactionID() + "");
+        }
+        if(!mDbHelper.getAllTransactions().isEmpty()){
+            Log.e("NULL", "Llsllslsls");
+            mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction);
+            mlistTransaction.setAdapter(mAdapterTransaction);
+            mAdapterTransaction.notifyDataSetChanged();
         }
     }
 

@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
@@ -22,7 +23,7 @@ import vn.lol.moneyhater.moneyhater.model.Transaction;
 /**
  * Created by huy on 7/28/2015.
  */
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
 
     private final String TAG = this.getClass().getName();
 
@@ -398,7 +399,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // TABLE TRANSACTION insert, add, , delete, find, find all
-    public Transaction SelectTransaction(int transactionID){
+    public Transaction getTransaction(int transactionID){
         Transaction transaction=null;
 
         try {

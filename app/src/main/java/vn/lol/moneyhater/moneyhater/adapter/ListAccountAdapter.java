@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import vn.lol.moneyhater.momeyhater.R;
 
 /**
@@ -14,10 +16,10 @@ import vn.lol.moneyhater.momeyhater.R;
  */
 public class ListAccountAdapter extends ArrayAdapter<String> {
     private final Activity activity;
-    private final String[] mName;
-    private final int[] mMoney;
+    private final ArrayList<String> mName;
+    private final ArrayList<Double> mMoney;
 
-    public ListAccountAdapter(Activity activity, String[] name, int[] money) {
+    public ListAccountAdapter(Activity activity, ArrayList<String> name, ArrayList<Double> money) {
         super(activity, R.layout.item_account, name);
         this.activity = activity;
         this.mName = name;
@@ -30,8 +32,8 @@ public class ListAccountAdapter extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.item_account, null, true);
         TextView tvName = (TextView) rowView.findViewById(R.id.tvAccName);
         TextView tvMoney = (TextView) rowView.findViewById(R.id.tvAccMoney);
-        tvName.setText(mName[position]);
-        tvMoney.setText(mMoney[position]+"");
+        tvName.setText(mName.get(position));
+        tvMoney.setText(String.format("%.3f",mMoney.get(position)));
         return rowView;
     }
 }

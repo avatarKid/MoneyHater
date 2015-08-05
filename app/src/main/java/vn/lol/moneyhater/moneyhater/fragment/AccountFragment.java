@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,41 +23,45 @@ public class AccountFragment extends Fragment {
     private DatabaseHelper mDbHelper;
     ListView mlistAccount;
     TextView mTotalMoney;
-    private final String[] name = {
-            "ABC",
-            "VINA"
-    };
-    private final int[] money = {
-            1000000,
-            500000
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account, container,
                 false);
-        mAdapterAccount = new ListAccountAdapter(getActivity(),name,money);
-        mlistAccount = (ListView)rootView.findViewById(R.id.lvAccount);
-        mlistAccount.setAdapter(mAdapterAccount);
-        mTotalMoney = (TextView) rootView.findViewById(R.id.tvAccTotalMoney);
-        int total = 0;
-        for(int i=0;i<money.length;i++){
-            total += money[i];
-        }
-        mTotalMoney.setText(total+"");
-
         mDbHelper= (DatabaseHelper) container.getTag(R.id.TAG_DB_HELPER);
-
-        Account acc1 = new Account("Vi9",1235.0,0);
-        Account acc2 = new Account("Vi8",425.1,0);
-        Account acc3 = new Account("Vi7",234.5,0);
-        mDbHelper.insertAccount(acc1);
-        mDbHelper.insertAccount(acc2);
-        mDbHelper.insertAccount(acc3);
-
-        ArrayList<Account> al = mDbHelper.getAllAccounts();
+        mlistAccount = (ListView)rootView.findViewById(R.id.lvAccount);
+        mTotalMoney = (TextView) rootView.findViewById(R.id.tvAccTotalMoney);
+        displayListAccount();
 
         return rootView;
     }
 
+    public void displayListAccount(){
+
+        ArrayList<String> listAccountName = new ArrayList<String>();
+        ArrayList<Double> listCash = new ArrayList<Double>();
+        ArrayList<Account> listAccount = mDbHelper.getAllAccounts();
+        for (int i=0; i< listAccount.size(); i++)
+        {
+            String accountName = listAccount.get(i).getAccountName();
+            listAccountName.add(accountName);
+            Double cash = listAccount.get(i).getCash();
+            listCash.add(cash);
+        }
+        mAdapterAccount = new ListAccountAdapter(getActivity(),listAccountName,listCash);
+
+        mAdapterAccount.notifyDataSetChanged();
+        mlistAccount.setAdapter(mAdapterAccount);
+
+        double total = 0;
+        for(int i=0;i<listCash.size();i++){
+            total += listCash.get(i);
+        }
+        mTotalMoney.setText(String.format("%.3f",total));
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        displayListAccount();
+    }
 }
