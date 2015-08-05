@@ -69,7 +69,7 @@ public class DropboxBackup {
                 try {
                     File file = new File(DatabaseHelper.DB_FILEPATH);
                     FileInputStream inputStream = new FileInputStream(file);
-                    DropboxAPI.Entry response = mDBApi.putFile("/huy" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()), inputStream,
+                    DropboxAPI.Entry response = mDBApi.putFile("/Backup " + new SimpleDateFormat("dd-MM-yyyy HHmmss").format(new Date()), inputStream,
                             file.length(), null, null);
                     Log.i(TAG, "The uploaded file's rev is: " + response.rev);
 
