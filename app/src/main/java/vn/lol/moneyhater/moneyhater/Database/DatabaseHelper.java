@@ -120,7 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
     }
 
     // TABLE Account insert, add, , delete, find, find all
-    public Account SelectAccount(String accountID) {
+    public Account SelectAccount(int accountID) {
         Account account=null;
 
         try {
@@ -227,7 +227,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
             count = db.update(TABLE_ACCOUNT, values, FIELD_ID + " = ?",
                     new String[]{String.valueOf(account.getAccountID())});
         } catch (Exception e) {
-            Log.e(TAG,"insertAccount");
+            Log.e(TAG,"updateAccount");
             e.printStackTrace();
         }
         return count>0;
