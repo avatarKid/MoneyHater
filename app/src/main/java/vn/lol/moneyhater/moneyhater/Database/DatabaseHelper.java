@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
     private final String TAG = this.getClass().getName();
 
     // database version
-    private static final int DATABASE_VERSION=3;
+    private static final int DATABASE_VERSION=4;
 
     // database name
     public static final String DATABASE_NAME = "moneyhater";
@@ -61,8 +61,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
     private final String CREATE_TABLE_ACCOUNT = "CREATE TABLE `account` (\n" +
             "\t`id`\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
             "\t`name`\tTEXT NOT NULL,\n" +
-            "\t`cash`\tINTEGER NOT NULL DEFAULT 0,\n" +
-            "\t`type_id`\tNUMERIC NOT NULL DEFAULT 0\n" +
+            "\t`cash`\tNUMERIC NOT NULL DEFAULT 0,\n" +
+            "\t`type_id`\tINTEGER NOT NULL DEFAULT 0\n" +
             ")";
 
     private final String CREATE_TABLE_BUDGET ="CREATE TABLE `budget` (\n" +
@@ -75,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
     private final String CREATE_TABLE_CATEGORY ="CREATE TABLE `category` (\n" +
             "\t`id`\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
             "\t`name`\tTEXT NOT NULL,\n" +
-            "\t`image_id`\tNUMERIC NOT NULL DEFAULT 0\n" +
+            "\t`image_id`\tINTEGER NOT NULL DEFAULT 0\n" +
             ")";
 
     private final String CREATE_TABLE_TRANSACTION ="CREATE TABLE `transactionx` (\n" +
