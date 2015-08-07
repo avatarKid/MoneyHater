@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -35,6 +36,12 @@ public class ListAccountAdapter extends ArrayAdapter<Account> {
         View rowView = inflater.inflate(R.layout.item_account, null, true);
         TextView tvName = (TextView) rowView.findViewById(R.id.tvAccName);
         final TextView tvMoney = (TextView) rowView.findViewById(R.id.tvAccMoney);
+        ImageView ivType = (ImageView) rowView.findViewById(R.id.ivAccType);
+        if(mAccount.get(position).getAccountTypeID() == 0){
+            ivType.setBackgroundResource(R.drawable.card);
+        } else {
+            ivType.setBackgroundResource(R.drawable.cash);
+        }
         tvName.setText(mAccount.get(position).getAccountName());
         tvMoney.addTextChangedListener(new TextWatcher() {
             @Override

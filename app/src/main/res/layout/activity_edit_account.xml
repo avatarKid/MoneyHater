@@ -56,9 +56,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="right"
-        >
+        android:orientation="horizontal"
+        android:gravity="right">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_add_drawable"
+            android:id="@+id/btDeleteAcc"
+            android:layout_marginRight="10dp"
+            android:text="Delete"
+            android:layout_marginTop="10dp" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,14 +75,6 @@
             android:id="@+id/btSaveAcc"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:text="Save"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_add_drawable"
-            android:id="@+id/btDeleteAcc"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:text="Delete" />
+            android:text="Save" />
     </LinearLayout>
 </LinearLayout>

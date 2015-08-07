@@ -40,7 +40,7 @@ public class NewAccountActivity extends ActionBarActivity {
         EditText accountName = (EditText) findViewById(R.id.etAccountName);
         EditText accountCash = (EditText) findViewById(R.id.etCash);
         Account newAccount = new Account(accountName.getText().toString(),
-                Double.parseDouble(accountCash.getText().toString()),0);
+                Double.parseDouble(accountCash.getText().toString()),1);
         mDbHelper.insertAccount(newAccount);
     }
 
