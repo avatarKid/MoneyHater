@@ -241,7 +241,17 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         }
         return budget;
     }
-
+    public Cursor getBudgetCursor(){
+        Cursor c = null;
+        String selectQuery = "SELECT  * FROM " + TABLE_BUDGET;
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            c = db.rawQuery(selectQuery, null);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return c;
+    }
     public ArrayList<Budget> getAllBudgets() {
         ArrayList<Budget> lstAccounts = new ArrayList<Budget>();
         String selectQuery = "SELECT  * FROM " + TABLE_BUDGET;

@@ -7,31 +7,32 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.model.Budget;
 
 /**
  * Created by TuanAnh on 7/24/2015.
  */
-public class ListBudgetAdapter extends ArrayAdapter<String> {
-    private final Activity activity;
-    private final String[] mName;
-    private final int[] mMoney;
+public class ListBudgetAdapter extends ArrayAdapter<Budget> {
+    private  Activity mActivity;
+    private ArrayList<Budget> mBudgets = new ArrayList<Budget>();
 
-    public ListBudgetAdapter(Activity activity, String[] name, int[] money) {
-        super(activity, R.layout.item_account, name);
-        this.activity = activity;
-        this.mName = name;
-        this.mMoney = money;
+    public ListBudgetAdapter(Activity activity, int resource, ArrayList<Budget> budgets) {
+        super(activity, resource, budgets);
+        this.mActivity = activity;
+        this.mBudgets = budgets;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = activity.getLayoutInflater();
+        LayoutInflater inflater = mActivity.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.item_bubget, null, true);
         TextView tvName = (TextView) rowView.findViewById(R.id.tvBudgetName);
         TextView tvMoney = (TextView) rowView.findViewById(R.id.tvBudgetMoney);
-        tvName.setText(mName[position]);
-        tvMoney.setText(mMoney[position]+"");
+        tvName.setText(mBudgets.get(position).getBudgetName()+ "");
+        tvMoney.setText(mBudgets.get(position).getCash()+ "");
         return rowView;
     }
 }

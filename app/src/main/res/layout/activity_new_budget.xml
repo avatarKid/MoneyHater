@@ -1,89 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="vn.lol.moneyhater.moneyhater.activity.NewBudgetActivity">
-
-
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="#ffffff"
-        android:orientation="vertical">
-
+        android:paddingTop="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="20dp"
+        android:orientation="horizontal"
+        android:background="@drawable/label_item_drawable"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Name"
+            />
         <EditText
-            android:id="@+id/budgetNum"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:hint="true"
-            android:text="0 đ"
-            android:textColor="@color/blue"
-            android:textSize="15pt" />
+            android:layout_marginLeft="50dp"
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="@android:color/darker_gray" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/budget_image_first"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/event" />
-
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="@android:color/darker_gray">
-        </View>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/budget_image_second"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/pen" />
-            <EditText
-                android:id="@+id/budget_note"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:hint="note"
-                android:text="note"
-                android:textSize="10pt" />
-
-        </LinearLayout>
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="@android:color/darker_gray">
-        </View>
+            android:layout_weight="1"
+            android:id="@+id/et_budget_name" />
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/label_item_drawable"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Total Money"
+            />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:inputType="numberDecimal"
+            android:maxLength="9"
+            android:numeric="decimal"
+            android:singleLine="true"
+            android:id="@+id/et_budget_cash" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="right"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_add_drawable"
+            android:id="@+id/bt_add"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Add"
+            />
+    </LinearLayout>
 </LinearLayout>
