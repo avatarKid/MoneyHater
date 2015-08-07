@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
             android:layout_weight="1"
-            android:id="@+id/etAccountName" />
+            android:id="@+id/editAccountName" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,40 +51,30 @@
             android:inputType="number"
             android:numeric="integer"
             android:singleLine="true"
-            android:id="@+id/etCash" />
+            android:id="@+id/editCash" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="15dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="20dp"
-        android:background="@drawable/label_item_drawable"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Type"
-            />
+        android:gravity="right">
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="right"
-        >
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_add_drawable"
-            android:id="@+id/btAddNewAcc"
+            android:id="@+id/btDeleteAcc"
+            android:layout_marginRight="10dp"
+            android:text="Delete"
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_add_drawable"
+            android:id="@+id/btSaveAcc"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:text="Add"
-            />
+            android:text="Save" />
     </LinearLayout>
 </LinearLayout>

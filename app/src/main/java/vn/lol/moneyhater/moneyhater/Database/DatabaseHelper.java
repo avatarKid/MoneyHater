@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
     private final String TAG = this.getClass().getName();
 
     // database version
-    private static final int DATABASE_VERSION=3;
+    private static final int DATABASE_VERSION=4;
 
     // database name
     public static final String DATABASE_NAME = "moneyhater";
@@ -61,8 +61,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
     private final String CREATE_TABLE_ACCOUNT = "CREATE TABLE `account` (\n" +
             "\t`id`\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
             "\t`name`\tTEXT NOT NULL,\n" +
-            "\t`cash`\tINTEGER NOT NULL DEFAULT 0,\n" +
-            "\t`type_id`\tNUMERIC NOT NULL DEFAULT 0\n" +
+            "\t`cash`\tNUMERIC NOT NULL DEFAULT 0,\n" +
+            "\t`type_id`\tINTEGER NOT NULL DEFAULT 0\n" +
             ")";
 
     private final String CREATE_TABLE_BUDGET ="CREATE TABLE `budget` (\n" +
@@ -75,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
     private final String CREATE_TABLE_CATEGORY ="CREATE TABLE `category` (\n" +
             "\t`id`\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
             "\t`name`\tTEXT NOT NULL,\n" +
-            "\t`image_id`\tNUMERIC NOT NULL DEFAULT 0\n" +
+            "\t`image_id`\tINTEGER NOT NULL DEFAULT 0\n" +
             ")";
 
     private final String CREATE_TABLE_TRANSACTION ="CREATE TABLE `transactionx` (\n" +
@@ -120,7 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
     }
 
     // TABLE Account insert, add, , delete, find, find all
-    public Account SelectAccount(String accountID) {
+    public Account SelectAccount(int accountID) {
         Account account=null;
 
         try {
@@ -211,6 +211,26 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
             e.printStackTrace();
         }
         return deleteNumber>0;
+    }
+
+    public boolean updateAccount(Account account){
+        long count = 0;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(FIELD_NAME, account.getAccountName());
+            values.put(FIELD_CASH, account.getCash());
+            values.put(FIELD_ACCOUNT_TYPE_ID, account.getAccountTypeID());
+
+            // update row
+            count = db.update(TABLE_ACCOUNT, values, FIELD_ID + " = ?",
+                    new String[]{String.valueOf(account.getAccountID())});
+        } catch (Exception e) {
+            Log.e(TAG,"updateAccount");
+            e.printStackTrace();
+        }
+        return count>0;
     }
 
     // TABLE Budget insert, add, , delete, find, find all
@@ -317,6 +337,26 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         return deleteNumber>0;
     }
 
+    public boolean updateBudget(Budget budget){
+        long count = 0;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(FIELD_NAME, budget.getBudgetName());
+            values.put(FIELD_CASH, budget.getCash());
+            values.put(FIELD_IMAGE_ID, budget.getImageID());
+
+            // update row
+            count = db.update(TABLE_BUDGET, values, FIELD_ID + " = ?",
+                    new String[]{String.valueOf(budget.getBudgetID())});
+        } catch (Exception e) {
+            Log.e(TAG,"updateBudget");
+            e.printStackTrace();
+        }
+        return count >0;
+    }
+
     // TABLE Category insert, add, , delete, find, find all
     public Category SelectCategory(int categoryID){
         Category category=null;
@@ -406,6 +446,25 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
             e.printStackTrace();
         }
         return deleteNumber>0;
+    }
+
+    public boolean updateCategory(Category category){
+        long count = 0;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(FIELD_NAME, category.getCategoryName());
+            values.put(FIELD_IMAGE_ID, category.getImageID());
+
+            // update row
+            count = db.update(TABLE_CATEGORY, values, FIELD_ID + " = ?",
+                    new String[]{String.valueOf(category.getCategoryID())});
+        } catch (Exception e) {
+            Log.e(TAG,"updateCategory");
+            e.printStackTrace();
+        }
+        return count >0;
     }
 
     // TABLE TRANSACTION insert, add, , delete, find, find all
@@ -548,5 +607,29 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
             e.printStackTrace();
         }
         return deleteNumber>0;
+    }
+
+    public boolean updateTransaction(Transaction transaction){
+        long count = 0;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(FIELD_TRANSACTION_ACCOUNT_ID, transaction.getAccountID());
+            values.put(FIELD_TRANSACTION_BUDGET_ID, transaction.getBudgetID());
+            values.put(FIELD_CASH, transaction.getCash());
+            values.put(FIELD_TRANSACTION_CATEGORY_ID, transaction.getCategoryID());
+            values.put(FIELD_DATE, transaction.getDateTime());
+            values.put(FIELD_NAME, transaction.getTransactionName());
+            values.put(FIELD_TRANSACTION_TYPE, transaction.getType());
+
+            // update row
+            count = db.update(TABLE_TRANSACTION, values, FIELD_ID + " = ?",
+                    new String[]{String.valueOf(transaction.getTransactionID())});
+        } catch (Exception e) {
+            Log.e(TAG,"updateTransaction");
+            e.printStackTrace();
+        }
+        return count >0;
     }
 }

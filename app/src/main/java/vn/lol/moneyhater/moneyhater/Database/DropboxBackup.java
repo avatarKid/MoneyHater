@@ -62,30 +62,30 @@ public class DropboxBackup {
 
     public void backupFile(DatabaseHelper dbHelper) {
         final AndroidAuthSession session = (AndroidAuthSession) mDBApi.getSession();
-//        if (session.authenticationSuccessful()) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    File file = new File(DatabaseHelper.DB_FILEPATH);
-                    FileInputStream inputStream = new FileInputStream(file);
-                    DropboxAPI.Entry response = mDBApi.putFile("/Backup " + new SimpleDateFormat("dd-MM-yyyy HHmmss").format(new Date()), inputStream,
-                            file.length(), null, null);
-                    Log.i(TAG, "The uploaded file's rev is: " + response.rev);
+        if (session.isLinked()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        File file = new File(DatabaseHelper.DB_FILEPATH);
+                        FileInputStream inputStream = new FileInputStream(file);
+                        DropboxAPI.Entry response = mDBApi.putFile("/Backup " + new SimpleDateFormat("dd-MM-yyyy HHmmss").format(new Date()), inputStream,
+                                file.length(), null, null);
+                        Log.i(TAG, "The uploaded file's rev is: " + response.rev);
 
-                    Log.i(TAG, session.authenticationSuccessful() + "");
-                } catch (FileNotFoundException e) {
-                    Log.e(TAG, "backupFile FileNotFoundException");
-                    e.printStackTrace();
-                } catch (DropboxException e) {
-                    Log.e(TAG, "backupFile DropboxException");
-                    e.printStackTrace();
+                        Log.i(TAG, session.authenticationSuccessful() + "");
+                    } catch (FileNotFoundException e) {
+                        Log.e(TAG, "backupFile FileNotFoundException");
+                        e.printStackTrace();
+                    } catch (DropboxException e) {
+                        Log.e(TAG, "backupFile DropboxException");
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
-//        } else {
-//            session.startOAuth2Authentication(mMainActivity);
-//        }
+            }).start();
+        } else {
+            session.startOAuth2Authentication(mMainActivity);
+        }
         Log.i(TAG, session.authenticationSuccessful() + "");
     }
 

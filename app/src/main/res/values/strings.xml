@@ -41,6 +41,7 @@
     <string name="pref_backup_option">Backup Preference</string>
     <string name="action_backup">Backup</string>
     <string name="title_activity_edit_transaction">Edit Transaction</string>
+    <string name="title_activity_edit_account">Edit Account</string>
 
     <!-- Account screen-->
 
