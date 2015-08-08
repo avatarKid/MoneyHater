@@ -40,12 +40,8 @@ public class ListTransactionAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        Log.e("POS: ",position + "");
+        Log.e("POS: ", position + "");
         return mData.get(position) instanceof SupportTransaction ? TYPE_DATE : TYPE_TRANSACTION;
-    }
-
-    public void clear(){
-        mData.clear();
     }
 
     @Override
@@ -55,9 +51,6 @@ public class ListTransactionAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if(mData.size() <= 0){
-            return 1;
-        }
         return mData.size();
     }
 
@@ -69,6 +62,14 @@ public class ListTransactionAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        if(mData.get(position) instanceof SupportTransaction){
+            return false;
+        }
+        return true;
     }
 
     @Override

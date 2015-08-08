@@ -33,6 +33,7 @@ public class TransactionFragment extends Fragment {
     ListView mlistTransaction;
     ArrayList<TransactionDate> listTransaction;
     private ArrayList<String> listDate;
+    int selectedTransaction = 0;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,11 +43,12 @@ public class TransactionFragment extends Fragment {
         listTransaction = new ArrayList<TransactionDate>();
         listDate = new ArrayList<>();
         mlistTransaction = (ListView) rootView.findViewById(R.id.lvTransaction);
-
+        loadData();
 
         mlistTransaction.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedTransaction = position;
                 int transactionID = ((Transaction) listTransaction.get(position)).getTransactionID();
                 Intent intent = new Intent(getActivity(), EditTransaction.class);
                 intent.putExtra("transaction", mDbHelper.getTransaction(transactionID));
@@ -57,11 +59,9 @@ public class TransactionFragment extends Fragment {
     }
 
 
-
     @Override
     public void onResume() {
         super.onResume();
-        loadData();
     }
 
     public void addItem(Transaction item) {
@@ -85,7 +85,7 @@ public class TransactionFragment extends Fragment {
 
 
         for (int i = 0; i < listDate.size(); i++) {
-            if (date.equals(listDate.get(i))) {
+            if (date.equals(listDate.get(i) + "")) {
                 dateExist = true;
             }
         }
@@ -120,15 +120,41 @@ public class TransactionFragment extends Fragment {
                 mDbHelper.insertTransaction(transaction);
             }
         }
-        if(requestCode == ConstantValue.REQUEST_CODE_EDIT_TRANSACTION){
-            if (resultCode == ConstantValue.RESULT_CODE_DELETE_TRANSACTION){
-                mDbHelper.deleteTransaction(data.getIntExtra(ConstantValue.TRANSACTION_ID, 0));
-                loadData();
-                if(mDbHelper.getAllTransactions().isEmpty()){
-                    listTransaction.clear();
-                    mAdapterTransaction.notifyDataSetChanged();
-                }
+        if (requestCode == ConstantValue.REQUEST_CODE_EDIT_TRANSACTION) {
+            if (resultCode == ConstantValue.RESULT_CODE_DELETE_TRANSACTION) {
+                removeTransaction(data.getIntExtra(ConstantValue.TRANSACTION_ID, 0));
             }
+        }
+    }
+
+    public void removeTransaction(int transactionID) {
+        mDbHelper.deleteTransaction(transactionID);
+        // Transaction will be delete
+        Transaction deleteTransaction = (Transaction) listTransaction.get(selectedTransaction);
+        String dateOfDeleteTransaction = deleteTransaction.getDate();
+
+        // get count of transaction have the same date with deleteTransaction
+        int numberOfSameDate = 0;
+        for (int i = 0; i < listTransaction.size(); i++) {
+            if (listTransaction.get(i).getDate().equals(dateOfDeleteTransaction) &&
+                    listTransaction.get(i) instanceof Transaction) {
+                numberOfSameDate++;
+            }
+        }
+        listTransaction.remove(selectedTransaction);
+        // check if there is only 1 transaction have xxx date in listTransaction -> remove that date in listDate
+        for (int i = 0; i < listDate.size(); i++) {
+            if (listDate.get(i).equals(dateOfDeleteTransaction) && numberOfSameDate == 1) {
+                listDate.remove(i);
+                listTransaction.remove(selectedTransaction - 1);
+            }
+        }
+
+
+        mAdapterTransaction.notifyDataSetChanged();
+        if (mDbHelper.getAllTransactions().isEmpty()) {
+            listTransaction.clear();
+            mAdapterTransaction.notifyDataSetChanged();
         }
     }
 
@@ -136,10 +162,8 @@ public class TransactionFragment extends Fragment {
         listTransaction.clear();
         for (Transaction transaction : mDbHelper.getAllTransactions()) {
             addItem(transaction);
-            Log.e("IDDD: ", transaction.getTransactionID() + "");
         }
-        if(!mDbHelper.getAllTransactions().isEmpty()){
-            Log.e("NULL", "Llsllslsls");
+        if (!mDbHelper.getAllTransactions().isEmpty()) {
             mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction);
             mlistTransaction.setAdapter(mAdapterTransaction);
             mAdapterTransaction.notifyDataSetChanged();
