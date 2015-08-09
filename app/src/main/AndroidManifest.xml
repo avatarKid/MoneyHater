@@ -61,6 +61,10 @@
             android:name="vn.lol.moneyhater.moneyhater.activity.EditAccountActivity"
             android:label="@string/title_activity_edit_account" >
         </activity>
+        <activity
+            android:name="vn.lol.moneyhater.moneyhater.activity.EditBudgetActivity"
+            android:label="@string/title_activity_edit_budget" >
+        </activity>
     </application>
 
 </manifest>
