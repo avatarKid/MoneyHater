@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
@@ -39,8 +41,17 @@ public class NewAccountActivity extends ActionBarActivity {
     public void addNewAccount(){
         EditText accountName = (EditText) findViewById(R.id.etAccountName);
         EditText accountCash = (EditText) findViewById(R.id.etCash);
+        RadioButton radioCard = (RadioButton) findViewById(R.id.rbtCard);
+        RadioButton radioCash = (RadioButton) findViewById(R.id.rbtCash);
+        int accountType = 1;
+        if(radioCard.isChecked()){
+            accountType = 0;
+        }
+        if(radioCash.isChecked()){
+            accountType = 1;
+        }
         Account newAccount = new Account(accountName.getText().toString(),
-                Double.parseDouble(accountCash.getText().toString()),1);
+                Double.parseDouble(accountCash.getText().toString()),accountType);
         mDbHelper.insertAccount(newAccount);
     }
 

@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
@@ -19,8 +20,11 @@ public class EditAccountActivity extends ActionBarActivity {
     private DatabaseHelper mDbHelper;
     private Account accountEdit;
     private int accountID = 0;
+    private int accountType = 0;
     EditText editAccName;
     EditText editCash;
+    RadioButton radioCash;
+    RadioButton radioCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +39,29 @@ public class EditAccountActivity extends ActionBarActivity {
         editAccName.setText(accountEdit.getAccountName());
         editCash = (EditText) findViewById(R.id.editCash);
         editCash.setText(String.format("%.0f",accountEdit.getCash()));
+        accountType = accountEdit.getAccountTypeID();
+        radioCash = (RadioButton) findViewById(R.id.rbtCash);
+        radioCard = (RadioButton) findViewById(R.id.rbtCard);
+        if(accountType == 1){
+            radioCash.setChecked(true);
+        }
+        if(accountType == 0){
+            radioCard.setChecked(true);
+        }
 
         Button updateAccount = (Button) findViewById(R.id.btSaveAcc);
         updateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(radioCard.isChecked()){
+                    accountType = 0;
+                }
+                if(radioCash.isChecked()){
+                    accountType = 1;
+                }
                 accountEdit.setAccountName(editAccName.getText().toString());
                 accountEdit.setCash(Double.parseDouble(editCash.getText().toString()));
+                accountEdit.setAccountTypeID(accountType);
                 mDbHelper.updateAccount(accountEdit);
                 finish();
             }
