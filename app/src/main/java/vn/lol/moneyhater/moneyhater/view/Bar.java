@@ -98,7 +98,7 @@ public class Bar {
 //        } else {
 //            return String.valueOf(mValue);
 //        }
-        return formatNum();
+        return Utils.convertKMB(mValue);
     }
 
     public String formatNum(){
