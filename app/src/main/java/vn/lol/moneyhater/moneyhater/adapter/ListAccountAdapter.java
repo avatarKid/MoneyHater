@@ -22,7 +22,6 @@ import vn.lol.moneyhater.moneyhater.model.Account;
 public class ListAccountAdapter extends ArrayAdapter<Account> {
     private final Activity activity;
     private final ArrayList<Account> mAccount;
-    private String current = "";
 
     public ListAccountAdapter(Activity activity, ArrayList<Account> account) {
         super(activity, R.layout.item_account, account);
@@ -43,33 +42,7 @@ public class ListAccountAdapter extends ArrayAdapter<Account> {
             ivType.setBackgroundResource(R.drawable.cash);
         }
         tvName.setText(mAccount.get(position).getAccountName());
-        tvMoney.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i2, int i3) {
-
-                if(!s.toString().equals(""))
-                {
-                    if(!s.toString().equals(current)){
-                        String cleanString = s.toString().replaceAll("[,.]", "");
-                        double parsed = Double.parseDouble(cleanString);
-                        String formated = NumberFormat.getInstance().format((parsed/10));
-                        current = formated;
-                        tvMoney.setText(formated);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        tvMoney.setText(mAccount.get(position).getCash() + "");
+        tvMoney.setText(NumberFormat.getInstance().format(mAccount.get(position).getCash()));
         return rowView;
     }
 }

@@ -2,6 +2,8 @@ package vn.lol.moneyhater.moneyhater.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import java.text.NumberFormat;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
@@ -20,6 +25,12 @@ import vn.lol.moneyhater.moneyhater.model.Account;
 public class NewAccountActivity extends ActionBarActivity {
 
     private DatabaseHelper mDbHelper;
+    EditText accountName;
+    EditText accountCash;
+    RadioButton radioCard;
+    RadioButton radioCash;
+    Button btAddAcc;
+    String current = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,32 +38,62 @@ public class NewAccountActivity extends ActionBarActivity {
         setContentView(R.layout.activity_new_account);
 
         mDbHelper = new DatabaseHelper(getApplicationContext());
-        Button btAddAcc = (Button) findViewById(R.id.btAddNewAcc);
+        accountName = (EditText) findViewById(R.id.etAccountName);
+        accountCash = (EditText) findViewById(R.id.etCash);
+        radioCard = (RadioButton) findViewById(R.id.rbtCard);
+        radioCash = (RadioButton) findViewById(R.id.rbtCash);
+        btAddAcc = (Button) findViewById(R.id.btAddNewAcc);
+        accountCash.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                if (!charSequence.toString().equals("")) {
+                    if (!charSequence.toString().equals(current)) {
+                        String cash = charSequence.toString().replaceAll("[,]", "");
+                        double parsed = Double.parseDouble(cash);
+                        String formated = NumberFormat.getInstance().format((parsed));
+                        current = formated;
+                        accountCash.setText(formated);
+                        accountCash.setSelection(accountCash.getText().length());
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
         btAddAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addNewAccount();
-                mDbHelper.close();
                 finish();
             }
         });
     }
 
-    public void addNewAccount(){
-        EditText accountName = (EditText) findViewById(R.id.etAccountName);
-        EditText accountCash = (EditText) findViewById(R.id.etCash);
-        RadioButton radioCard = (RadioButton) findViewById(R.id.rbtCard);
-        RadioButton radioCash = (RadioButton) findViewById(R.id.rbtCash);
+    public void addNewAccount() {
         int accountType = 1;
-        if(radioCard.isChecked()){
+        if (radioCard.isChecked()) {
             accountType = 0;
         }
-        if(radioCash.isChecked()){
+        if (radioCash.isChecked()) {
             accountType = 1;
         }
+
         Account newAccount = new Account(accountName.getText().toString(),
-                Double.parseDouble(accountCash.getText().toString()),accountType);
+                Double.parseDouble(accountCash.getText().toString().replaceAll("[,]", "")),
+                accountType);
         mDbHelper.insertAccount(newAccount);
+
     }
 
     @Override

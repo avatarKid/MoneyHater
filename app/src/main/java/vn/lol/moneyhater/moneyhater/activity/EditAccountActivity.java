@@ -3,12 +3,16 @@ package vn.lol.moneyhater.moneyhater.activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+
+import java.text.NumberFormat;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
@@ -25,6 +29,7 @@ public class EditAccountActivity extends ActionBarActivity {
     EditText editCash;
     RadioButton radioCash;
     RadioButton radioCard;
+    String current = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +43,35 @@ public class EditAccountActivity extends ActionBarActivity {
         editAccName = (EditText) findViewById(R.id.editAccountName);
         editAccName.setText(accountEdit.getAccountName());
         editCash = (EditText) findViewById(R.id.editCash);
-        editCash.setText(String.format("%.0f",accountEdit.getCash()));
+        editCash.setText(NumberFormat.getInstance().format(accountEdit.getCash()));
+
+        editCash.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                if(!charSequence.toString().equals(""))
+                {
+                    if(!charSequence.toString().equals(current)){
+                        String cash = charSequence.toString().replaceAll("[,]", "");
+                        double parsed = Double.parseDouble(cash);
+                        String formated = NumberFormat.getInstance().format((parsed));
+                        current = formated;
+                        editCash.setText(formated);
+                        editCash.setSelection(editCash.getText().length());
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         accountType = accountEdit.getAccountTypeID();
         radioCash = (RadioButton) findViewById(R.id.rbtCash);
         radioCard = (RadioButton) findViewById(R.id.rbtCard);
@@ -60,7 +93,7 @@ public class EditAccountActivity extends ActionBarActivity {
                     accountType = 1;
                 }
                 accountEdit.setAccountName(editAccName.getText().toString());
-                accountEdit.setCash(Double.parseDouble(editCash.getText().toString()));
+                accountEdit.setCash(Double.parseDouble(editCash.getText().toString().replaceAll("[,]", "")));
                 accountEdit.setAccountTypeID(accountType);
                 mDbHelper.updateAccount(accountEdit);
                 finish();
