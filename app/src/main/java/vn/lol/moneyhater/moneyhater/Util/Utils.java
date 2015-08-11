@@ -5,10 +5,6 @@ package vn.lol.moneyhater.moneyhater.Util;
  */
 import android.graphics.Color;
 
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.TreeMap;
-
 public class Utils {
     public static int darkenColor(int color) {
         float[] hsv = new float[3];
