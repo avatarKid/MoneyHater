@@ -632,4 +632,84 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         }
         return count >0;
     }
+
+    public Cursor getTransactionInMonth(int month){
+        Cursor c = null;
+        String moth = month < 10 ? "0"+month : month+"";
+        String selectQuery = "SELECT IFNULL(sum("+FIELD_CASH+"),0) AS Income," +
+                "IFNULL((SELECT sum("+FIELD_CASH+") FROM " + TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m', "+FIELD_DATE+") = '" +moth+"'),0) AS Expense FROM " +
+                TABLE_TRANSACTION + " WHERE "+FIELD_TRANSACTION_TYPE+" ='1' AND strftime('%m', "+FIELD_DATE+") = '" +moth+"'";
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            c = db.rawQuery(selectQuery, null);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return c;
+    }
+
+    public Cursor getTransactionInYear(int year){
+        Cursor c = null;
+        String selectQuery = "SELECT " +
+                "IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '01"+year+"'),0) AS T1 ," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '02"+year+"'),0) AS T2," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '03"+year+"'),0) AS T3 ," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '04"+year+"'),0) AS T4," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '05"+year+"'),0) AS T5," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '06"+year+"'),0) AS T6," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '07"+year+"'),0) AS T7," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '08"+year+"'),0) AS T8," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '09"+year+"'),0) AS T9," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '10"+year+"'),0) AS T10," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '11"+year+"'),0) AS T11," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '12"+year+"'),0) AS T12" +
+                " FROM  sqlite_master " +
+                " UNION " +
+                " SELECT " +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '01"+year+"'),0) AS T1 ," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '02"+year+"'),0) AS T2," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '03"+year+"'),0) AS T3 ," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '04"+year+"'),0) AS T4," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '05"+year+"'),0) AS T5," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '06"+year+"'),0) AS T6," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '07"+year+"'),0) AS T7," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '08"+year+"'),0) AS T8," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '09"+year+"'),0) AS T9," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '10"+year+"'),0) AS T10," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '11"+year+"'),0) AS T11," +
+                " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '12"+year+"'),0) AS T12" +
+                " FROM  sqlite_master ";
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            c = db.rawQuery(selectQuery, null);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return c;
+    }
 }

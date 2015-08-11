@@ -29,7 +29,6 @@ public class AccountFragment extends Fragment {
     private ListAccountAdapter mAdapterAccount;
     private DatabaseHelper mDbHelper;
     private ArrayList<Account> listAccount;
-    private String current = "";
     ListView mlistAccount;
     TextView mTotalMoney;
 
@@ -64,32 +63,7 @@ public class AccountFragment extends Fragment {
         for(int i=0;i<listAccount.size();i++){
             total += listAccount.get(i).getCash();
         }
-        mTotalMoney.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int i, int i2, int i3) {
-                if(!s.toString().equals(""))
-                {
-                    if(!s.toString().equals(current)){
-                        String cleanString = s.toString().replaceAll("[,.]", "");
-                        double parsed = Double.parseDouble(cleanString);
-                        String formated = NumberFormat.getInstance().format((parsed/10));
-                        current = formated;
-                        mTotalMoney.setText(formated);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        mTotalMoney.setText(total + "");
+        mTotalMoney.setText(NumberFormat.getInstance().format(total));
     }
     @Override
     public void onResume() {

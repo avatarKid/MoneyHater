@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
@@ -26,8 +27,6 @@ public class NewBudgetActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 addNewBudget();
-                mDbHelper.close();
-                finish();
             }
         });
     }
@@ -41,9 +40,23 @@ public class NewBudgetActivity extends ActionBarActivity {
     public void addNewBudget(){
         EditText budgetName = (EditText) findViewById(R.id.et_budget_name);
         EditText budgetCash = (EditText) findViewById(R.id.et_budget_cash);
-        Budget newBudget = new Budget(budgetName.getText().toString(),0,
-                Double.parseDouble(budgetCash.getText().toString()));
-        mDbHelper.insertBudget(newBudget);
+
+        try {
+            String name = budgetName.getText().toString();
+            if(name.isEmpty() || name == null){
+                Toast.makeText(NewBudgetActivity.this, "Error Value", Toast.LENGTH_LONG).show();
+                return;
+            }
+            Double cash = Double.parseDouble(budgetCash.getText().toString());
+            Budget newBudget = new Budget(name ,0, cash);
+            mDbHelper.insertBudget(newBudget);
+            finish();
+        }catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(NewBudgetActivity.this, "Error Value", Toast.LENGTH_LONG).show();
+        }
+
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

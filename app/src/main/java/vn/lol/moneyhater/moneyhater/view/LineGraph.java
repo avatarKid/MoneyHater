@@ -325,7 +325,7 @@ public class LineGraph extends View {
 
       //  mCanvas.drawColor(mBackgroundColor);
         resetPaintWithAntiAlias(mPaint, true);
-        float bottomPadding = 30, topPadding = 10;
+        float bottomPadding = 30, topPadding = 20;
         float sidePadding = 30;
         if (mUseDips) {
             bottomPadding = mDipPadding;
@@ -557,6 +557,8 @@ public class LineGraph extends View {
                     case MotionEvent.ACTION_DOWN:
                         if (r.contains(point.x, point.y)) {
                             mSelectedIndex = count;
+                            mFullImage = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+                            mCanvas = new Canvas(mFullImage);
                             postInvalidate();
                         }
                         break;

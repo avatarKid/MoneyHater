@@ -1,88 +1,103 @@
 package vn.lol.moneyhater.moneyhater.fragment;
 
-import android.animation.Animator;
+import android.database.Cursor;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.view.Bar;
 import vn.lol.moneyhater.moneyhater.view.BarGraph;
-import vn.lol.moneyhater.moneyhater.view.HoloGraphAnimate;
 import vn.lol.moneyhater.moneyhater.view.Line;
 import vn.lol.moneyhater.moneyhater.view.LineGraph;
 import vn.lol.moneyhater.moneyhater.view.LinePoint;
-import vn.lol.moneyhater.moneyhater.view.PiceChartView;
 
 public class ChartFragment extends Fragment {
+    private DatabaseHelper mDbHelper;
+    float [] lMoneyExpense;
+    float [] lMoneyIncome;
+    private int [] lPointMoneyE;
+    private int [] lPointMoneyI;
+    private float maxMoney = 0;
+    private float bMoneyExpense;
+    private float bMoneyIncome;
+    private Line l,l1;
+    int month, year;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_chart, container,
                 false);
-        float current = 600000;
-        float chi = 400000;
-//        View pice = (View)rootView.findViewById(R.id.charPice);
-//        ((PiceChartView)pice).setPercentage(chi,current);
-        ArrayList<Bar> points = new ArrayList<Bar>();
-        Bar d = new Bar();
-        d.setColor(Color.parseColor("#ff4444"));
-        d.setName("Spend");
-        d.setValue(10000000);
-        Bar d2 = new Bar();
-        d2.setColor(Color.parseColor("#33ad34"));
-        d2.setName("Have");
-        d2.setValue(20000000);
-        points.add(d);
-        points.add(d2);
-        BarGraph g = (BarGraph) rootView.findViewById(R.id.charBar);
-        g.setBars(points);
-
+        lMoneyExpense = new float[12];
+        lMoneyIncome = new float[12];
+        lPointMoneyE = new int[12];
+        lPointMoneyI = new int[12];
+        l = new Line();
+        l.setColor(Color.parseColor("#33ad34"));
+        l1 = new Line();
+        l1.setColor(Color.parseColor("#ff4444"));
+        final Calendar c = Calendar.getInstance();
+        month = c.get(Calendar.MONTH)+1;
+        year = c.get(Calendar.YEAR);
+        maxMoney = 0;
+        GetDatabase();
+        SetupBar(rootView);
         SetupPointLine(rootView);
         return rootView;
     }
 
-    private void SetupPointLine(View rootView){
-        Line l = new Line();
-        l.addPoint(createNewPoint(0,1));
-        l.addPoint(createNewPoint(1,2));
-        l.addPoint(createNewPoint(2,3));
-        l.addPoint(createNewPoint(3,4));
-        l.addPoint(createNewPoint(4,5));
-        l.addPoint(createNewPoint(5,6));
-        l.addPoint(createNewPoint(6,7));
-        l.addPoint(createNewPoint(7,8));
-        l.addPoint(createNewPoint(8,9));
-        l.addPoint(createNewPoint(9,10));
-        l.addPoint(createNewPoint(10,1));
-        l.addPoint(createNewPoint(11, 2));
-        l.setColor(Color.parseColor("#33ad34"));
-        Line l1 = new Line();
-        l1.addPoint(createNewPoint(0,4));
-        l1.addPoint(createNewPoint(1,5));
-        l1.addPoint(createNewPoint(2,2));
-        l1.addPoint(createNewPoint(3, 5));
-        l1.addPoint(createNewPoint(4,3));
-        l1.addPoint(createNewPoint(5,5));
-        l1.addPoint(createNewPoint(6,1));
-        l1.addPoint(createNewPoint(7,6));
-        l1.addPoint(createNewPoint(8,2));
-        l1.addPoint(createNewPoint(9,5));
-        l1.addPoint(createNewPoint(10,4));
-        l1.addPoint(createNewPoint(11,5));
-        l1.setColor(Color.parseColor("#ff4444"));
-        LineGraph li = (LineGraph)rootView.findViewById(R.id.charLine);
+    private void SetupBar(View rootView){
+        ArrayList<Bar> points = new ArrayList<Bar>();
+        Bar d = new Bar();
+        d.setColor(Color.parseColor("#ff4444"));
+        d.setName("Expense");
+        d.setValue(bMoneyExpense);
+        Bar d2 = new Bar();
+        d2.setColor(Color.parseColor("#33ad34"));
+        d2.setName("Income");
+        d2.setValue(bMoneyIncome);
+        points.add(d);
+        points.add(d2);
+        BarGraph g = (BarGraph) rootView.findViewById(R.id.charBar);
+        g.setBars(points);
+    }
 
+    private void SetupPointLine(View rootView){
+        ProcessAnalysLineGraph();
+        LineGraph li = (LineGraph)rootView.findViewById(R.id.charLine);
         li.addLine(l);
         li.addLine(l1);
         li.setRangeY(0, 11);
         li.setLineToFill(0);
+        li.setOnPointClickedListener(new LineGraph.OnPointClickedListener() {
+            @Override
+            public void onClick(int lineIndex, int pointIndex) {
+                if(lineIndex == 0){
+                    Toast.makeText(getActivity(),
+                            ""+(int) lMoneyIncome[pointIndex],
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }else if (lineIndex == 1){
+                    if((int) lMoneyExpense[pointIndex] > 0)
+                        Toast.makeText(getActivity(),
+                            "- "+(int) lMoneyExpense[pointIndex], Toast.LENGTH_SHORT)
+                            .show();
+                    else
+                        Toast.makeText(getActivity(),
+                            ""+(int) lMoneyIncome[pointIndex],
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }
+
+            }
+        });
     }
 
     private LinePoint createNewPoint(int x,int y){
@@ -92,8 +107,55 @@ public class ChartFragment extends Fragment {
         return p;
     }
 
-    private void GetDatabase() {
+    private void ProcessAnalysLineGraph(){
+        //Find max money
+        for(int i=0;i< lMoneyExpense.length;i++){
+            if(lMoneyExpense[i]>maxMoney){
+                maxMoney = lMoneyExpense[i];
+            }
+            if(lMoneyIncome[i] > maxMoney){
+                maxMoney = lMoneyIncome[i];
+            }
+        }
+        //Calculate Line Point
+        for(int i=0;i< lMoneyExpense.length;i++){
+            lPointMoneyE[i] = (int)((lMoneyExpense[i]/maxMoney) *10);
+            l1.addPoint(createNewPoint(i, lPointMoneyE[i]));
+            lPointMoneyI[i] = (int)((lMoneyIncome[i]/maxMoney) *10);
+            l.addPoint(createNewPoint(i, lPointMoneyI[i]));
+        }
 
+    }
+
+
+    private void GetDatabase() {
+        //Get database
+        try {
+            mDbHelper = new DatabaseHelper(getActivity());
+            Cursor cs = mDbHelper.getTransactionInMonth(month);
+            cs.moveToFirst();
+            bMoneyIncome = 0;
+            bMoneyExpense = 0;
+            if (cs.getCount() == 1) {
+                bMoneyIncome = cs.getFloat(0);
+                bMoneyExpense = cs.getFloat(1);
+            }
+            Cursor cs2 = mDbHelper.getTransactionInYear(year);
+            cs2.moveToFirst();
+            if (cs2.getCount() == 2) {
+                for(int i =0;i<12;i++){
+                    lMoneyExpense[i] = cs2.getFloat(i);
+                }
+                cs2.moveToNext();
+                for(int i =0;i<12;i++){
+                    lMoneyIncome[i] = cs2.getFloat(i);
+                }
+            }
+        }catch (Exception e){
+            Toast.makeText(getActivity(),
+                    "Error get Database", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
 
