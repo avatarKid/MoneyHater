@@ -20,4 +20,7 @@ public class ConstantValue {
     public static final String TRANSACTION_ID = "transaction_id";
     public static final String DB_HELPER = "DBHelper";
     public static final String ACCOUNT_ID = "accountID";
+
+    public static final int TRANSACTION_TYPE_EXPENSE = 0;
+    public static final int TRANSACTION_TYPE_INCOME = 1;
 }

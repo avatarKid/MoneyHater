@@ -31,4 +31,9 @@ public class Category {
     public void setImageID(int imageID) {
         mImageID = imageID;
     }
+
+    @Override
+    public String toString() {
+        return mCategoryName;
+    }
 }

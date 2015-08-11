@@ -49,4 +49,9 @@ public class Budget {
     public void setCash(double cash) {
         mCash = cash;
     }
+
+    @Override
+    public String toString() {
+        return mBudgetName;
+    }
 }

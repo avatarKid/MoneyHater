@@ -3,20 +3,27 @@ package vn.lol.moneyhater.moneyhater.activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.fragment.TransactionFragment;
+import vn.lol.moneyhater.moneyhater.model.Account;
+import vn.lol.moneyhater.moneyhater.model.Budget;
+import vn.lol.moneyhater.moneyhater.model.Category;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
 
 
@@ -30,8 +37,10 @@ public class NewTransactionActivity extends ActionBarActivity {
     DatePicker dpTransactionDate;
     Button btAddNewTransaction;
     Transaction transaction = new Transaction();
-    private static final int TRANSACTION_TYPE_EXPENSE = 0;
-    private static final int TRANSACTION_TYPE_INCOME = 1;
+    ArrayList<Budget> listBudget;
+    ArrayList<Category> listCategory;
+    ArrayList<Account> listAccount;
+    DatabaseHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +56,7 @@ public class NewTransactionActivity extends ActionBarActivity {
 //                startActivity(intent);
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra(ConstantValue.NEW_TRANSACTION, transaction);
-                setResult(RESULT_OK,returnIntent);
+                setResult(RESULT_OK, returnIntent);
                 finish();
             }
         });
@@ -83,14 +92,46 @@ public class NewTransactionActivity extends ActionBarActivity {
         spTransactionAccount = (Spinner) findViewById(R.id.spAddTransAccountName);
         dpTransactionDate = (DatePicker) findViewById(R.id.dpTransactionDate);
         swTransactionType = (Switch) findViewById(R.id.swTransactionType);
+        mDbHelper = new DatabaseHelper(getApplicationContext());
+        listAccount = mDbHelper.getAllAccounts();
+        listBudget = mDbHelper.getAllBudgets();
+        listCategory = mDbHelper.getAllCategory();
+
+        // add item to Account spinner
+        ArrayAdapter<Account> adapterAccount = new ArrayAdapter<Account>(this, android.R.layout.simple_spinner_dropdown_item, listAccount);
+        spTransactionAccount.setAdapter(adapterAccount);
+
+        // add item to Budget spinner
+        ArrayAdapter<Budget> adapterBudget = new ArrayAdapter<Budget>(this, android.R.layout.simple_spinner_dropdown_item, listBudget);
+        spTransactionBudget.setAdapter(adapterBudget);
+
+        //TODO add Category
     }
 
     public void addTransaction() {
+
         transaction.setTransactionName(etTransactionName.getText().toString());
-        transaction.setCash(Double.parseDouble(etTransactionMoney.getText().toString()));
+
+        try {
+            transaction.setCash(Double.parseDouble(etTransactionMoney.getText().toString()));
+        } catch (NumberFormatException e) {
+            transaction.setCash(0);
+            e.printStackTrace();
+        }
+
         Calendar calendar = Calendar.getInstance();
         calendar.set(dpTransactionDate.getYear(), dpTransactionDate.getMonth(), dpTransactionDate.getDayOfMonth());
         transaction.setDate(calendar);
-        transaction.setType(swTransactionType.isChecked()? TRANSACTION_TYPE_INCOME:TRANSACTION_TYPE_EXPENSE);
+        transaction.setType(swTransactionType.isChecked() ? ConstantValue.TRANSACTION_TYPE_INCOME : ConstantValue.TRANSACTION_TYPE_EXPENSE);
+        Account account = (Account) spTransactionAccount.getSelectedItem();
+        if (account != null) {
+            transaction.setAccountID(account.getAccountID());
+        }
+        Budget budget = (Budget) spTransactionBudget.getSelectedItem();
+        if (budget != null) {
+            transaction.setBudgetID(budget.getBudgetID());
+        }
+
+
     }
 }

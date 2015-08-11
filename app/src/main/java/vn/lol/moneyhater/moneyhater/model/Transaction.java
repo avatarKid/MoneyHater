@@ -152,4 +152,9 @@ public class Transaction implements TransactionDate,Serializable {
     public int compareTo(TransactionDate another) {
         return another.getTime().compareTo(getTime());
     }
+
+    @Override
+    public String toString() {
+        return mTransactionName;
+    }
 }

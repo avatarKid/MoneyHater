@@ -23,6 +23,7 @@ public class Account implements Serializable {
 
     }
 
+
     public int getAccountID() {
         return mAccountID;
     }
@@ -53,6 +54,11 @@ public class Account implements Serializable {
 
     public void setAccountTypeID(int accountTypeID) {
         mAccountTypeID = accountTypeID;
+    }
+
+    @Override
+    public String toString() {
+        return mAccountName;
     }
 
 }
