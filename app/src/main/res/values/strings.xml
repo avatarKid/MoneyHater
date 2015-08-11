@@ -37,6 +37,8 @@
     <string name="lbAddTransName">Name</string>
     <string name="lbAddTransAccountName">Account</string>
     <string name="lbAddTransBudgetName">Budget</string>
+    <string name="lbAddTransactionDate">Date</string>
+    <string name="lbAddTransactionCategory">Category</string>
     <string name="pref_lst_files">List files have backup</string>
     <string name="pref_backup_option">Backup Preference</string>
     <string name="action_backup">Backup</string>
