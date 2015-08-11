@@ -90,7 +90,7 @@ public class NewTransactionActivity extends ActionBarActivity {
         etTransactionMoney = (EditText) findViewById(R.id.etTransactionMoney);
         spTransactionBudget = (Spinner) findViewById(R.id.spAddTransBudgetName);
         spTransactionAccount = (Spinner) findViewById(R.id.spAddTransAccountName);
-        dpTransactionDate = (DatePicker) findViewById(R.id.dpTransactionDate);
+//        dpTransactionDate = (DatePicker) findViewById(R.id.dpTransactionDate);
         swTransactionType = (Switch) findViewById(R.id.swTransactionType);
         mDbHelper = new DatabaseHelper(getApplicationContext());
         listAccount = mDbHelper.getAllAccounts();
@@ -119,9 +119,11 @@ public class NewTransactionActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(dpTransactionDate.getYear(), dpTransactionDate.getMonth(), dpTransactionDate.getDayOfMonth());
-        transaction.setDate(calendar);
+        // TODO get from datePicker dialog
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(dpTransactionDate.getYear(), dpTransactionDate.getMonth(), dpTransactionDate.getDayOfMonth());
+//        transaction.setDate(calendar);
+//
         transaction.setType(swTransactionType.isChecked() ? ConstantValue.TRANSACTION_TYPE_INCOME : ConstantValue.TRANSACTION_TYPE_EXPENSE);
         Account account = (Account) spTransactionAccount.getSelectedItem();
         if (account != null) {
@@ -131,7 +133,5 @@ public class NewTransactionActivity extends ActionBarActivity {
         if (budget != null) {
             transaction.setBudgetID(budget.getBudgetID());
         }
-
-
     }
 }

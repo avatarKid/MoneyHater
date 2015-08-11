@@ -120,7 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
     }
 
     // TABLE Account insert, add, , delete, find, find all
-    public Account SelectAccount(int accountID) {
+    public Account getAccount(int accountID) {
         Account account=null;
 
         try {
@@ -142,7 +142,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
                 account.setAccountTypeID(c.getInt(c.getColumnIndex(FIELD_ACCOUNT_TYPE_ID)));
             }
         } catch (Exception e) {
-            Log.e(TAG,"SelectAccount");
+            Log.e(TAG,"error select Account");
             e.printStackTrace();
         }
         return account;
@@ -234,7 +234,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
     }
 
     // TABLE Budget insert, add, , delete, find, find all
-    public Budget SelectBudget(int budgetID){
+    public Budget getBudget(int budgetID){
         Budget budget=null;
 
         try {
@@ -256,7 +256,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
                 budget.setImageID(c.getInt(c.getColumnIndex(FIELD_IMAGE_ID)));
             }
         } catch (Exception e) {
-            Log.e(TAG,"SelectBudget");
+            Log.e(TAG,"get Budget");
             e.printStackTrace();
         }
         return budget;
@@ -358,7 +358,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
     }
 
     // TABLE Category insert, add, , delete, find, find all
-    public Category SelectCategory(int categoryID){
+    public Category getCategory(int categoryID){
         Category category=null;
 
         try {
@@ -379,7 +379,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
                 category.setImageID(c.getInt(c.getColumnIndex(FIELD_IMAGE_ID)));
             }
         } catch (Exception e) {
-            Log.e(TAG,"SelectBudget");
+            Log.e(TAG,"get category");
             e.printStackTrace();
         }
         return category;
@@ -494,7 +494,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
                 transaction.setType(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_TYPE)));
             }
         } catch (Exception e) {
-            Log.e(TAG,"SelectBudget");
+            Log.e(TAG,"Select Budget");
             e.printStackTrace();
         }
         return transaction;

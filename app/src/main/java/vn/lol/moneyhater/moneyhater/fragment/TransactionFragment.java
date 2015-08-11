@@ -99,13 +99,6 @@ public class TransactionFragment extends Fragment {
         Collections.sort(listTransaction);
     }
 
-    /**
-     * Created by expert Huy
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -123,6 +116,11 @@ public class TransactionFragment extends Fragment {
         if (requestCode == ConstantValue.REQUEST_CODE_EDIT_TRANSACTION) {
             if (resultCode == ConstantValue.RESULT_CODE_DELETE_TRANSACTION) {
                 removeTransaction(data.getIntExtra(ConstantValue.TRANSACTION_ID, 0));
+            }
+        }
+        if (requestCode == ConstantValue.REQUEST_CODE_EDIT_TRANSACTION){
+            if(resultCode == ConstantValue.RESULT_CODE_SAVE_TRANSACTION){
+
             }
         }
     }

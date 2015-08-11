@@ -13,7 +13,6 @@ import android.widget.Toast;
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
-import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.Budget;
 
 public class EditBudgetActivity extends ActionBarActivity {
@@ -35,7 +34,7 @@ public class EditBudgetActivity extends ActionBarActivity {
         mDbHelper = new DatabaseHelper(getApplicationContext());
         Intent intent = getIntent();
         id = intent.getIntExtra(ConstantValue.ACCOUNT_ID, 0);
-        budget = mDbHelper.SelectBudget(id);
+        budget = mDbHelper.getBudget(id);
         name = (EditText) findViewById(R.id.et_edit_bud_name);
         name.setText(budget.getBudgetName());
         cash = (EditText) findViewById(R.id.et_edit_cash);

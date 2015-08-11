@@ -40,7 +40,6 @@ public class ListTransactionAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        Log.e("POS: ", position + "");
         return mData.get(position) instanceof SupportTransaction ? TYPE_DATE : TYPE_TRANSACTION;
     }
 

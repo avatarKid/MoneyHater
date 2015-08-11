@@ -39,7 +39,7 @@ public class EditAccountActivity extends ActionBarActivity {
         mDbHelper = new DatabaseHelper(getApplicationContext());
         Intent intent = getIntent();
         accountID = intent.getIntExtra(ConstantValue.ACCOUNT_ID,0);
-        accountEdit = mDbHelper.SelectAccount(accountID);
+        accountEdit = mDbHelper.getAccount(accountID);
         editAccName = (EditText) findViewById(R.id.editAccountName);
         editAccName.setText(accountEdit.getAccountName());
         editCash = (EditText) findViewById(R.id.editCash);
