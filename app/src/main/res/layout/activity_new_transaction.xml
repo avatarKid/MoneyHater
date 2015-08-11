@@ -48,11 +48,11 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:text="0"
             android:inputType="number"
             android:maxLength="9"
             android:numeric="integer"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="0" />
     </LinearLayout>
 
     <LinearLayout
@@ -107,22 +107,59 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@drawable/label_item_drawable"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp">
 
-        <DatePicker
-            android:id="@+id/dpTransactionDate"
+        <!-- Category Name-->
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:calendarViewShown="false"></DatePicker>
+            android:text="@string/lbAddTransactionCategory"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <Button
-            android:id="@+id/btAddNewTran"
+        <Spinner
+            android:id="@+id/spAddTransCategoryName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/button_add_drawable"
-            android:text="Add" />
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
     </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/label_item_drawable"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp">
+
+        <!--  Date picker-->
+        <EditText
+            android:id="@+id/etAddTransactionDate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:editable="false"
+            android:hint="@string/lbAddTransactionDate"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btAddNewTran"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/button_add_drawable"
+        android:text="Add" />
+
 
 </LinearLayout>
