@@ -3,6 +3,7 @@ package vn.lol.moneyhater.moneyhater.activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,6 +28,7 @@ import java.util.Calendar;
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
+import vn.lol.moneyhater.moneyhater.adapter.CategoryAdapter;
 import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.Budget;
 import vn.lol.moneyhater.moneyhater.model.Category;
@@ -226,6 +228,8 @@ public class EditTransaction extends AppCompatActivity {
         }
 
         //TODO category
+        transaction.setCategoryID(spTransactionCategory.getSelectedItemPosition());
+
     }
 
     public void init() {
@@ -253,6 +257,15 @@ public class EditTransaction extends AppCompatActivity {
         spTransactionCategory = (Spinner) findViewById(R.id.spEditTransCategoryName);
         swTransactionType = (Switch) findViewById(R.id.swEditTransactionType);
         //TODO init category
+        try {
+            String[] arr = getResources().getStringArray(R.array.category);
+            CategoryAdapter ca = new CategoryAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,arr);
+            spTransactionCategory.setAdapter(ca);
+            spTransactionCategory.setSelection(transaction.getCategoryID());
+        } catch (Resources.NotFoundException e) {
+            Log.e("Loi nay","Loi nay");
+            e.printStackTrace();
+        }
 
         etTransactionMoney.addTextChangedListener(new TextWatcher() {
 
