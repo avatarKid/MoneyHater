@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.Budget;
 import vn.lol.moneyhater.moneyhater.model.Category;
@@ -638,8 +639,8 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         String moth = month < 10 ? "0"+month : month+"";
         String selectQuery = "SELECT IFNULL(sum("+FIELD_CASH+"),0) AS Income," +
                 "IFNULL((SELECT sum("+FIELD_CASH+") FROM " + TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m', "+FIELD_DATE+") = '" +moth+"'),0) AS Expense FROM " +
-                TABLE_TRANSACTION + " WHERE "+FIELD_TRANSACTION_TYPE+" ='1' AND strftime('%m', "+FIELD_DATE+") = '" +moth+"'";
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m', "+FIELD_DATE+") = '" +moth+"'),0) AS Expense FROM " +
+                TABLE_TRANSACTION + " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ConstantValue.TRANSACTION_TYPE_INCOME+"' AND strftime('%m', "+FIELD_DATE+") = '" +moth+"'";
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             c = db.rawQuery(selectQuery, null);
