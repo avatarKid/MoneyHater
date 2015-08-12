@@ -118,11 +118,17 @@ public class TransactionFragment extends Fragment {
                 removeTransaction(data.getIntExtra(ConstantValue.TRANSACTION_ID, 0));
             }
         }
-        if (requestCode == ConstantValue.REQUEST_CODE_EDIT_TRANSACTION){
-            if(resultCode == ConstantValue.RESULT_CODE_SAVE_TRANSACTION){
-
+        if (requestCode == ConstantValue.REQUEST_CODE_EDIT_TRANSACTION) {
+            if (resultCode == ConstantValue.RESULT_CODE_SAVE_TRANSACTION) {
+                Transaction transaction = (Transaction) getActivity().getIntent().getSerializableExtra(ConstantValue.SAVE_TRANSACTION);
+                updateTransaction(transaction);
             }
         }
+    }
+
+    public void updateTransaction(Transaction transaction){
+        mDbHelper.updateTransaction(transaction);
+        //TODO
     }
 
     public void removeTransaction(int transactionID) {

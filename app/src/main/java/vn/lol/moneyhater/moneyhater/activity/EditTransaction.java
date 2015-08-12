@@ -65,10 +65,10 @@ public class EditTransaction extends AppCompatActivity {
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                updateTransaction();
                 Intent intent = new Intent();
-                intent.putExtra(ConstantValue.TRANSACTION_ID, transactionID);
-                setResult(ConstantValue.RESULT_CODE_DELETE_TRANSACTION, intent);
+                intent.putExtra(ConstantValue.SAVE_TRANSACTION, transaction);
+                setResult(ConstantValue.RESULT_CODE_SAVE_TRANSACTION, intent);
                 finish();
             }
         });
@@ -76,7 +76,24 @@ public class EditTransaction extends AppCompatActivity {
 
     public void updateTransaction() {
         transaction = new Transaction();
-//        transaction.setTransactionName();
+        transaction.setTransactionName(etTransactionName.getText().toString());
+
+        try {
+            transaction.setCash(Double.parseDouble(etTransactionMoney.getText().toString()));
+        } catch (NumberFormatException e) {
+            transaction.setCash(0);
+            e.printStackTrace();
+        }
+
+        transaction.setType(swTransactionType.isChecked() ? ConstantValue.TRANSACTION_TYPE_INCOME : ConstantValue.TRANSACTION_TYPE_EXPENSE);
+        Account account = (Account) spTransactionAccount.getSelectedItem();
+        if (account != null) {
+            transaction.setAccountID(account.getAccountID());
+        }
+        Budget budget = (Budget) spTransactionBudget.getSelectedItem();
+        if (budget != null) {
+            transaction.setBudgetID(budget.getBudgetID());
+        }
     }
 
     public void init() {
@@ -109,6 +126,7 @@ public class EditTransaction extends AppCompatActivity {
         swTransactionType.setChecked(transaction.getType() == 0 ? false : true);
         spTransactionAccount.setSelection(adapterAccount.getPosition(currentAccount));
         spTransactionBudget.setSelection(adapterBudget.getPosition(currentBudget));
+        //TODO get date to edittext
     }
 
     @Override
