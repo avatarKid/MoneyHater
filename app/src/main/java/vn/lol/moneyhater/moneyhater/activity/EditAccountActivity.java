@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -86,17 +87,21 @@ public class EditAccountActivity extends ActionBarActivity {
         updateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(radioCard.isChecked()){
-                    accountType = 0;
+                try {
+                    if (radioCard.isChecked()) {
+                        accountType = 0;
+                    }
+                    if (radioCash.isChecked()) {
+                        accountType = 1;
+                    }
+                    accountEdit.setAccountName(editAccName.getText().toString());
+                    accountEdit.setCash(Double.parseDouble(editCash.getText().toString().replaceAll("[,]", "")));
+                    accountEdit.setAccountTypeID(accountType);
+                    mDbHelper.updateAccount(accountEdit);
+                    finish();
+                } catch (Exception e){
+                    Log.d("Edit Account" , e.getMessage());
                 }
-                if(radioCash.isChecked()){
-                    accountType = 1;
-                }
-                accountEdit.setAccountName(editAccName.getText().toString());
-                accountEdit.setCash(Double.parseDouble(editCash.getText().toString().replaceAll("[,]", "")));
-                accountEdit.setAccountTypeID(accountType);
-                mDbHelper.updateAccount(accountEdit);
-                finish();
             }
         });
 

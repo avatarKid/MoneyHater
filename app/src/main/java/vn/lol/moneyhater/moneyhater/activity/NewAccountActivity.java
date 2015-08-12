@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,8 +75,12 @@ public class NewAccountActivity extends ActionBarActivity {
         btAddAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewAccount();
-                finish();
+                try {
+                    addNewAccount();
+                    finish();
+                }  catch (Exception e){
+                    Log.d("Add Account", e.getMessage());
+                }
             }
         });
     }

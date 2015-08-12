@@ -84,8 +84,8 @@
                 android:layout_marginLeft="40dp" />
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/card"
                 android:id="@+id/imageView" />
 
@@ -97,8 +97,8 @@
                 android:layout_marginLeft="40dp" />
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/cash"
                 android:id="@+id/imageView2" />
         </RadioGroup>
