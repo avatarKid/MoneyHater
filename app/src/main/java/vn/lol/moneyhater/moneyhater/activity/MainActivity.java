@@ -133,8 +133,6 @@ public class MainActivity extends ActionBarActivity
 
     public void initView() {
         mDb = new DatabaseHelper(getApplicationContext());
-        ArrayList<Transaction> arr = mDb.getAllTransactions();
-//        mDb.deleteAllTransaction();
         mDropbox = new DropboxBackup(this);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setPageMargin(60);
