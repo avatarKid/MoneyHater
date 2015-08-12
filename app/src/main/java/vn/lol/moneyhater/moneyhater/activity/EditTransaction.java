@@ -70,6 +70,7 @@ public class EditTransaction extends AppCompatActivity {
         btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                updateMoneyOnDelete();
                 Intent intent = new Intent();
                 intent.putExtra(ConstantValue.TRANSACTION_ID, transactionID);
                 setResult(ConstantValue.RESULT_CODE_DELETE_TRANSACTION, intent);
@@ -313,6 +314,33 @@ public class EditTransaction extends AppCompatActivity {
                 + transaction.getCalendar().get(Calendar.YEAR));
     }
 
+    public void updateMoneyOnDelete(){
+        //update money in account
+        Account account = mDbHelper.getAccount(transaction.getAccountID());
+        if(account != null) {
+            double accountMoney = account.getCash();
+            if (transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+                accountMoney += transaction.getCash();
+            } else {
+                accountMoney -= transaction.getCash();
+            }
+            account.setCash(accountMoney);
+            mDbHelper.updateAccount(account);
+        }
+
+        //update money in budget
+        Budget budget = mDbHelper.getBudget(transaction.getBudgetID());
+        if(budget != null) {
+            double budgetMoney = budget.getCash();
+            if (transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+                budgetMoney += transaction.getCash();
+            } else {
+                budgetMoney -= transaction.getCash();
+            }
+            budget.setCash(budgetMoney);
+            mDbHelper.updateBudget(budget);
+        }
+    }
 
     public void showDialogPickDay() {
         showDialog(DIALOG_ID);
