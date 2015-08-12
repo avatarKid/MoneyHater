@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.activity.EditTransaction;
 import vn.lol.moneyhater.moneyhater.adapter.ListTransactionAdapter;
+import vn.lol.moneyhater.moneyhater.model.Account;
+import vn.lol.moneyhater.moneyhater.model.Budget;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
 import vn.lol.moneyhater.moneyhater.model.TransactionDate;
@@ -31,7 +34,7 @@ public class TransactionFragment extends Fragment {
     private ListTransactionAdapter mAdapterTransaction;
     DatabaseHelper mDbHelper;
     ListView mlistTransaction;
-    TextView tvIncome, tvExpense;
+    TextView tvIncome, tvExpense, tvSumaryTransaction;
     ArrayList<TransactionDate> listTransaction;
     private ArrayList<String> listDate;
     int selectedTransaction = 0;
@@ -48,7 +51,7 @@ public class TransactionFragment extends Fragment {
         mlistTransaction = (ListView) rootView.findViewById(R.id.lvTransaction);
         tvIncome = (TextView) rootView.findViewById(R.id.tvIncome);
         tvExpense = (TextView) rootView.findViewById(R.id.tvExpense);
-
+        tvSumaryTransaction = (TextView) rootView.findViewById(R.id.tvSumTransaction);
         loadData();
 
         mlistTransaction.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -133,9 +136,10 @@ public class TransactionFragment extends Fragment {
                 updateTransaction(transaction);
             }
         }
+        calculateIncomeAndExpense();
     }
 
-    public void updateTransaction(Transaction transaction){
+    public void updateTransaction(Transaction transaction) {
         removeTransaction(transaction.getTransactionID());
         addItem(transaction);
         mAdapterTransaction.notifyDataSetChanged();
@@ -180,14 +184,34 @@ public class TransactionFragment extends Fragment {
             addItem(transaction);
         }
         if (!mDbHelper.getAllTransactions().isEmpty()) {
-            mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction,mDbHelper);
+            mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction, mDbHelper);
             mlistTransaction.setAdapter(mAdapterTransaction);
             mAdapterTransaction.notifyDataSetChanged();
         }
+        calculateIncomeAndExpense();
     }
 
-    public void calculateIncomeAndExpense(){
+    /*
+    * Calculate income and expense
+    * */
+    public void calculateIncomeAndExpense() {
+        double income = 0;
+        double expense = 0;
 
+        for (int i = 0; i < listTransaction.size(); i++) {
+            if (listTransaction.get(i) instanceof Transaction) {
+                Transaction transaction = (Transaction) listTransaction.get(i);
+                if (transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+                    expense += transaction.getCash();
+                } else {
+                    income += transaction.getCash();
+                }
+            }
+        }
+
+        tvIncome.setText(NumberFormat.getInstance().format(income));
+        tvExpense.setText(NumberFormat.getInstance().format(expense));
+        tvSumaryTransaction.setText(NumberFormat.getInstance().format(income - expense));
     }
 
 }

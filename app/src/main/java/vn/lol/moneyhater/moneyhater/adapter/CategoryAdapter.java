@@ -52,7 +52,7 @@ public class CategoryAdapter extends ArrayAdapter {
                 arrImage[16]=ResourcesCompat.getDrawable(context.getResources(),R.drawable.selling,null);
                 arrImage[17]=ResourcesCompat.getDrawable(context.getResources(),R.drawable.other,null);
                 for (int i=0;i<18;i++) {
-                    arrImage[i] = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(((BitmapDrawable) arrImage[i]).getBitmap(), 50, 50, true));
+                    arrImage[i] = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(((BitmapDrawable) arrImage[i]).getBitmap(), 80, 80, true));
                 }
             }
         } catch (Resources.NotFoundException e) {
@@ -69,7 +69,9 @@ public class CategoryAdapter extends ArrayAdapter {
             TextView textView = (TextView) super.getView(position, convertView, parent);
             textView.setTextColor(Color.BLACK);
             textView.setText(arrCategories[position]);
+            textView.setPadding(20,10,10,10);
             textView.setCompoundDrawablesWithIntrinsicBounds(arrImage[position], null, null, null);
+            textView.setCompoundDrawablePadding(50);
             return textView;
         } catch (Exception e) {
             Log.e("Loi nay","Loi nay");

@@ -219,13 +219,39 @@ public class NewTransactionActivity extends ActionBarActivity {
         calendar.set(mYear, mMonth, mDay);
         transaction.setDate(calendar);
         transaction.setType(swTransactionType.isChecked() ? ConstantValue.TRANSACTION_TYPE_INCOME : ConstantValue.TRANSACTION_TYPE_EXPENSE);
+
         Account account = (Account) spTransactionAccount.getSelectedItem();
         if (account != null) {
             transaction.setAccountID(account.getAccountID());
+            //Update account
+            double accountMoney = 0;
+            accountMoney = account.getCash();
+            if(transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+                accountMoney -= transaction.getCash();
+            } else {
+                accountMoney += transaction.getCash();
+            }
+            account.setCash(accountMoney);
+            mDbHelper.updateAccount(account);
+
         }
         Budget budget = (Budget) spTransactionBudget.getSelectedItem();
         if (budget != null) {
             transaction.setBudgetID(budget.getBudgetID());
+            //Update budget
+            double budgetMoney = 0;
+            budgetMoney = budget.getCash();
+            if(transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+                budgetMoney -= transaction.getCash();
+            }else {
+                budgetMoney += transaction.getCash();
+            }
+            budget.setCash(budgetMoney);
+            mDbHelper.updateBudget(budget);
         }
+
+
+
+
     }
 }

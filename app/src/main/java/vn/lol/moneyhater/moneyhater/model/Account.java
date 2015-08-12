@@ -23,6 +23,11 @@ public class Account implements Serializable {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        Account account = (Account)o;
+        return (account.getAccountID() == getAccountID());
+    }
 
     public int getAccountID() {
         return mAccountID;

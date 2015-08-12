@@ -18,6 +18,12 @@ public class Budget {
         mCash = cash;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        Budget budget = (Budget)o;
+        return (budget.getBudgetID() == getBudgetID());
+    }
+
     public int getBudgetID() {
         return mBudgetID;
     }

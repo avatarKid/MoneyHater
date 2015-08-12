@@ -50,6 +50,12 @@ public class EditTransaction extends AppCompatActivity {
     Spinner spTransactionCategory;
     EditText edTransactionDate;
 
+    double oldCash = 0;
+    int oldAccountID = 0;
+    int oldBudgetID = 0;
+    int oldType = 0;
+    double newCash = 0;
+
     int mDay, mMonth, mYear;
     static final int DIALOG_ID = 0;
 
@@ -60,8 +66,6 @@ public class EditTransaction extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_transaction);
 
-        transaction = (Transaction) getIntent().getSerializableExtra(ConstantValue.EDIT_TRANSACTION);
-        transactionID = transaction.getTransactionID();
         init();
         btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +108,7 @@ public class EditTransaction extends AppCompatActivity {
 
         //Date
         Calendar calendar = Calendar.getInstance();
-        calendar.set(mYear,mMonth,mDay);
+        calendar.set(mYear, mMonth, mDay);
         transaction.setDate(calendar);
 
         //Money
@@ -117,23 +121,122 @@ public class EditTransaction extends AppCompatActivity {
 
         //Type
         transaction.setType(swTransactionType.isChecked() ? ConstantValue.TRANSACTION_TYPE_INCOME : ConstantValue.TRANSACTION_TYPE_EXPENSE);
+        newCash = transaction.getCash();
 
-        //Account
-        Account account = (Account) spTransactionAccount.getSelectedItem();
-        if (account != null) {
-            transaction.setAccountID(account.getAccountID());
+        //update Account
+        Account newAccount = (Account) spTransactionAccount.getSelectedItem();
+        double newAccountMoney = newAccount.getCash();
+
+        Account oldAccount = mDbHelper.getAccount(oldAccountID);
+        double oldAccountMoney = oldAccount.getCash();
+
+        if (newAccount != null) {
+            transaction.setAccountID(newAccount.getAccountID());
+            if(newAccount.getAccountID() == oldAccountID){ // if not change Account
+                if(transaction.getType() == oldType){ // if not change Type of Transaction
+                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                        newAccountMoney = newAccountMoney + oldCash - newCash;
+                    }else {
+                        newAccountMoney = newAccountMoney - oldCash + newCash;
+                    }
+                } else { // change Type of Transaction
+                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                        newAccountMoney = newAccountMoney + oldCash + newCash;
+                    }else {
+                        newAccountMoney = newAccountMoney - oldCash - newCash;
+                    }
+                }
+                newAccount.setCash(newAccountMoney);
+                mDbHelper.updateAccount(newAccount);
+            } else { // if Change account
+                if(transaction.getType() == oldType){ // if not change Type of Transaction
+                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                        newAccountMoney -= newCash;
+                        oldAccountMoney += oldCash;
+                    }else {
+                        newAccountMoney += newCash;
+                        oldAccountMoney -= oldCash;
+                    }
+                } else { // change Type of Transaction
+                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                        newAccountMoney += newCash;
+                        oldAccountMoney += oldCash;
+                    }else {
+                        newAccountMoney -= newCash;
+                        oldAccountMoney -= oldCash;
+                    }
+                }
+                newAccount.setCash(newAccountMoney);
+                oldAccount.setCash(oldAccountMoney);
+                mDbHelper.updateAccount(newAccount);
+                mDbHelper.updateAccount(oldAccount);
+            }
+
         }
 
-        //Budget
-        Budget budget = (Budget) spTransactionBudget.getSelectedItem();
-        if (budget != null) {
-            transaction.setBudgetID(budget.getBudgetID());
+        //update Budget
+        Budget newBudget = (Budget) spTransactionBudget.getSelectedItem();
+        double newBudgetMoney = newBudget.getCash();
+
+        Budget oldBudget = mDbHelper.getBudget(oldBudgetID);
+        double oldBudgetMoney = oldBudget.getCash();
+
+        if (newBudget != null) {
+            transaction.setBudgetID(newBudget.getBudgetID());
+            if(newBudget.getBudgetID() == oldBudgetID){ // if not change Budget
+                if(transaction.getType() == oldType){ // if not change Type of Transaction
+                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                        newBudgetMoney = newBudgetMoney + oldCash - newCash;
+                    }else {
+                        newBudgetMoney = newBudgetMoney - oldCash + newCash;
+                    }
+                } else { // change Type of Transaction
+                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                        newBudgetMoney = newBudgetMoney + oldCash + newCash;
+                    }else {
+                        newBudgetMoney = newBudgetMoney - oldCash - newCash;
+                    }
+                }
+                newBudget.setCash(newBudgetMoney);
+                mDbHelper.updateBudget(newBudget);
+            } else { // if Change account
+                if(transaction.getType() == oldType){ // if not change Type of Transaction
+                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                        newBudgetMoney -= newCash;
+                        oldBudgetMoney += oldCash;
+                    }else {
+                        newBudgetMoney += newCash;
+                        oldBudgetMoney -= oldCash;
+                    }
+                } else { // change Type of Transaction
+                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                        newBudgetMoney += newCash;
+                        oldBudgetMoney += oldCash;
+                    }else {
+                        newBudgetMoney -= newCash;
+                        oldBudgetMoney -= oldCash;
+                    }
+                }
+                newBudget.setCash(newBudgetMoney);
+                oldBudget.setCash(oldBudgetMoney);
+                mDbHelper.updateBudget(newBudget);
+                mDbHelper.updateBudget(oldBudget);
+            }
+
         }
 
         //TODO category
     }
 
     public void init() {
+        // get value of selected transaction
+        transaction = (Transaction) getIntent().getSerializableExtra(ConstantValue.EDIT_TRANSACTION);
+        transactionID = transaction.getTransactionID();
+        oldCash = transaction.getCash();
+        oldAccountID = transaction.getAccountID();
+        oldBudgetID = transaction.getBudgetID();
+        oldType = transaction.getType();
+
         // get date of current transaction
         mDay = transaction.getCalendar().get(Calendar.DAY_OF_MONTH);
         mMonth = transaction.getCalendar().get(Calendar.MONTH);
@@ -149,11 +252,12 @@ public class EditTransaction extends AppCompatActivity {
         spTransactionAccount = (Spinner) findViewById(R.id.spEditTransAccountName);
         spTransactionCategory = (Spinner) findViewById(R.id.spEditTransCategoryName);
         swTransactionType = (Switch) findViewById(R.id.swEditTransactionType);
-
+        //TODO init category
 
         etTransactionMoney.addTextChangedListener(new TextWatcher() {
 
             String current = "";
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
@@ -201,10 +305,11 @@ public class EditTransaction extends AppCompatActivity {
         etTransactionName.setText(transaction.getTransactionName());
         etTransactionMoney.setText(NumberFormat.getInstance().format(transaction.getCash()));
         swTransactionType.setChecked(transaction.getType() == 0 ? false : true);
+
         spTransactionAccount.setSelection(adapterAccount.getPosition(currentAccount));
         spTransactionBudget.setSelection(adapterBudget.getPosition(currentBudget));
         edTransactionDate.setText(transaction.getCalendar().get(Calendar.DAY_OF_MONTH) + "/"
-                + (transaction.getCalendar().get(Calendar.MONTH)+1) + "/"
+                + (transaction.getCalendar().get(Calendar.MONTH) + 1) + "/"
                 + transaction.getCalendar().get(Calendar.YEAR));
     }
 
