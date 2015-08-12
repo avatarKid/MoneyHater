@@ -1,19 +1,28 @@
 package vn.lol.moneyhater.moneyhater.activity;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
@@ -41,6 +50,8 @@ public class EditTransaction extends AppCompatActivity {
     Spinner spTransactionCategory;
     EditText edTransactionDate;
 
+    int mDay, mMonth, mYear;
+    static final int DIALOG_ID = 0;
 
     Button btSave, btDelete;
 
@@ -48,10 +59,10 @@ public class EditTransaction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_transaction);
-        init();
 
-        transaction = (Transaction) getIntent().getSerializableExtra("transaction");
+        transaction = (Transaction) getIntent().getSerializableExtra(ConstantValue.EDIT_TRANSACTION);
         transactionID = transaction.getTransactionID();
+        init();
         btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,38 +83,104 @@ public class EditTransaction extends AppCompatActivity {
                 finish();
             }
         });
+
+        edTransactionDate.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                try {
+                    showDialogPickDay();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Err Pick Day", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
     }
 
     public void updateTransaction() {
-        transaction = new Transaction();
+        //Name
         transaction.setTransactionName(etTransactionName.getText().toString());
 
+        //Date
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(mYear,mMonth,mDay);
+        transaction.setDate(calendar);
+
+        //Money
         try {
-            transaction.setCash(Double.parseDouble(etTransactionMoney.getText().toString()));
+            transaction.setCash(Double.parseDouble(etTransactionMoney.getText().toString().replaceAll("[,]", "")));
         } catch (NumberFormatException e) {
             transaction.setCash(0);
             e.printStackTrace();
         }
 
+        //Type
         transaction.setType(swTransactionType.isChecked() ? ConstantValue.TRANSACTION_TYPE_INCOME : ConstantValue.TRANSACTION_TYPE_EXPENSE);
+
+        //Account
         Account account = (Account) spTransactionAccount.getSelectedItem();
         if (account != null) {
             transaction.setAccountID(account.getAccountID());
         }
+
+        //Budget
         Budget budget = (Budget) spTransactionBudget.getSelectedItem();
         if (budget != null) {
             transaction.setBudgetID(budget.getBudgetID());
         }
+
+        //TODO category
     }
 
     public void init() {
+        // get date of current transaction
+        mDay = transaction.getCalendar().get(Calendar.DAY_OF_MONTH);
+        mMonth = transaction.getCalendar().get(Calendar.MONTH);
+        mYear = transaction.getCalendar().get(Calendar.YEAR);
+
+        //Init view
         btSave = (Button) findViewById(R.id.btSaveTransaction);
+        btDelete = (Button) findViewById(R.id.btDeleteTransaction);
         etTransactionName = (EditText) findViewById(R.id.etEditTransName);
         etTransactionMoney = (EditText) findViewById(R.id.etEditTransactionMoney);
+        edTransactionDate = (EditText) findViewById(R.id.etEditTransactionDate);
         spTransactionBudget = (Spinner) findViewById(R.id.spEditTransBudgetName);
         spTransactionAccount = (Spinner) findViewById(R.id.spEditTransAccountName);
-//        dpTransactionDate = (DatePicker) findViewById(R.id.dpTransactionDate);
+        spTransactionCategory = (Spinner) findViewById(R.id.spEditTransCategoryName);
         swTransactionType = (Switch) findViewById(R.id.swEditTransactionType);
+
+
+        etTransactionMoney.addTextChangedListener(new TextWatcher() {
+
+            String current = "";
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                if (!charSequence.toString().equals("")) {
+                    if (!charSequence.toString().equals(current)) {
+                        String cash = charSequence.toString().replaceAll("[,]", "");
+                        double parsed = Double.parseDouble(cash);
+                        String formated = NumberFormat.getInstance().format((parsed));
+                        current = formated;
+                        etTransactionMoney.setText(formated);
+                        etTransactionMoney.setSelection(etTransactionMoney.getText().length());
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        // load DB
         mDbHelper = new DatabaseHelper(getApplicationContext());
         listAccount = mDbHelper.getAllAccounts();
         listBudget = mDbHelper.getAllBudgets();
@@ -122,12 +199,38 @@ public class EditTransaction extends AppCompatActivity {
         //TODO add Category
 
         etTransactionName.setText(transaction.getTransactionName());
-        etTransactionMoney.setText(transaction.getCash() + "");
+        etTransactionMoney.setText(NumberFormat.getInstance().format(transaction.getCash()));
         swTransactionType.setChecked(transaction.getType() == 0 ? false : true);
         spTransactionAccount.setSelection(adapterAccount.getPosition(currentAccount));
         spTransactionBudget.setSelection(adapterBudget.getPosition(currentBudget));
-        //TODO get date to edittext
+        edTransactionDate.setText(transaction.getCalendar().get(Calendar.DAY_OF_MONTH) + "/"
+                + (transaction.getCalendar().get(Calendar.MONTH)+1) + "/"
+                + transaction.getCalendar().get(Calendar.YEAR));
     }
+
+
+    public void showDialogPickDay() {
+        showDialog(DIALOG_ID);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if (id == DIALOG_ID) {
+            return new DatePickerDialog(this, dpickerListener, mYear, mMonth, mDay);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener dpickerListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            mYear = year;
+            mMonth = monthOfYear;
+            mDay = dayOfMonth;
+            edTransactionDate.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
+        }
+    };
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

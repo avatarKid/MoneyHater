@@ -48,11 +48,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
+            android:hint="0"
             android:inputType="number"
-            android:maxLength="9"
             android:numeric="integer"
-            android:singleLine="true"
-            android:text="0" />
+            android:singleLine="true" />
     </LinearLayout>
 
     <LinearLayout

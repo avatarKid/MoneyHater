@@ -5,9 +5,12 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -68,14 +72,15 @@ public class NewTransactionActivity extends ActionBarActivity {
             }
         });
 
-        etAddTransactionDate.setOnClickListener(new View.OnClickListener() {
+        etAddTransactionDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
                 try {
                     showDialogPickDay();
-                }catch (Exception e){
-                    Toast.makeText(getApplicationContext(),"Err Pick Day",Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Err Pick Day", Toast.LENGTH_SHORT).show();
                 }
+                return false;
             }
         });
     }
@@ -103,14 +108,51 @@ public class NewTransactionActivity extends ActionBarActivity {
     }
 
     public void init() {
+        final Calendar cal = Calendar.getInstance();
+        mYear = cal.get(Calendar.YEAR);
+        mMonth = cal.get(Calendar.MONTH);
+        mDay = cal.get(Calendar.DAY_OF_MONTH);
+
         etAddTransactionDate = (EditText) findViewById(R.id.etAddTransactionDate);
         btAddNewTransaction = (Button) findViewById(R.id.btAddNewTran);
         etTransactionName = (EditText) findViewById(R.id.etAddTransName);
         etTransactionMoney = (EditText) findViewById(R.id.etTransactionMoney);
         spTransactionBudget = (Spinner) findViewById(R.id.spAddTransBudgetName);
         spTransactionAccount = (Spinner) findViewById(R.id.spAddTransAccountName);
-        //dpTransactionDate = (DatePicker) findViewById(R.id.dpTransactionDate);
         swTransactionType = (Switch) findViewById(R.id.swTransactionType);
+
+
+        etTransactionMoney.addTextChangedListener(new TextWatcher() {
+
+            String current = "";
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+                if (!charSequence.toString().equals("")) {
+                    if (!charSequence.toString().equals(current)) {
+                        String cash = charSequence.toString().replaceAll("[,]", "");
+                        double parsed = Double.parseDouble(cash);
+                        String formated = NumberFormat.getInstance().format((parsed));
+                        current = formated;
+                        etTransactionMoney.setText(formated);
+                        etTransactionMoney.setSelection(etTransactionMoney.getText().length());
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+        //Load data from DB
         mDbHelper = new DatabaseHelper(getApplicationContext());
         listAccount = mDbHelper.getAllAccounts();
         listBudget = mDbHelper.getAllBudgets();
@@ -124,21 +166,20 @@ public class NewTransactionActivity extends ActionBarActivity {
         ArrayAdapter<Budget> adapterBudget = new ArrayAdapter<Budget>(this, android.R.layout.simple_spinner_dropdown_item, listBudget);
         spTransactionBudget.setAdapter(adapterBudget);
 
+        // fill today to edit text
+        etAddTransactionDate.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
+
         //TODO add Category
     }
 
-    public void showDialogPickDay(){
-        final Calendar cal = Calendar.getInstance();
-        mYear = cal.get(Calendar.YEAR);
-        mMonth = cal.get(Calendar.MONTH);
-        mDay = cal.get(Calendar.DAY_OF_MONTH);
+    public void showDialogPickDay() {
         showDialog(DIALOG_ID);
     }
 
     @Override
     protected Dialog onCreateDialog(int id) {
-        if(id == DIALOG_ID){
-            return new DatePickerDialog(this,dpickerListener,mYear,mMonth,mDay);
+        if (id == DIALOG_ID) {
+            return new DatePickerDialog(this, dpickerListener, mYear, mMonth, mDay);
         }
         return null;
     }
@@ -149,7 +190,7 @@ public class NewTransactionActivity extends ActionBarActivity {
             mYear = year;
             mMonth = monthOfYear;
             mDay = dayOfMonth;
-            etAddTransactionDate.setText(mDay+"/"+(mMonth+1)+"/"+mYear);
+            etAddTransactionDate.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
         }
     };
 
@@ -158,7 +199,7 @@ public class NewTransactionActivity extends ActionBarActivity {
         transaction.setTransactionName(etTransactionName.getText().toString());
 
         try {
-            transaction.setCash(Double.parseDouble(etTransactionMoney.getText().toString()));
+            transaction.setCash(Double.parseDouble(etTransactionMoney.getText().toString().replaceAll("[,]", "")));
         } catch (NumberFormatException e) {
             transaction.setCash(0);
             e.printStackTrace();
@@ -176,7 +217,5 @@ public class NewTransactionActivity extends ActionBarActivity {
         if (budget != null) {
             transaction.setBudgetID(budget.getBudgetID());
         }
-
-
     }
 }

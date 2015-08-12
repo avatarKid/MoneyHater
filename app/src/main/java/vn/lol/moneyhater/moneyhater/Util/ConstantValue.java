@@ -10,6 +10,7 @@ public class ConstantValue {
     public static final int RESULT_CODE_SAVE_TRANSACTION = 201;
     public static final int RESULT_CODE_DELETE_TRANSACTION = 202;
     public static final String NEW_TRANSACTION = "new_transaction";
+    public static final String EDIT_TRANSACTION = "edit_transaction";
     public static final String SAVE_TRANSACTION = "save_transaction";
     public final static String DROPBOX_SHARE_PREFERENCE = "dropbox_prefs";
     public final static String DROPBOX_APP_KEY = "6xarw436ospag2t";

@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,18 +31,24 @@ public class TransactionFragment extends Fragment {
     private ListTransactionAdapter mAdapterTransaction;
     DatabaseHelper mDbHelper;
     ListView mlistTransaction;
+    TextView tvIncome, tvExpense;
     ArrayList<TransactionDate> listTransaction;
     private ArrayList<String> listDate;
     int selectedTransaction = 0;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // Init
         View rootView = inflater.inflate(R.layout.fragment_transaction, container,
                 false);
         mDbHelper = (DatabaseHelper) container.getTag(R.id.TAG_DB_HELPER);
         listTransaction = new ArrayList<TransactionDate>();
         listDate = new ArrayList<>();
         mlistTransaction = (ListView) rootView.findViewById(R.id.lvTransaction);
+        tvIncome = (TextView) rootView.findViewById(R.id.tvIncome);
+        tvExpense = (TextView) rootView.findViewById(R.id.tvExpense);
+
         loadData();
 
         mlistTransaction.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -51,19 +57,21 @@ public class TransactionFragment extends Fragment {
                 selectedTransaction = position;
                 int transactionID = ((Transaction) listTransaction.get(position)).getTransactionID();
                 Intent intent = new Intent(getActivity(), EditTransaction.class);
-                intent.putExtra("transaction", mDbHelper.getTransaction(transactionID));
+                intent.putExtra(ConstantValue.EDIT_TRANSACTION, mDbHelper.getTransaction(transactionID));
                 getActivity().startActivityForResult(intent, ConstantValue.REQUEST_CODE_EDIT_TRANSACTION);
             }
         });
         return rootView;
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
     }
 
+    /*
+    * Add transaction to list
+    * */
     public void addItem(Transaction item) {
         boolean dateExist = false;
         String date = item.getDate();
@@ -106,8 +114,7 @@ public class TransactionFragment extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
                 Transaction transaction = (Transaction) data.getSerializableExtra(ConstantValue.NEW_TRANSACTION);
                 addItem(transaction);
-                Log.e("Transaction type: ", transaction.getType() + "");
-                mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction);
+                mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction, mDbHelper);
                 mlistTransaction.setAdapter(mAdapterTransaction);
                 mAdapterTransaction.notifyDataSetChanged();
                 mDbHelper.insertTransaction(transaction);
@@ -115,24 +122,27 @@ public class TransactionFragment extends Fragment {
         }
         if (requestCode == ConstantValue.REQUEST_CODE_EDIT_TRANSACTION) {
             if (resultCode == ConstantValue.RESULT_CODE_DELETE_TRANSACTION) {
-                removeTransaction(data.getIntExtra(ConstantValue.TRANSACTION_ID, 0));
+                int transactionID = data.getIntExtra(ConstantValue.TRANSACTION_ID, 0);
+                mDbHelper.deleteTransaction(transactionID);
+                removeTransaction(transactionID);
             }
         }
         if (requestCode == ConstantValue.REQUEST_CODE_EDIT_TRANSACTION) {
             if (resultCode == ConstantValue.RESULT_CODE_SAVE_TRANSACTION) {
-                Transaction transaction = (Transaction) getActivity().getIntent().getSerializableExtra(ConstantValue.SAVE_TRANSACTION);
+                Transaction transaction = (Transaction) data.getSerializableExtra(ConstantValue.SAVE_TRANSACTION);
                 updateTransaction(transaction);
             }
         }
     }
 
     public void updateTransaction(Transaction transaction){
+        removeTransaction(transaction.getTransactionID());
+        addItem(transaction);
+        mAdapterTransaction.notifyDataSetChanged();
         mDbHelper.updateTransaction(transaction);
-        //TODO
     }
 
     public void removeTransaction(int transactionID) {
-        mDbHelper.deleteTransaction(transactionID);
         // Transaction will be delete
         Transaction deleteTransaction = (Transaction) listTransaction.get(selectedTransaction);
         String dateOfDeleteTransaction = deleteTransaction.getDate();
@@ -154,7 +164,6 @@ public class TransactionFragment extends Fragment {
             }
         }
 
-
         mAdapterTransaction.notifyDataSetChanged();
         if (mDbHelper.getAllTransactions().isEmpty()) {
             listTransaction.clear();
@@ -162,16 +171,23 @@ public class TransactionFragment extends Fragment {
         }
     }
 
+    /*
+    * Load data onCreate
+    * */
     public void loadData() {
         listTransaction.clear();
         for (Transaction transaction : mDbHelper.getAllTransactions()) {
             addItem(transaction);
         }
         if (!mDbHelper.getAllTransactions().isEmpty()) {
-            mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction);
+            mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction,mDbHelper);
             mlistTransaction.setAdapter(mAdapterTransaction);
             mAdapterTransaction.notifyDataSetChanged();
         }
+    }
+
+    public void calculateIncomeAndExpense(){
+
     }
 
 }

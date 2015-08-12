@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -32,10 +33,12 @@ public class ListTransactionAdapter extends BaseAdapter {
 
     private ArrayList<TransactionDate> mData = new ArrayList<TransactionDate>();
     private LayoutInflater mInflater;
+    private DatabaseHelper databaseHelper;
 
-    public ListTransactionAdapter(Activity activity, ArrayList<TransactionDate> lstTrans) {
+    public ListTransactionAdapter(Activity activity, ArrayList<TransactionDate> lstTrans, DatabaseHelper mDBHelper) {
         mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mData = lstTrans;
+        databaseHelper = mDBHelper;
     }
 
     @Override
@@ -110,8 +113,12 @@ public class ListTransactionAdapter extends BaseAdapter {
                 Transaction transaction = (Transaction) getItem(position);
                 holder.tv1.setText(transaction.getTransactionName());
                 /* TODO get account name of transaction via Account ID */
-                holder.tv2.setText(transaction.getTransactionName());
-                holder.tv3.setText(transaction.getCash() + "");
+                if(databaseHelper.getAccount(transaction.getAccountID()).getAccountName() != null) {
+                    holder.tv2.setText(databaseHelper.getAccount(transaction.getAccountID()).getAccountName().toUpperCase());
+                } else {
+                    holder.tv2.setText("");
+                }
+                holder.tv3.setText(NumberFormat.getInstance().format(transaction.getCash()));
                 break;
         }
 
