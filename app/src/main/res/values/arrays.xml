@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="blank"/>
+    <string-array name="category">
+        <item>Education</item>
+        <item>Entertainment</item>
+        <item>Family</item>
+        <item>Food &amp; Drink</item>
+        <item>Friends &amp; Lover</item>
+        <item>Invest</item>
+        <item>Loan</item>
+        <item>Medical</item>
+        <item>Shopping</item>
+        <item>Transport</item>
+        <item>Travel</item>
+        <item>Award</item>
+        <item>Debt</item>
+        <item>Give</item>
+        <item>Interest Money</item>
+        <item>Salary</item>
+        <item>Selling</item>
+        <item>Other</item>
+    </string-array>
 </resources>

@@ -23,6 +23,7 @@ import java.util.Calendar;
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
+import vn.lol.moneyhater.moneyhater.adapter.CategoryAdapter;
 import vn.lol.moneyhater.moneyhater.fragment.TransactionFragment;
 import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.Budget;
@@ -48,6 +49,7 @@ public class NewTransactionActivity extends ActionBarActivity {
     int mDay, mMonth, mYear;
 
     static final int DIALOG_ID = 0;
+    private Spinner spCategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +111,19 @@ public class NewTransactionActivity extends ActionBarActivity {
         etTransactionMoney = (EditText) findViewById(R.id.etTransactionMoney);
         spTransactionBudget = (Spinner) findViewById(R.id.spAddTransBudgetName);
         spTransactionAccount = (Spinner) findViewById(R.id.spAddTransAccountName);
+        spCategories = (Spinner) findViewById(R.id.spAddTransCategoryName);
         //dpTransactionDate = (DatePicker) findViewById(R.id.dpTransactionDate);
         swTransactionType = (Switch) findViewById(R.id.swTransactionType);
         mDbHelper = new DatabaseHelper(getApplicationContext());
         listAccount = mDbHelper.getAllAccounts();
         listBudget = mDbHelper.getAllBudgets();
         listCategory = mDbHelper.getAllCategory();
+
+
+        // set adaptor Categories
+        String[] arr = getResources().getStringArray(R.array.category);
+        CategoryAdapter ca = new CategoryAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,arr);
+        spCategories.setAdapter(ca);
 
         // add item to Account spinner
         ArrayAdapter<Account> adapterAccount = new ArrayAdapter<Account>(this, android.R.layout.simple_spinner_dropdown_item, listAccount);
