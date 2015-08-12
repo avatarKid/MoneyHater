@@ -2,11 +2,16 @@ package vn.lol.moneyhater.moneyhater.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,6 +31,7 @@ import vn.lol.moneyhater.moneyhater.model.TransactionDate;
  */
 public class ListTransactionAdapter extends BaseAdapter {
 
+    private final Drawable[] arrImage;
     int listPosition = 0;
     private static final int TYPE_DATE = 0;
     private static final int TYPE_TRANSACTION = 1;
@@ -39,6 +45,28 @@ public class ListTransactionAdapter extends BaseAdapter {
         mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mData = lstTrans;
         databaseHelper = mDBHelper;
+        arrImage=new Drawable[18];
+        arrImage[0]= ResourcesCompat.getDrawable(activity.getResources(), R.drawable.education, null);
+        arrImage[1]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.entertainment,null);
+        arrImage[2]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.family,null);
+        arrImage[3]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.food_drink,null);
+        arrImage[4]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.friend_lover,null);
+        arrImage[5]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.invest,null);
+        arrImage[6]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.loan,null);
+        arrImage[7]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.medical,null);
+        arrImage[8]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.shopping,null);
+        arrImage[9]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.transport,null);
+        arrImage[10]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.travel,null);
+        arrImage[11]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.award,null);
+        arrImage[12]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.debt,null);
+        arrImage[13]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.give,null);
+        arrImage[14]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.interest_money,null);
+        arrImage[15]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.salary,null);
+        arrImage[16]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.selling,null);
+        arrImage[17]=ResourcesCompat.getDrawable(activity.getResources(),R.drawable.other,null);
+        for (int i=0;i<18;i++) {
+            arrImage[i] = new BitmapDrawable(activity.getResources(), Bitmap.createScaledBitmap(((BitmapDrawable) arrImage[i]).getBitmap(), 80, 80, true));
+        }
     }
 
     @Override
@@ -94,6 +122,7 @@ public class ListTransactionAdapter extends BaseAdapter {
                     holder.tv1 = (TextView) convertView.findViewById(R.id.tvTransactionName);
                     holder.tv2 = (TextView) convertView.findViewById(R.id.tvTransactionAccount);
                     holder.tv3 = (TextView) convertView.findViewById(R.id.tvTransactionMoney);
+                    holder.iv = (ImageView) convertView.findViewById(R.id.ivCategoryImage);
                     convertView.setTag(holder);
                     break;
             }
@@ -118,6 +147,13 @@ public class ListTransactionAdapter extends BaseAdapter {
                 } else {
                     holder.tv2.setText("");
                 }
+                try {
+                    holder.iv.setImageDrawable(arrImage[transaction.getCategoryID()]);
+                } catch (Exception e) {
+                    Log.e("ListTransactionAdapter","SET IMAGE");
+                    e.printStackTrace();
+                } finally {
+                }
                 holder.tv3.setText(NumberFormat.getInstance().format(transaction.getCash()));
                 break;
         }
@@ -130,6 +166,7 @@ public class ListTransactionAdapter extends BaseAdapter {
         public TextView tv1;
         public TextView tv2;
         public TextView tv3;
+        public ImageView iv;
     }
 
 }
