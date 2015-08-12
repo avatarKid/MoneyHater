@@ -1,5 +1,7 @@
 package vn.lol.moneyhater.moneyhater.activity;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +34,7 @@ public class NewTransactionActivity extends ActionBarActivity {
 
     EditText etTransactionName;
     EditText etTransactionMoney;
+    EditText etAddTransactionDate;
     Switch swTransactionType;
     Spinner spTransactionAccount;
     Spinner spTransactionBudget;
@@ -41,6 +45,9 @@ public class NewTransactionActivity extends ActionBarActivity {
     ArrayList<Category> listCategory;
     ArrayList<Account> listAccount;
     DatabaseHelper mDbHelper;
+    int mDay, mMonth, mYear;
+
+    static final int DIALOG_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,17 @@ public class NewTransactionActivity extends ActionBarActivity {
                 returnIntent.putExtra(ConstantValue.NEW_TRANSACTION, transaction);
                 setResult(RESULT_OK, returnIntent);
                 finish();
+            }
+        });
+
+        etAddTransactionDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    showDialogPickDay();
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(),"Err Pick Day",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -85,12 +103,13 @@ public class NewTransactionActivity extends ActionBarActivity {
     }
 
     public void init() {
+        etAddTransactionDate = (EditText) findViewById(R.id.etAddTransactionDate);
         btAddNewTransaction = (Button) findViewById(R.id.btAddNewTran);
         etTransactionName = (EditText) findViewById(R.id.etAddTransName);
         etTransactionMoney = (EditText) findViewById(R.id.etTransactionMoney);
         spTransactionBudget = (Spinner) findViewById(R.id.spAddTransBudgetName);
         spTransactionAccount = (Spinner) findViewById(R.id.spAddTransAccountName);
-//        dpTransactionDate = (DatePicker) findViewById(R.id.dpTransactionDate);
+        //dpTransactionDate = (DatePicker) findViewById(R.id.dpTransactionDate);
         swTransactionType = (Switch) findViewById(R.id.swTransactionType);
         mDbHelper = new DatabaseHelper(getApplicationContext());
         listAccount = mDbHelper.getAllAccounts();
@@ -108,6 +127,32 @@ public class NewTransactionActivity extends ActionBarActivity {
         //TODO add Category
     }
 
+    public void showDialogPickDay(){
+        final Calendar cal = Calendar.getInstance();
+        mYear = cal.get(Calendar.YEAR);
+        mMonth = cal.get(Calendar.MONTH);
+        mDay = cal.get(Calendar.DAY_OF_MONTH);
+        showDialog(DIALOG_ID);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        if(id == DIALOG_ID){
+            return new DatePickerDialog(this,dpickerListener,mYear,mMonth,mDay);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener dpickerListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            mYear = year;
+            mMonth = monthOfYear;
+            mDay = dayOfMonth;
+            etAddTransactionDate.setText(mDay+"/"+(mMonth+1)+"/"+mYear);
+        }
+    };
+
     public void addTransaction() {
 
         transaction.setTransactionName(etTransactionName.getText().toString());
@@ -119,11 +164,9 @@ public class NewTransactionActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        // TODO get from datePicker dialog
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(dpTransactionDate.getYear(), dpTransactionDate.getMonth(), dpTransactionDate.getDayOfMonth());
-//        transaction.setDate(calendar);
-//
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(mYear, mMonth, mDay);
+        transaction.setDate(calendar);
         transaction.setType(swTransactionType.isChecked() ? ConstantValue.TRANSACTION_TYPE_INCOME : ConstantValue.TRANSACTION_TYPE_EXPENSE);
         Account account = (Account) spTransactionAccount.getSelectedItem();
         if (account != null) {
@@ -133,5 +176,7 @@ public class NewTransactionActivity extends ActionBarActivity {
         if (budget != null) {
             transaction.setBudgetID(budget.getBudgetID());
         }
+
+
     }
 }
