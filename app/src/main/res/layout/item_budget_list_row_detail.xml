@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingBottom="10dp"
     android:paddingTop="5dp"
+    android:background="@drawable/item_drawable"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -37,15 +38,30 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tvNote"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_transaction_date"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right|end"
-            android:text="@string/tvTransactionMoney"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
+
+            <TextView
+                android:id="@+id/tv_transaction_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tvTransactionMoney"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text=" đ"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

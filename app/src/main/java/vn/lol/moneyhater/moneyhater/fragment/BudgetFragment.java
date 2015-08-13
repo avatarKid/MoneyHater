@@ -67,7 +67,6 @@ public class BudgetFragment extends Fragment {
 //    }
 
     private void displayLisBudget() {
-        listBudget = mDbHelper.getAllBudgets();
 
         mAdapterBudget = new ListBudgetExpandableAdapter(getActivity(),groups);
         mlistBudget.setAdapter(mAdapterBudget);
@@ -80,20 +79,20 @@ public class BudgetFragment extends Fragment {
 //                startActivity(intent);
 //            }
 //        });
-//        mlistBudget.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getActivity(), EditBudgetActivity.class);
-//                intent.putExtra(ConstantValue.BUDGET_ID, listBudget.get(position).getBudgetID());
-//                startActivity(intent);
-//                return true;
-//            }
-//        });
+        mlistBudget.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), EditBudgetActivity.class);
+                intent.putExtra(ConstantValue.BUDGET_ID, listBudget.get(position).getBudgetID());
+                startActivity(intent);
+                return true;
+            }
+        });
     }
 
     private void CreateData(){
         listBudget = mDbHelper.getAllBudgets();
-
+        groups.clear();
         for (int i = 0; i < listBudget.size() ; i++) {
             Budget b = listBudget.get(i);
             BudgetGroup g = new BudgetGroup(b, mDbHelper.getTransactionByBudgetID(b.getBudgetID()));

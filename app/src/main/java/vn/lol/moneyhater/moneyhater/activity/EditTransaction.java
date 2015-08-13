@@ -177,56 +177,10 @@ public class EditTransaction extends AppCompatActivity {
 
         }
 
-//        //update Budget
-//        Budget newBudget = (Budget) spTransactionBudget.getSelectedItem();
-//        double newBudgetMoney = newBudget.getCash();
-//
-//        Budget oldBudget = mDbHelper.getBudget(oldBudgetID);
-//        double oldBudgetMoney = oldBudget.getCash();
-//
-//        if (newBudget != null) {
-//            transaction.setBudgetID(newBudget.getBudgetID());
-//            if(newBudget.getBudgetID() == oldBudgetID){ // if not change Budget
-//                if(transaction.getType() == oldType){ // if not change Type of Transaction
-//                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
-//                        newBudgetMoney = newBudgetMoney + oldCash - newCash;
-//                    }else {
-//                        newBudgetMoney = newBudgetMoney - oldCash + newCash;
-//                    }
-//                } else { // change Type of Transaction
-//                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
-//                        newBudgetMoney = newBudgetMoney + oldCash + newCash;
-//                    }else {
-//                        newBudgetMoney = newBudgetMoney - oldCash - newCash;
-//                    }
-//                }
-//                newBudget.setCash(newBudgetMoney);
-//                mDbHelper.updateBudget(newBudget);
-//            } else { // if Change account
-//                if(transaction.getType() == oldType){ // if not change Type of Transaction
-//                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
-//                        newBudgetMoney -= newCash;
-//                        oldBudgetMoney += oldCash;
-//                    }else {
-//                        newBudgetMoney += newCash;
-//                        oldBudgetMoney -= oldCash;
-//                    }
-//                } else { // change Type of Transaction
-//                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
-//                        newBudgetMoney += newCash;
-//                        oldBudgetMoney += oldCash;
-//                    }else {
-//                        newBudgetMoney -= newCash;
-//                        oldBudgetMoney -= oldCash;
-//                    }
-//                }
-//                newBudget.setCash(newBudgetMoney);
-//                oldBudget.setCash(oldBudgetMoney);
-//                mDbHelper.updateBudget(newBudget);
-//                mDbHelper.updateBudget(oldBudget);
-//            }
-//
-//        }
+        Budget budget = (Budget) spTransactionBudget.getSelectedItem();
+        if (budget != null) {
+            transaction.setBudgetID(budget.getBudgetID());
+        }
 
         // update category
         transaction.setCategoryID(spTransactionCategory.getSelectedItemPosition());
@@ -344,18 +298,7 @@ public class EditTransaction extends AppCompatActivity {
             mDbHelper.updateAccount(account);
         }
 
-//        //update money in budget
-//        Budget budget = mDbHelper.getBudget(transaction.getBudgetID());
-//        if(null != budget) {
-//            double budgetMoney = budget.getCash();
-//            if (transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
-//                budgetMoney += transaction.getCash();
-//            } else {
-//                budgetMoney -= transaction.getCash();
-//            }
-//            budget.setCash(budgetMoney);
-//            mDbHelper.updateBudget(budget);
-//        }
+
     }
 
     public void showDialogPickDay() {

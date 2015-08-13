@@ -103,7 +103,7 @@ public class Transaction implements TransactionDate,Serializable {
     }
 
     public String getDate(){
-        return getDay() + getMonth() + getYear();
+        return getDay() + " " +getMonth() + " " + getYear();
     }
 
     public void setCash(double cash) {

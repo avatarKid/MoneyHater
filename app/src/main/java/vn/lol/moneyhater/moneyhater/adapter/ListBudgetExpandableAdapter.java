@@ -10,6 +10,7 @@ import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.BudgetGroup;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
 
@@ -79,9 +80,7 @@ public class ListBudgetExpandableAdapter  extends BaseExpandableListAdapter {
         cash.setText(group.getBudget().getCash() + "");
         current.setText(group.getCurrentCast() + "");
         if(group.getCurrentCast() < 0){
-            name.setTextColor(red_light);
-            cash.setTextColor(red_light);
-            current.setTextColor(red_light);
+            current.setTextColor(activity.getResources().getColor(R.color.red_light));
         }
         return convertView;
     }
@@ -97,8 +96,18 @@ public class ListBudgetExpandableAdapter  extends BaseExpandableListAdapter {
         name = (TextView) convertView.findViewById(R.id.tv_transaction_name);
         date = (TextView) convertView.findViewById(R.id.tv_transaction_cash);
         cash = (TextView) convertView.findViewById(R.id.tv_transaction_date);
+
         name.setText(children.getTransactionName());
-        cash.setText(children.getCash() + "");
+        if(children.getType() == ConstantValue.TRANSACTION_TYPE_INCOME){
+            cash.setText("+ " + children.getCash());
+            name.setTextColor(activity.getResources().getColor(R.color.green));
+            cash.setTextColor(activity.getResources().getColor(R.color.green));
+        }else {
+            cash.setText("- " + children.getCash());
+            name.setTextColor(activity.getResources().getColor(R.color.red_light));
+            cash.setTextColor(activity.getResources().getColor(R.color.red_light));
+        }
+
         date.setText(children.getDate());
         return convertView;
     }
