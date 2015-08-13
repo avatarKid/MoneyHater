@@ -113,11 +113,13 @@ public class EditAccountActivity extends ActionBarActivity {
                     if (radioCash.isChecked()) {
                         accountType = 1;
                     }
-                    accountEdit.setAccountName(editAccName.getText().toString());
-                    accountEdit.setCash(Double.parseDouble(editCash.getText().toString().replaceAll("[,]", "")));
-                    accountEdit.setAccountTypeID(accountType);
-                    mDbHelper.updateAccount(accountEdit);
-                    finish();
+                    if(!editAccName.getText().toString().isEmpty()) {
+                        accountEdit.setAccountName(editAccName.getText().toString());
+                        accountEdit.setCash(Double.parseDouble(editCash.getText().toString().replaceAll("[,]", "")));
+                        accountEdit.setAccountTypeID(accountType);
+                        mDbHelper.updateAccount(accountEdit);
+                        finish();
+                    }
                 } catch (Exception e){
                     Log.d("Edit Account" , e.getMessage());
                 }

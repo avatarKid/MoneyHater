@@ -76,8 +76,10 @@ public class NewAccountActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    addNewAccount();
-                    finish();
+                    if(!accountName.getText().toString().isEmpty()) {
+                        addNewAccount();
+                        finish();
+                    }
                 }  catch (Exception e){
                     Log.d("Add Account", e.getMessage());
                 }
