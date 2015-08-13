@@ -142,13 +142,15 @@ public class ChartFragment extends Fragment {
             }
             Cursor cs2 = mDbHelper.getTransactionInYear(year);
             cs2.moveToFirst();
+            float xx = 0;
             if (cs2.getCount() == 2) {
                 for(int i =0;i<12;i++){
-                    lMoneyExpense[i] = cs2.getFloat(i);
+                    lMoneyIncome[i] = cs2.getFloat(i);
+                    if (lMoneyIncome[i] > xx) xx = lMoneyIncome[i];
                 }
                 cs2.moveToNext();
                 for(int i =0;i<12;i++){
-                    lMoneyIncome[i] = cs2.getFloat(i);
+                    lMoneyExpense[i] = cs2.getFloat(i);
                 }
             }
         }catch (Exception e){
