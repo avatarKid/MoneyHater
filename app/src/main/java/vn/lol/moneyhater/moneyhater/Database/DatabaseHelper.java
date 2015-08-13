@@ -145,6 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         } catch (Exception e) {
             Log.e(TAG,"error select Account");
             e.printStackTrace();
+            return null;
         }
         return account;
     }
@@ -259,6 +260,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         } catch (Exception e) {
             Log.e(TAG,"get Budget");
             e.printStackTrace();
+            return null;
         }
         return budget;
     }

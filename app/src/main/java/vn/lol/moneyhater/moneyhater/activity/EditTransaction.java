@@ -228,7 +228,7 @@ public class EditTransaction extends AppCompatActivity {
 
         }
 
-        //TODO category
+        // update category
         transaction.setCategoryID(spTransactionCategory.getSelectedItemPosition());
 
     }
@@ -257,7 +257,8 @@ public class EditTransaction extends AppCompatActivity {
         spTransactionAccount = (Spinner) findViewById(R.id.spEditTransAccountName);
         spTransactionCategory = (Spinner) findViewById(R.id.spEditTransCategoryName);
         swTransactionType = (Switch) findViewById(R.id.swEditTransactionType);
-        //TODO init category
+
+        //Category
         try {
             String[] arr = getResources().getStringArray(R.array.category);
             CategoryAdapter ca = new CategoryAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,arr);
@@ -268,6 +269,7 @@ public class EditTransaction extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //Format number when typing
         etTransactionMoney.addTextChangedListener(new TextWatcher() {
 
             String current = "";
@@ -314,12 +316,10 @@ public class EditTransaction extends AppCompatActivity {
         ArrayAdapter<Budget> adapterBudget = new ArrayAdapter<Budget>(this, android.R.layout.simple_spinner_dropdown_item, listBudget);
         spTransactionBudget.setAdapter(adapterBudget);
 
-        //TODO add Category
-
+        // Load data from selected transaction
         etTransactionName.setText(transaction.getTransactionName());
         etTransactionMoney.setText(NumberFormat.getInstance().format(transaction.getCash()));
         swTransactionType.setChecked(transaction.getType() == 0 ? false : true);
-
         spTransactionAccount.setSelection(adapterAccount.getPosition(currentAccount));
         spTransactionBudget.setSelection(adapterBudget.getPosition(currentBudget));
         edTransactionDate.setText(transaction.getCalendar().get(Calendar.DAY_OF_MONTH) + "/"
@@ -327,10 +327,13 @@ public class EditTransaction extends AppCompatActivity {
                 + transaction.getCalendar().get(Calendar.YEAR));
     }
 
+    /*
+    * update money in budget and account when delete transaction
+    * */
     public void updateMoneyOnDelete(){
         //update money in account
         Account account = mDbHelper.getAccount(transaction.getAccountID());
-        if(account != null) {
+        if(null != account) {
             double accountMoney = account.getCash();
             if (transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
                 accountMoney += transaction.getCash();
@@ -343,7 +346,7 @@ public class EditTransaction extends AppCompatActivity {
 
         //update money in budget
         Budget budget = mDbHelper.getBudget(transaction.getBudgetID());
-        if(budget != null) {
+        if(null != budget) {
             double budgetMoney = budget.getCash();
             if (transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
                 budgetMoney += transaction.getCash();

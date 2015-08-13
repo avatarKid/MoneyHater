@@ -122,7 +122,6 @@ public class NewTransactionActivity extends ActionBarActivity {
         spTransactionBudget = (Spinner) findViewById(R.id.spAddTransBudgetName);
         spTransactionAccount = (Spinner) findViewById(R.id.spAddTransAccountName);
         spCategories = (Spinner) findViewById(R.id.spAddTransCategoryName);
-        //dpTransactionDate = (DatePicker) findViewById(R.id.dpTransactionDate);
         swTransactionType = (Switch) findViewById(R.id.swTransactionType);
 
 
@@ -178,8 +177,6 @@ public class NewTransactionActivity extends ActionBarActivity {
 
         // fill today to edit text
         etAddTransactionDate.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
-
-        //TODO add Category
     }
 
     public void showDialogPickDay() {

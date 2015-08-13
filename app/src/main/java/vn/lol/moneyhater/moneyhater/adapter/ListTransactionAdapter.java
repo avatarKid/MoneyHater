@@ -22,6 +22,7 @@ import java.util.Collections;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
 import vn.lol.moneyhater.moneyhater.model.TransactionDate;
@@ -141,8 +142,8 @@ public class ListTransactionAdapter extends BaseAdapter {
             case TYPE_TRANSACTION:
                 Transaction transaction = (Transaction) getItem(position);
                 holder.tv1.setText(transaction.getTransactionName());
-                /* TODO get account name of transaction via Account ID */
-                if(databaseHelper.getAccount(transaction.getAccountID()).getAccountName() != null) {
+                Account account = databaseHelper.getAccount(transaction.getAccountID());
+                if(account != null && account.getAccountName().isEmpty()) {
                     holder.tv2.setText(databaseHelper.getAccount(transaction.getAccountID()).getAccountName().toUpperCase());
                 } else {
                     holder.tv2.setText("");

@@ -24,8 +24,6 @@ import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.activity.EditTransaction;
 import vn.lol.moneyhater.moneyhater.adapter.ListTransactionAdapter;
-import vn.lol.moneyhater.moneyhater.model.Account;
-import vn.lol.moneyhater.moneyhater.model.Budget;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
 import vn.lol.moneyhater.moneyhater.model.TransactionDate;
@@ -75,7 +73,7 @@ public class TransactionFragment extends Fragment {
     /*
     * Add transaction to list
     * */
-    public void addItem(Transaction item) {
+    public void addTransaction(Transaction item) {
         boolean dateExist = false;
         String date = item.getDate();
         Calendar calendar = item.getCalendar();
@@ -116,7 +114,7 @@ public class TransactionFragment extends Fragment {
         if (requestCode == ConstantValue.REQUEST_CODE_ADD_TRANSACTION) {
             if (resultCode == Activity.RESULT_OK) {
                 Transaction transaction = (Transaction) data.getSerializableExtra(ConstantValue.NEW_TRANSACTION);
-                addItem(transaction);
+                addTransaction(transaction);
                 mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction, mDbHelper);
                 mlistTransaction.setAdapter(mAdapterTransaction);
                 mAdapterTransaction.notifyDataSetChanged();
@@ -141,7 +139,7 @@ public class TransactionFragment extends Fragment {
 
     public void updateTransaction(Transaction transaction) {
         removeTransaction(transaction.getTransactionID());
-        addItem(transaction);
+        addTransaction(transaction);
         mAdapterTransaction.notifyDataSetChanged();
         mDbHelper.updateTransaction(transaction);
     }
@@ -181,7 +179,7 @@ public class TransactionFragment extends Fragment {
     public void loadData() {
         listTransaction.clear();
         for (Transaction transaction : mDbHelper.getAllTransactions()) {
-            addItem(transaction);
+            addTransaction(transaction);
         }
         if (!mDbHelper.getAllTransactions().isEmpty()) {
             mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction, mDbHelper);
