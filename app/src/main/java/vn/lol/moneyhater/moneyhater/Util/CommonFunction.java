@@ -67,8 +67,8 @@ public class CommonFunction {
      */
     public static ArrayList<TransactionDate> getListTransactionAndDate(ArrayList<Transaction> listTransaction) {
         ArrayList<TransactionDate> listTransactionAndDate = new ArrayList<TransactionDate>();
+        ArrayList<String> listDate = new ArrayList<>();
         for (Transaction item : listTransaction) {
-            ArrayList<String> listDate = new ArrayList<>();
             boolean dateExist = false;
             String date = item.getDate();
             Calendar calendar = item.getCalendar();
