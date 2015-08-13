@@ -232,23 +232,19 @@ public class NewTransactionActivity extends ActionBarActivity {
             mDbHelper.updateAccount(account);
 
         }
-        Budget budget = (Budget) spTransactionBudget.getSelectedItem();
-        if (budget != null) {
-            transaction.setBudgetID(budget.getBudgetID());
-            //Update budget
-            double budgetMoney = 0;
-            budgetMoney = budget.getCash();
-            if(transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
-                budgetMoney -= transaction.getCash();
-            }else {
-                budgetMoney += transaction.getCash();
-            }
-            budget.setCash(budgetMoney);
-            mDbHelper.updateBudget(budget);
-        }
-
-
-
-
+//        Budget budget = (Budget) spTransactionBudget.getSelectedItem();
+//        if (budget != null) {
+//            transaction.setBudgetID(budget.getBudgetID());
+//            //Update budget
+//            double budgetMoney = 0;
+//            budgetMoney = budget.getCash();
+//            if(transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+//                budgetMoney -= transaction.getCash();
+//            }else {
+//                budgetMoney += transaction.getCash();
+//            }
+//            budget.setCash(budgetMoney);
+//            mDbHelper.updateBudget(budget);
+//        }
     }
 }
