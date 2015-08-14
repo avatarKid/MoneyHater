@@ -110,8 +110,8 @@ public class EditTransaction extends AppCompatActivity {
     }
 
     public void updateTransaction() {
-        if(etTransactionName.getText().toString().trim().isEmpty()){
-            Toast.makeText(getApplicationContext(),"Please enter Transaction Name!", Toast.LENGTH_SHORT).show();
+        if (etTransactionName.getText().toString().trim().isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Please enter Transaction Name!", Toast.LENGTH_SHORT).show();
             return;
         }
         //Name
@@ -138,6 +138,21 @@ public class EditTransaction extends AppCompatActivity {
         Account newAccount = (Account) spTransactionAccount.getSelectedItem();
         Account oldAccount = mDbHelper.getAccount(oldAccountID);
 
+        if (oldAccount == null && newAccount != null) {
+            double newAccountMoney = newAccount.getCash();
+            transaction.setAccountID(newAccount.getAccountID());
+
+            // change Type of Transaction
+            if (transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+                newAccountMoney = newAccountMoney - newCash;
+            } else {
+                newAccountMoney = newAccountMoney + newCash;
+            }
+
+            newAccount.setCash(newAccountMoney);
+            mDbHelper.updateAccount(newAccount);
+
+        }
         if (newAccount != null && oldAccount != null) {
             double newAccountMoney = newAccount.getCash();
             double oldAccountMoney = oldAccount.getCash();
@@ -284,7 +299,7 @@ public class EditTransaction extends AppCompatActivity {
         swTransactionType.setChecked(transaction.getType() == 0 ? false : true);
         spTransactionAccount.setSelection(adapterAccount.getPosition(currentAccount));
         if (transaction.getBudgetID() == -1) {
-            spTransactionBudget.setSelection(listBudget.size()-1);
+            spTransactionBudget.setSelection(listBudget.size() - 1);
         } else {
             spTransactionBudget.setSelection(adapterBudget.getPosition(currentBudget));
         }
