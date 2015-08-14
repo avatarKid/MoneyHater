@@ -47,9 +47,16 @@ public class ChartFragment extends Fragment {
         month = c.get(Calendar.MONTH)+1;
         year = c.get(Calendar.YEAR);
         maxMoney = 0;
-        GetDatabase();
-        SetupBar(rootView);
-        SetupPointLine(rootView);
+        try {
+            GetDatabase();
+            SetupBar(rootView);
+            SetupPointLine(rootView);
+        }catch (Exception e){
+            Toast.makeText(getActivity(),
+                    "Some thing wrong",
+                    Toast.LENGTH_SHORT)
+                    .show();
+        }
         return rootView;
     }
 

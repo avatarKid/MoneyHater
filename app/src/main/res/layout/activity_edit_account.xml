@@ -28,8 +28,9 @@
             android:paddingBottom="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:text="Name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
 
@@ -37,10 +38,9 @@
 
             <EditText
                 android:id="@+id/editAccountName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_weight="1" />
+                android:layout_weight="3" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,17 +53,18 @@
             android:paddingBottom="5dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:text="Total Money"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <EditText
                 android:id="@+id/editCash"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
+
+                android:layout_weight="3"
                 android:inputType="number"
                 android:numeric="integer"
                 android:singleLine="true" />
