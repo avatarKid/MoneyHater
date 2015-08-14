@@ -145,6 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         } catch (Exception e) {
             Log.e(TAG,"error select Account");
             e.printStackTrace();
+            return null;
         }
         return account;
     }
@@ -234,6 +235,41 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         return count>0;
     }
 
+    public ArrayList<Transaction> getTransactionByAccountID(int accountID) {
+        ArrayList<Transaction> lstTransactions= new ArrayList<Transaction>();
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE "
+                + FIELD_TRANSACTION_ACCOUNT_ID + " = " + accountID;
+
+        Log.e(TAG, selectQuery);
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    Transaction transaction=new Transaction();
+                    transaction.setAccountID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_ACCOUNT_ID)));
+                    transaction.setBudgetID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_BUDGET_ID)));
+                    transaction.setCash(c.getDouble(c.getColumnIndex(FIELD_CASH)));
+                    transaction.setCategoryID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_CATEGORY_ID)));
+                    transaction.setDate(c.getString(c.getColumnIndex(FIELD_DATE)));
+                    transaction.setTransactionID(c.getInt(c.getColumnIndex(FIELD_ID)));
+                    transaction.setTransactionName(c.getString(c.getColumnIndex(FIELD_NAME)));
+                    transaction.setType(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_TYPE)));
+
+                    lstTransactions.add(transaction);
+                } while (c.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG,"getTransactionByAccountID");
+            e.printStackTrace();
+        }
+
+        return lstTransactions;
+    }
+
     // TABLE Budget insert, add, , delete, find, find all
     public Budget getBudget(int budgetID){
         Budget budget=null;
@@ -259,6 +295,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         } catch (Exception e) {
             Log.e(TAG,"get Budget");
             e.printStackTrace();
+            return null;
         }
         return budget;
     }
@@ -357,7 +394,34 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         }
         return count >0;
     }
+    public ArrayList getTransactionByBudgetID(int idBudget){
+        ArrayList<Transaction> lstTransactions= new ArrayList<Transaction>();
+        Cursor c = null;
+        String selectQuery = "SELECT * FROM transactionx WHERE budget_id = '"+idBudget+"'";
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            c = db.rawQuery(selectQuery, null);
+            if (c.moveToFirst()) {
+                do {
+                    Transaction transaction=new Transaction();
+                    transaction.setAccountID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_ACCOUNT_ID)));
+                    transaction.setBudgetID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_BUDGET_ID)));
+                    transaction.setCash(c.getDouble(c.getColumnIndex(FIELD_CASH)));
+                    transaction.setCategoryID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_CATEGORY_ID)));
+                    transaction.setDate(c.getString(c.getColumnIndex(FIELD_DATE)));
+                    transaction.setTransactionID(c.getInt(c.getColumnIndex(FIELD_ID)));
+                    transaction.setTransactionName(c.getString(c.getColumnIndex(FIELD_NAME)));
+                    transaction.setType(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_TYPE)));
 
+                    lstTransactions.add(transaction);
+                } while (c.moveToNext());
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return lstTransactions;
+    }
     // TABLE Category insert, add, , delete, find, find all
     public Category getCategory(int categoryID){
         Category category=null;

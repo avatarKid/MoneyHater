@@ -49,8 +49,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:inputType="numberDecimal"
-            android:maxLength="9"
-            android:numeric="decimal"
+            android:numeric="integer"
             android:singleLine="true"
             android:id="@+id/et_budget_cash" />
     </LinearLayout>
