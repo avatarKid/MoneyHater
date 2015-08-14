@@ -76,6 +76,14 @@ public class NewAccountActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    if(accountName.getText().toString().trim().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "Please enter Account Name!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if(accountCash.getText().toString().trim().isEmpty() || accountCash.getText().toString().trim().equals("0")){
+                        Toast.makeText(getApplicationContext(), "Please enter Account Money!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     if(!accountName.getText().toString().isEmpty()) {
                         addNewAccount();
                         finish();
@@ -88,6 +96,7 @@ public class NewAccountActivity extends ActionBarActivity {
     }
 
     public void addNewAccount() {
+
         int accountType = 1;
         if (radioCard.isChecked()) {
             accountType = 0;

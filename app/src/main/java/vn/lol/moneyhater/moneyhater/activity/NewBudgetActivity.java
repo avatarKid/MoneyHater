@@ -73,7 +73,14 @@ public class NewBudgetActivity extends ActionBarActivity {
         return true;
     }
     public void addNewBudget(){
-
+        if(budgetName.getText().toString().trim().isEmpty()){
+            Toast.makeText(getApplicationContext(), "Please enter Bugdet Name!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(budgetCash.getText().toString().trim().isEmpty() || budgetCash.getText().toString().trim().equals("0")){
+            Toast.makeText(getApplicationContext(), "Please enter Total Money!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         try {
             String name = budgetName.getText().toString();

@@ -82,6 +82,14 @@ public class EditBudgetActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 try {
+                    if(name.getText().toString().trim().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "Please enter Bugdet Name!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if(cash.getText().toString().trim().isEmpty() || cash.getText().toString().trim().equals("0")){
+                        Toast.makeText(getApplicationContext(), "Please enter Total Money!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     String nameVal = name.getText().toString();
                     budget.setBudgetName(nameVal);
                     if(nameVal.isEmpty() || name == null){

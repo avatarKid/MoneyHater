@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -107,6 +108,14 @@ public class EditAccountActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 try {
+                    if(editAccName.getText().toString().trim().isEmpty()){
+                        Toast.makeText(getApplicationContext(), "Please enter Account Name!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if(editCash.getText().toString().trim().isEmpty() || editCash.getText().toString().trim().equals("0")){
+                        Toast.makeText(getApplicationContext(), "Please enter Account Money!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     if (radioCard.isChecked()) {
                         accountType = 0;
                     }

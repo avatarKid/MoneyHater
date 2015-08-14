@@ -80,6 +80,10 @@ public class MainActivity extends ActionBarActivity
                 Intent intent;
                 switch (StateSeleced) {
                     case 0:
+                        if (mDb.getAllAccounts().isEmpty()) {
+                            Toast.makeText(getApplicationContext(),"Please add an Account first!",Toast.LENGTH_SHORT).show();
+                            break;
+                        }
                         intent = new Intent(MainActivity.this, NewTransactionActivity.class);
                         startActivityForResult(intent, ConstantValue.REQUEST_CODE_ADD_TRANSACTION);
                         break;
