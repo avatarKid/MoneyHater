@@ -26,4 +26,6 @@ public class ConstantValue {
 
     public static final int TRANSACTION_TYPE_EXPENSE = 0;
     public static final int TRANSACTION_TYPE_INCOME = 1;
+
+    public static String SETTING_CURRENCY = " đ";
 }

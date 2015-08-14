@@ -28,7 +28,6 @@ public class NewBudgetActivity extends ActionBarActivity {
         setContentView(R.layout.activity_new_budget);
         budgetName = (EditText) findViewById(R.id.et_budget_name);
         budgetCash  = (EditText) findViewById(R.id.et_budget_cash);
-
         budgetCash.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {

@@ -154,7 +154,6 @@ public class NewTransactionActivity extends ActionBarActivity {
             }
         });
 
-
         //Load data from DB
         mDbHelper = new DatabaseHelper(getApplicationContext());
         listAccount = mDbHelper.getAllAccounts();

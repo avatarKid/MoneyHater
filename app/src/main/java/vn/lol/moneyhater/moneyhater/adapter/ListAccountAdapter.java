@@ -14,6 +14,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.Account;
 
 /**
@@ -42,7 +43,7 @@ public class ListAccountAdapter extends ArrayAdapter<Account> {
             ivType.setBackgroundResource(R.drawable.cash);
         }
         tvName.setText(mAccount.get(position).getAccountName());
-        tvMoney.setText(NumberFormat.getInstance().format(mAccount.get(position).getCash()));
+        tvMoney.setText(NumberFormat.getInstance().format(mAccount.get(position).getCash()) + ConstantValue.SETTING_CURRENCY);
         return rowView;
     }
 }

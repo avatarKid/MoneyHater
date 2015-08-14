@@ -3,122 +3,120 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
+        android:background="@drawable/label_item_drawable"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingBottom="20dp"
-        android:orientation="horizontal"
-        android:background="@drawable/label_item_drawable"
-        >
+        android:paddingTop="15dp">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Name"
+            android:textAppearance="?android:attr/textAppearanceMedium"
 
             />
+
         <EditText
+            android:id="@+id/etAccountName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:id="@+id/etAccountName" />
+            android:layout_weight="3" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/label_item_drawable"
         android:orientation="horizontal"
-        android:paddingTop="15dp"
+        android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingBottom="20dp"
-        android:background="@drawable/label_item_drawable"
-        >
+        android:paddingTop="15dp">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_weight="2"
             android:text="Total Money"
-            />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
         <EditText
+            android:id="@+id/etCash"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
 
+            android:layout_weight="3"
             android:inputType="number"
             android:numeric="integer"
-            android:singleLine="true"
-            android:id="@+id/etCash" />
+            android:singleLine="true" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
+        android:background="@drawable/label_item_drawable"
+        android:gravity="center_vertical"
+        android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingBottom="20dp"
-        android:background="@drawable/label_item_drawable"
-        android:weightSum="1"
-        android:gravity="center_vertical">
+        android:paddingTop="15dp"
+        android:weightSum="1">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Type"
-            />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
         <RadioGroup
+            android:id="@+id/rgAccType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:id="@+id/rgAccType">
+            android:orientation="horizontal">
 
             <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/rbtCard"
-                android:checked="false"
-                android:layout_marginLeft="40dp" />
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/card"
-                android:id="@+id/imageView" />
-
-            <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rbtCash"
-                android:checked="true"
-                android:layout_marginLeft="40dp" />
+                android:layout_marginLeft="40dp"
+                android:checked="false" />
 
             <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/cash"
-                android:id="@+id/imageView2" />
+                android:background="@drawable/card" />
+
+            <RadioButton
+                android:id="@+id/rbtCash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:checked="true" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/cash" />
         </RadioGroup>
     </LinearLayout>
-    <LinearLayout
+
+    <Button
+        android:id="@+id/btAddNewAcc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="right"
-        >
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_add_drawable"
-            android:id="@+id/btAddNewAcc"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:text="Add"
-            />
-    </LinearLayout>
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_add_drawable"
+        android:text="Add" />
+
 </LinearLayout>

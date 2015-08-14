@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:text="In Month"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         />
     <vn.lol.moneyhater.moneyhater.view.BarGraph
         android:id="@+id/charBar"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:text="In Year"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         />
     <vn.lol.moneyhater.moneyhater.view.LineGraph
         android:id="@+id/charLine"

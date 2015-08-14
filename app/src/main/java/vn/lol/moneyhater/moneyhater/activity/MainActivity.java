@@ -27,6 +27,7 @@ import java.util.Vector;
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.Database.DropboxBackup;
+import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.FragmentPageAdapter;
 import vn.lol.moneyhater.moneyhater.fragment.AccountFragment;
@@ -64,6 +65,7 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        CommonFunction.loadSettingCurrency(getApplication());
     }
 
 

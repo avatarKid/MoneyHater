@@ -128,12 +128,11 @@ public class EditTransaction extends AppCompatActivity {
 
         //update Account
         Account newAccount = (Account) spTransactionAccount.getSelectedItem();
-        double newAccountMoney = newAccount.getCash();
-
         Account oldAccount = mDbHelper.getAccount(oldAccountID);
-        double oldAccountMoney = oldAccount.getCash();
 
         if (newAccount != null) {
+            double newAccountMoney = newAccount.getCash();
+            double oldAccountMoney = oldAccount.getCash();
             transaction.setAccountID(newAccount.getAccountID());
             if(newAccount.getAccountID() == oldAccountID){ // if not change Account
                 if(transaction.getType() == oldType){ // if not change Type of Transaction

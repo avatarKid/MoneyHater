@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import java.util.Date;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.activity.EditTransaction;
 import vn.lol.moneyhater.moneyhater.adapter.ListTransactionAdapter;
@@ -207,9 +209,8 @@ public class TransactionFragment extends Fragment {
             }
         }
 
-        tvIncome.setText(NumberFormat.getInstance().format(income));
-        tvExpense.setText(NumberFormat.getInstance().format(expense));
-        tvSumaryTransaction.setText(NumberFormat.getInstance().format(income - expense));
+        tvIncome.setText(NumberFormat.getInstance().format(income) + ConstantValue.SETTING_CURRENCY);
+        tvExpense.setText(NumberFormat.getInstance().format(expense) + ConstantValue.SETTING_CURRENCY);
+        tvSumaryTransaction.setText(NumberFormat.getInstance().format(income - expense) + ConstantValue.SETTING_CURRENCY);
     }
-
 }

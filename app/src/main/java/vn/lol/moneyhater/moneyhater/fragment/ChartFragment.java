@@ -14,6 +14,7 @@ import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.view.Bar;
 import vn.lol.moneyhater.moneyhater.view.BarGraph;
 import vn.lol.moneyhater.moneyhater.view.Line;
@@ -88,17 +89,17 @@ public class ChartFragment extends Fragment {
             public void onClick(int lineIndex, int pointIndex) {
                 if(lineIndex == 0){
                     Toast.makeText(getActivity(),
-                            ""+(int) lMoneyIncome[pointIndex],
+                            ""+(int) lMoneyIncome[pointIndex] + ConstantValue.SETTING_CURRENCY,
                             Toast.LENGTH_SHORT)
                             .show();
                 }else if (lineIndex == 1){
                     if((int) lMoneyExpense[pointIndex] > 0)
                         Toast.makeText(getActivity(),
-                            "- "+(int) lMoneyExpense[pointIndex], Toast.LENGTH_SHORT)
+                            "- "+(int) lMoneyExpense[pointIndex] + ConstantValue.SETTING_CURRENCY, Toast.LENGTH_SHORT)
                             .show();
                     else
                         Toast.makeText(getActivity(),
-                            ""+(int) lMoneyIncome[pointIndex],
+                            ""+(int) lMoneyIncome[pointIndex] + ConstantValue.SETTING_CURRENCY,
                             Toast.LENGTH_SHORT)
                             .show();
                 }
