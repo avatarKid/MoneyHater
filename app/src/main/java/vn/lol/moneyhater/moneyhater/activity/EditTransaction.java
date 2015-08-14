@@ -310,6 +310,7 @@ public class EditTransaction extends AppCompatActivity {
         spTransactionAccount.setAdapter(adapterAccount);
 
         // add item to Budget spinner
+        listBudget.add(new Budget("Other",-1,-1));
         ArrayAdapter<Budget> adapterBudget = new ArrayAdapter<Budget>(this, android.R.layout.simple_spinner_dropdown_item, listBudget);
         spTransactionBudget.setAdapter(adapterBudget);
 
