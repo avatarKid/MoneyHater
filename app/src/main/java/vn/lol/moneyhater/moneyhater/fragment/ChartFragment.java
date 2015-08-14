@@ -47,9 +47,16 @@ public class ChartFragment extends Fragment {
         month = c.get(Calendar.MONTH)+1;
         year = c.get(Calendar.YEAR);
         maxMoney = 0;
-        GetDatabase();
-        SetupBar(rootView);
-        SetupPointLine(rootView);
+        try {
+            GetDatabase();
+            SetupBar(rootView);
+            SetupPointLine(rootView);
+        }catch (Exception e){
+            Toast.makeText(getActivity(),
+                    "Some thing wrong",
+                    Toast.LENGTH_SHORT)
+                    .show();
+        }
         return rootView;
     }
 
@@ -142,13 +149,15 @@ public class ChartFragment extends Fragment {
             }
             Cursor cs2 = mDbHelper.getTransactionInYear(year);
             cs2.moveToFirst();
+            float xx = 0;
             if (cs2.getCount() == 2) {
                 for(int i =0;i<12;i++){
-                    lMoneyExpense[i] = cs2.getFloat(i);
+                    lMoneyIncome[i] = cs2.getFloat(i);
+                    if (lMoneyIncome[i] > xx) xx = lMoneyIncome[i];
                 }
                 cs2.moveToNext();
                 for(int i =0;i<12;i++){
-                    lMoneyIncome[i] = cs2.getFloat(i);
+                    lMoneyExpense[i] = cs2.getFloat(i);
                 }
             }
         }catch (Exception e){

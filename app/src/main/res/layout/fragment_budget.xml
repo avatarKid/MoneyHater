@@ -4,11 +4,11 @@
     tools:context="vn.lol.moneyhater.moneyhater.fragment.BudgetFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ListView
+    <ExpandableListView
         android:id="@+id/lvBudget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
-        ></ListView>
+        ></ExpandableListView>
 
 </FrameLayout>

@@ -72,6 +72,7 @@ public class EditTransaction extends AppCompatActivity {
         btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                updateMoneyOnDelete();
                 Intent intent = new Intent();
                 intent.putExtra(ConstantValue.TRANSACTION_ID, transactionID);
                 setResult(ConstantValue.RESULT_CODE_DELETE_TRANSACTION, intent);
@@ -176,58 +177,12 @@ public class EditTransaction extends AppCompatActivity {
 
         }
 
-        //update Budget
-        Budget newBudget = (Budget) spTransactionBudget.getSelectedItem();
-        double newBudgetMoney = newBudget.getCash();
-
-        Budget oldBudget = mDbHelper.getBudget(oldBudgetID);
-        double oldBudgetMoney = oldBudget.getCash();
-
-        if (newBudget != null) {
-            transaction.setBudgetID(newBudget.getBudgetID());
-            if(newBudget.getBudgetID() == oldBudgetID){ // if not change Budget
-                if(transaction.getType() == oldType){ // if not change Type of Transaction
-                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
-                        newBudgetMoney = newBudgetMoney + oldCash - newCash;
-                    }else {
-                        newBudgetMoney = newBudgetMoney - oldCash + newCash;
-                    }
-                } else { // change Type of Transaction
-                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
-                        newBudgetMoney = newBudgetMoney + oldCash + newCash;
-                    }else {
-                        newBudgetMoney = newBudgetMoney - oldCash - newCash;
-                    }
-                }
-                newBudget.setCash(newBudgetMoney);
-                mDbHelper.updateBudget(newBudget);
-            } else { // if Change account
-                if(transaction.getType() == oldType){ // if not change Type of Transaction
-                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
-                        newBudgetMoney -= newCash;
-                        oldBudgetMoney += oldCash;
-                    }else {
-                        newBudgetMoney += newCash;
-                        oldBudgetMoney -= oldCash;
-                    }
-                } else { // change Type of Transaction
-                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
-                        newBudgetMoney += newCash;
-                        oldBudgetMoney += oldCash;
-                    }else {
-                        newBudgetMoney -= newCash;
-                        oldBudgetMoney -= oldCash;
-                    }
-                }
-                newBudget.setCash(newBudgetMoney);
-                oldBudget.setCash(oldBudgetMoney);
-                mDbHelper.updateBudget(newBudget);
-                mDbHelper.updateBudget(oldBudget);
-            }
-
+        Budget budget = (Budget) spTransactionBudget.getSelectedItem();
+        if (budget != null) {
+            transaction.setBudgetID(budget.getBudgetID());
         }
 
-        //TODO category
+        // update category
         transaction.setCategoryID(spTransactionCategory.getSelectedItemPosition());
 
     }
@@ -256,7 +211,8 @@ public class EditTransaction extends AppCompatActivity {
         spTransactionAccount = (Spinner) findViewById(R.id.spEditTransAccountName);
         spTransactionCategory = (Spinner) findViewById(R.id.spEditTransCategoryName);
         swTransactionType = (Switch) findViewById(R.id.swEditTransactionType);
-        //TODO init category
+
+        //Category
         try {
             String[] arr = getResources().getStringArray(R.array.category);
             CategoryAdapter ca = new CategoryAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,arr);
@@ -267,6 +223,7 @@ public class EditTransaction extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //Format number when typing
         etTransactionMoney.addTextChangedListener(new TextWatcher() {
 
             String current = "";
@@ -314,12 +271,10 @@ public class EditTransaction extends AppCompatActivity {
         ArrayAdapter<Budget> adapterBudget = new ArrayAdapter<Budget>(this, android.R.layout.simple_spinner_dropdown_item, listBudget);
         spTransactionBudget.setAdapter(adapterBudget);
 
-        //TODO add Category
-
+        // Load data from selected transaction
         etTransactionName.setText(transaction.getTransactionName());
         etTransactionMoney.setText(NumberFormat.getInstance().format(transaction.getCash()));
         swTransactionType.setChecked(transaction.getType() == 0 ? false : true);
-
         spTransactionAccount.setSelection(adapterAccount.getPosition(currentAccount));
         spTransactionBudget.setSelection(adapterBudget.getPosition(currentBudget));
         edTransactionDate.setText(transaction.getCalendar().get(Calendar.DAY_OF_MONTH) + "/"
@@ -327,6 +282,25 @@ public class EditTransaction extends AppCompatActivity {
                 + transaction.getCalendar().get(Calendar.YEAR));
     }
 
+    /*
+    * update money in budget and account when delete transaction
+    * */
+    public void updateMoneyOnDelete(){
+        //update money in account
+        Account account = mDbHelper.getAccount(transaction.getAccountID());
+        if(null != account) {
+            double accountMoney = account.getCash();
+            if (transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+                accountMoney += transaction.getCash();
+            } else {
+                accountMoney -= transaction.getCash();
+            }
+            account.setCash(accountMoney);
+            mDbHelper.updateAccount(account);
+        }
+
+
+    }
 
     public void showDialogPickDay() {
         showDialog(DIALOG_ID);

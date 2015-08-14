@@ -145,6 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         } catch (Exception e) {
             Log.e(TAG,"error select Account");
             e.printStackTrace();
+            return null;
         }
         return account;
     }
@@ -234,6 +235,41 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         return count>0;
     }
 
+    public ArrayList<Transaction> getTransactionByAccountID(int accountID) {
+        ArrayList<Transaction> lstTransactions= new ArrayList<Transaction>();
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSACTION + " WHERE "
+                + FIELD_TRANSACTION_ACCOUNT_ID + " = " + accountID;
+
+        Log.e(TAG, selectQuery);
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    Transaction transaction=new Transaction();
+                    transaction.setAccountID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_ACCOUNT_ID)));
+                    transaction.setBudgetID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_BUDGET_ID)));
+                    transaction.setCash(c.getDouble(c.getColumnIndex(FIELD_CASH)));
+                    transaction.setCategoryID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_CATEGORY_ID)));
+                    transaction.setDate(c.getString(c.getColumnIndex(FIELD_DATE)));
+                    transaction.setTransactionID(c.getInt(c.getColumnIndex(FIELD_ID)));
+                    transaction.setTransactionName(c.getString(c.getColumnIndex(FIELD_NAME)));
+                    transaction.setType(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_TYPE)));
+
+                    lstTransactions.add(transaction);
+                } while (c.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG,"getTransactionByAccountID");
+            e.printStackTrace();
+        }
+
+        return lstTransactions;
+    }
+
     // TABLE Budget insert, add, , delete, find, find all
     public Budget getBudget(int budgetID){
         Budget budget=null;
@@ -259,6 +295,7 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         } catch (Exception e) {
             Log.e(TAG,"get Budget");
             e.printStackTrace();
+            return null;
         }
         return budget;
     }
@@ -357,7 +394,34 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         }
         return count >0;
     }
+    public ArrayList getTransactionByBudgetID(int idBudget){
+        ArrayList<Transaction> lstTransactions= new ArrayList<Transaction>();
+        Cursor c = null;
+        String selectQuery = "SELECT * FROM transactionx WHERE budget_id = '"+idBudget+"'";
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            c = db.rawQuery(selectQuery, null);
+            if (c.moveToFirst()) {
+                do {
+                    Transaction transaction=new Transaction();
+                    transaction.setAccountID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_ACCOUNT_ID)));
+                    transaction.setBudgetID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_BUDGET_ID)));
+                    transaction.setCash(c.getDouble(c.getColumnIndex(FIELD_CASH)));
+                    transaction.setCategoryID(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_CATEGORY_ID)));
+                    transaction.setDate(c.getString(c.getColumnIndex(FIELD_DATE)));
+                    transaction.setTransactionID(c.getInt(c.getColumnIndex(FIELD_ID)));
+                    transaction.setTransactionName(c.getString(c.getColumnIndex(FIELD_NAME)));
+                    transaction.setType(c.getInt(c.getColumnIndex(FIELD_TRANSACTION_TYPE)));
 
+                    lstTransactions.add(transaction);
+                } while (c.moveToNext());
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return lstTransactions;
+    }
     // TABLE Category insert, add, , delete, find, find all
     public Category getCategory(int categoryID){
         Category category=null;
@@ -654,57 +718,59 @@ public class DatabaseHelper extends SQLiteOpenHelper implements Serializable {
         Cursor c = null;
         String selectQuery = "SELECT " +
                 "IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '01"+year+"'),0) AS T1 ," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '01"+year+"'),0) AS T1 ," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '02"+year+"'),0) AS T2," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '02"+year+"'),0) AS T2," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '03"+year+"'),0) AS T3 ," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '03"+year+"'),0) AS T3 ," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '04"+year+"'),0) AS T4," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '04"+year+"'),0) AS T4," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '05"+year+"'),0) AS T5," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '05"+year+"'),0) AS T5," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '06"+year+"'),0) AS T6," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '06"+year+"'),0) AS T6," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '07"+year+"'),0) AS T7," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '07"+year+"'),0) AS T7," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '08"+year+"'),0) AS T8," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '08"+year+"'),0) AS T8," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '09"+year+"'),0) AS T9," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '09"+year+"'),0) AS T9," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '10"+year+"'),0) AS T10," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '10"+year+"'),0) AS T10," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '11"+year+"'),0) AS T11," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '11"+year+"'),0) AS T11," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" ='0' AND strftime('%m%Y', "+FIELD_DATE+") = '12"+year+"'),0) AS T12" +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_EXPENSE +"' AND strftime('%m%Y', "+FIELD_DATE+") = '12"+year+"'),0) AS T12" +
                 " FROM  sqlite_master " +
-                " UNION " +
+                " GROUP BY T1 " +
+                " UNION ALL " +
                 " SELECT " +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '01"+year+"'),0) AS T1 ," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '01"+year+"'),0) AS T1 ," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '02"+year+"'),0) AS T2," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '02"+year+"'),0) AS T2," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '03"+year+"'),0) AS T3 ," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '03"+year+"'),0) AS T3 ," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '04"+year+"'),0) AS T4," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '04"+year+"'),0) AS T4," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '05"+year+"'),0) AS T5," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '05"+year+"'),0) AS T5," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '06"+year+"'),0) AS T6," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '06"+year+"'),0) AS T6," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '07"+year+"'),0) AS T7," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '07"+year+"'),0) AS T7," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '08"+year+"'),0) AS T8," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '08"+year+"'),0) AS T8," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '09"+year+"'),0) AS T9," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '09"+year+"'),0) AS T9," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '10"+year+"'),0) AS T10," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '10"+year+"'),0) AS T10," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '11"+year+"'),0) AS T11," +
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '11"+year+"'),0) AS T11," +
                 " IFNULL((SELECT sum("+FIELD_CASH+")  FROM "+ TABLE_TRANSACTION +
-                " WHERE "+FIELD_TRANSACTION_TYPE+" =1 AND strftime('%m%Y', "+FIELD_DATE+") = '12"+year+"'),0) AS T12" +
-                " FROM  sqlite_master ";
+                " WHERE "+FIELD_TRANSACTION_TYPE+" ='"+ ConstantValue.TRANSACTION_TYPE_INCOME +"' AND strftime('%m%Y', "+FIELD_DATE+") = '12"+year+"'),0) AS T12" +
+                " FROM  sqlite_master " +
+                " GROUP BY T1 ";
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             c = db.rawQuery(selectQuery, null);
