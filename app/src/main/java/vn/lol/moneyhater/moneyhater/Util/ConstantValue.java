@@ -9,6 +9,8 @@ public class ConstantValue {
     public static final int REQUEST_CODE_EDIT_TRANSACTION = 200;
     public static final int RESULT_CODE_SAVE_TRANSACTION = 201;
     public static final int RESULT_CODE_DELETE_TRANSACTION = 202;
+    public static final int RESULT_COODE_LANGUAGE = 203;
+    public static final int RESULT_COODE_CURRENCY = 204;
     public static final String NEW_TRANSACTION = "new_transaction";
     public static final String EDIT_TRANSACTION = "edit_transaction";
     public static final String SAVE_TRANSACTION = "save_transaction";

@@ -99,7 +99,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                     settingLanguage();
                     break;
                 case "pref_currency":
-
+                    Intent i = new Intent();
+                    setResult(ConstantValue.RESULT_COODE_CURRENCY, i);
+                    finish();
                     break;
                 case "pref_backup":
                     if (((CheckBoxPreference) pref).isChecked()) {
@@ -107,6 +109,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                                 .startOAuth2Authentication(SettingsActivity.this);
                     } else {
                         mDBApi.getSession().unlink();
+                        SharedPreferences prefs = getSharedPreferences(ConstantValue.DROPBOX_SHARE_PREFERENCE, 0);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.remove(ConstantValue.DROPBOX_APP_KEY);
+                        editor.remove(ConstantValue.DROPBOX_APP_SECRET);
                     }
                     break;
                 case "list_backup_file":
@@ -238,13 +244,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         }
         getApplicationContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
-        restartActivity();
-    }
-
-    private void restartActivity() {
-        Intent intent = getIntent();
+        Intent i = new Intent();
+        setResult(ConstantValue.RESULT_COODE_LANGUAGE, i);
         finish();
-        startActivity(intent);
     }
 
 }

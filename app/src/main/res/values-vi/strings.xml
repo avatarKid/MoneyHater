@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MoneyHater</string>
+
+    <string name="title_section1">giao dịch</string>
+    <string name="title_section2">trương mục</string>
+    <string name="title_section3">ngân sách</string>
+    <string name="title_section4">đồ thị</string>
+
+    <string name="navigation_drawer_open">Mở ngăn điều hướng</string>
+    <string name="navigation_drawer_close">Đóng ngăn điều hướng</string>
+
+    <string name="action_bar_setting">Cài đặt</string>
+    <string name="action_settings">Cài đặt</string>
+
+    <!-- Transaction screen-->
+    <string name="tvInCome">lợi tức</string>
+    <string name="tvExpense">kinh phí</string>
+    <string name="tvIncomeCash">0</string>
+    <string name="tvExpenseCash">0</string>
+    <string name="tvSumCash">0</string>
+
+
+    <string name="tvDateSet">22</string>
+    <string name="tvMonthSet">tháng bảy</string>
+    <string name="tvYearSet">2015</string>
+    <string name="tvDateSetSumMoney">100</string>
+    <string name="tvCategoryName">bán</string>
+    <string name="tvNote">bán Tivi</string>
+    <string name="tvTransactionMoney">100</string>
+    <string name="title_activity_new_budget">thêm ngân sách</string>
+    <string name="title_activity_new_account">thêm tài khoản</string>
+
+    <string name="hello_blank_fragment">Xin chào mảnh trống</string>
+    <string name="title_activity_new_transaction">thêm giao dịch</string>
+
+    <string name="hello_world">Chào thế giới!</string>
+    <string name="lbAddTransName">tên</string>
+    <string name="lbAddTransAccountName">trương mục</string>
+    <string name="lbAddTransBudgetName">ngân sách</string>
+    <string name="lbAddTransactionDate">ngày</string>
+    <string name="lbAddTransactionCategory">Category</string>
+    <string name="pref_lst_files">Danh sách các tập tin đã sao lưu</string>
+    <string name="pref_backup_option">Sở thích sao lưu</string>
+    <string name="action_backup">sao lưu</string>
+    <string name="title_activity_edit_transaction">chỉnh sửa giao dịch</string>
+    <string name="title_activity_edit_account">chỉnh sửa tài khoản</string>
+    <string name="title_activity_edit_budget">EditBudgetActivity</string>
+    <string name="title_activity_choose_category">Chọn thể loại</string>
+</resources>
