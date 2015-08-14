@@ -52,7 +52,7 @@ public class CategoryAdapter extends ArrayAdapter {
                 arrImage[16]=ResourcesCompat.getDrawable(context.getResources(),R.drawable.selling,null);
                 arrImage[17]=ResourcesCompat.getDrawable(context.getResources(),R.drawable.other,null);
                 for (int i=0;i<18;i++) {
-                    arrImage[i] = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(((BitmapDrawable) arrImage[i]).getBitmap(), 80, 80, true));
+                    arrImage[i] = new BitmapDrawable(context.getResources(), Bitmap.createScaledBitmap(((BitmapDrawable) arrImage[i]).getBitmap(), 60, 60, true));
                 }
             }
         } catch (Resources.NotFoundException e) {

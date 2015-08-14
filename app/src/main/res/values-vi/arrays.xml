@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="blank"/>
+    <string-array name="category">
+        <item>Giáo dục</item>
+        <item>Giải trí</item>
+        <item>Gia đình</item>
+        <item>Ăn &amp; Uống</item>
+        <item>Tình bạn &amp; Tình yêu</item>
+        <item>Đầu tư</item>
+        <item>Cho vay</item>
+        <item>Y tế</item>
+        <item>Mua sắm</item>
+        <item>Di chuyển</item>
+        <item>Du lịch</item>
+        <item>Thưởng</item>
+        <item>Nợ</item>
+        <item>Cho</item>
+        <item>Đầu tư tiền</item>
+        <item>Lương</item>
+        <item>Bán đồ</item>
+        <item>Khác</item>
+    </string-array>
+</resources>

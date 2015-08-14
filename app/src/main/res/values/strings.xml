@@ -46,6 +46,7 @@
     <string name="title_activity_edit_account">Edit Account</string>
     <string name="title_activity_edit_budget">EditBudgetActivity</string>
     <string name="title_activity_choose_category">Choose category</string>
+    <string name="other">Other</string>
 
     <!-- Account screen-->
 
