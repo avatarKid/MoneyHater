@@ -28,7 +28,6 @@ public class NewBudgetActivity extends ActionBarActivity {
         setContentView(R.layout.activity_new_budget);
         budgetName = (EditText) findViewById(R.id.et_budget_name);
         budgetCash  = (EditText) findViewById(R.id.et_budget_cash);
-
         budgetCash.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -74,7 +73,14 @@ public class NewBudgetActivity extends ActionBarActivity {
         return true;
     }
     public void addNewBudget(){
-
+        if(budgetName.getText().toString().trim().isEmpty()){
+            Toast.makeText(getApplicationContext(), "Please enter Bugdet Name!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(budgetCash.getText().toString().trim().isEmpty() || budgetCash.getText().toString().trim().equals("0")){
+            Toast.makeText(getApplicationContext(), "Please enter Total Money!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         try {
             String name = budgetName.getText().toString();

@@ -31,6 +31,7 @@ import java.util.Vector;
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
 import vn.lol.moneyhater.moneyhater.Database.DropboxBackup;
+import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.FragmentPageAdapter;
 import vn.lol.moneyhater.moneyhater.fragment.AccountFragment;
@@ -68,6 +69,7 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        CommonFunction.loadSettingCurrency(getApplication());
     }
 
 
@@ -78,6 +80,10 @@ public class MainActivity extends ActionBarActivity
                 Intent intent;
                 switch (StateSeleced) {
                     case 0:
+                        if (mDb.getAllAccounts().isEmpty()) {
+                            Toast.makeText(getApplicationContext(),"Please add an Account first!",Toast.LENGTH_SHORT).show();
+                            break;
+                        }
                         intent = new Intent(MainActivity.this, NewTransactionActivity.class);
                         startActivityForResult(intent, ConstantValue.REQUEST_CODE_ADD_TRANSACTION);
                         break;

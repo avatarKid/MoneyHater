@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:singleLine="true"
             android:text="Project"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/tvBudgetMoney"
@@ -29,13 +29,6 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="10,000,000"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="đ"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 </LinearLayout>

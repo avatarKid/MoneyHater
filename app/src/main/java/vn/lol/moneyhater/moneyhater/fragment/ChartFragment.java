@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.view.Bar;
 import vn.lol.moneyhater.moneyhater.view.BarGraph;
 import vn.lol.moneyhater.moneyhater.view.Line;
@@ -86,21 +88,27 @@ public class ChartFragment extends Fragment {
         li.setOnPointClickedListener(new LineGraph.OnPointClickedListener() {
             @Override
             public void onClick(int lineIndex, int pointIndex) {
+
                 if(lineIndex == 0){
+                    final String formated = NumberFormat.getInstance().format(lMoneyIncome[pointIndex]);
                     Toast.makeText(getActivity(),
-                            ""+(int) lMoneyIncome[pointIndex],
+                            formated + ConstantValue.SETTING_CURRENCY,
                             Toast.LENGTH_SHORT)
                             .show();
                 }else if (lineIndex == 1){
-                    if((int) lMoneyExpense[pointIndex] > 0)
+                    if((int) lMoneyExpense[pointIndex] > 0) {
+                        final String formated = NumberFormat.getInstance().format(lMoneyExpense[pointIndex]);
                         Toast.makeText(getActivity(),
-                            "- "+(int) lMoneyExpense[pointIndex], Toast.LENGTH_SHORT)
-                            .show();
-                    else
+                                "- " + formated + ConstantValue.SETTING_CURRENCY, Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                    else {
+                        final String formated = NumberFormat.getInstance().format(lMoneyIncome[pointIndex]);
                         Toast.makeText(getActivity(),
-                            ""+(int) lMoneyIncome[pointIndex],
-                            Toast.LENGTH_SHORT)
-                            .show();
+                                formated + ConstantValue.SETTING_CURRENCY,
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    }
                 }
 
             }
@@ -149,17 +157,18 @@ public class ChartFragment extends Fragment {
             }
             Cursor cs2 = mDbHelper.getTransactionInYear(year);
             cs2.moveToFirst();
-            float xx = 0;
             if (cs2.getCount() == 2) {
                 for(int i =0;i<12;i++){
-                    lMoneyIncome[i] = cs2.getFloat(i);
-                    if (lMoneyIncome[i] > xx) xx = lMoneyIncome[i];
+                    lMoneyExpense[i] = cs2.getFloat(i);
+
                 }
                 cs2.moveToNext();
                 for(int i =0;i<12;i++){
-                    lMoneyExpense[i] = cs2.getFloat(i);
+                    lMoneyIncome[i] = cs2.getFloat(i);
+
                 }
             }
+
         }catch (Exception e){
             Toast.makeText(getActivity(),
                     "Error get Database", Toast.LENGTH_SHORT)

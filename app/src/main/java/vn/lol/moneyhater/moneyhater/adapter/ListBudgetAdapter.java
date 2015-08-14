@@ -11,6 +11,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.Budget;
 
 /**
@@ -33,7 +34,7 @@ public class ListBudgetAdapter extends ArrayAdapter<Budget> {
         TextView tvName = (TextView) rowView.findViewById(R.id.tvBudgetName);
         TextView tvMoney = (TextView) rowView.findViewById(R.id.tvBudgetMoney);
         tvName.setText(mBudgets.get(position).getBudgetName()+ "");
-        tvMoney.setText(NumberFormat.getInstance().format(mBudgets.get(position).getCash()));
+        tvMoney.setText(NumberFormat.getInstance().format(mBudgets.get(position).getCash())+ ConstantValue.SETTING_CURRENCY);
         return rowView;
     }
 }

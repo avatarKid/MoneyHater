@@ -110,6 +110,10 @@ public class EditTransaction extends AppCompatActivity {
     }
 
     public void updateTransaction() {
+        if(etTransactionName.getText().toString().trim().isEmpty()){
+            Toast.makeText(getApplicationContext(),"Please enter Transaction Name!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         //Name
         transaction.setTransactionName(etTransactionName.getText().toString());
 
@@ -132,12 +136,11 @@ public class EditTransaction extends AppCompatActivity {
 
         //update Account
         Account newAccount = (Account) spTransactionAccount.getSelectedItem();
-        double newAccountMoney = newAccount.getCash();
-
         Account oldAccount = mDbHelper.getAccount(oldAccountID);
-        double oldAccountMoney = oldAccount.getCash();
 
-        if (newAccount != null) {
+        if (newAccount != null && oldAccount != null) {
+            double newAccountMoney = newAccount.getCash();
+            double oldAccountMoney = oldAccount.getCash();
             transaction.setAccountID(newAccount.getAccountID());
             if (newAccount.getAccountID() == oldAccountID) { // if not change Account
                 if (transaction.getType() == oldType) { // if not change Type of Transaction

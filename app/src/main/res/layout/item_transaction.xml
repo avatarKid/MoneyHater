@@ -29,8 +29,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tvCategoryName"
+                android:textStyle="bold"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/tvTransactionAccount"
@@ -38,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tvNote"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
         </LinearLayout>
 
         <TextView
@@ -47,7 +48,7 @@
             android:layout_height="wrap_content"
             android:gravity="right|end"
             android:text="@string/tvTransactionMoney"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
 </LinearLayout>

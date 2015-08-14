@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import vn.lol.moneyhater.momeyhater.R;
+import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.Util.ListFiles;
 

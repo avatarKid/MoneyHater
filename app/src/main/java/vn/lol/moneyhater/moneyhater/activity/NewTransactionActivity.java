@@ -64,13 +64,7 @@ public class NewTransactionActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 addTransaction();
-//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                intent.putExtra("transaction", transaction);
-//                startActivity(intent);
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(ConstantValue.NEW_TRANSACTION, transaction);
-                setResult(RESULT_OK, returnIntent);
-                finish();
+
             }
         });
 
@@ -154,7 +148,6 @@ public class NewTransactionActivity extends ActionBarActivity {
             }
         });
 
-
         //Load data from DB
         mDbHelper = new DatabaseHelper(getApplicationContext());
         listAccount = mDbHelper.getAllAccounts();
@@ -206,6 +199,10 @@ public class NewTransactionActivity extends ActionBarActivity {
 
     public void addTransaction() {
 
+        if(etTransactionName.getText().toString().trim().isEmpty()){
+            Toast.makeText(getApplicationContext(),"Please enter Transaction Name!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         transaction.setTransactionName(etTransactionName.getText().toString());
 
         try {
@@ -240,5 +237,10 @@ public class NewTransactionActivity extends ActionBarActivity {
             if (budget.getImageID()==-1) transaction.setBudgetID(-1);
             else transaction.setBudgetID(budget.getBudgetID());
         }
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(ConstantValue.NEW_TRANSACTION, transaction);
+        setResult(RESULT_OK, returnIntent);
+        finish();
     }
 }

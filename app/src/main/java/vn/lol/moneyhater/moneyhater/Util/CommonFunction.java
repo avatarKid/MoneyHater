@@ -1,5 +1,10 @@
 package vn.lol.moneyhater.moneyhater.Util;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -102,5 +107,16 @@ public class CommonFunction {
             Collections.sort(listTransactionAndDate);
         }
         return listTransactionAndDate;
+    }
+
+    public static void loadSettingCurrency(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String value = prefs.getString("pref_currency","1");
+        if(value.equals("1")){
+            ConstantValue.SETTING_CURRENCY = " đ";
+        } else {
+            ConstantValue.SETTING_CURRENCY = " $";
+        }
+
     }
 }

@@ -3,6 +3,7 @@ package vn.lol.moneyhater.moneyhater.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
@@ -22,6 +23,7 @@ import java.util.Collections;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
@@ -143,7 +145,7 @@ public class ListTransactionAdapter extends BaseAdapter {
                 Transaction transaction = (Transaction) getItem(position);
                 holder.tv1.setText(transaction.getTransactionName());
                 Account account = databaseHelper.getAccount(transaction.getAccountID());
-                if(account != null && account.getAccountName().isEmpty()) {
+                if(account != null && !account.getAccountName().isEmpty()) {
                     holder.tv2.setText(databaseHelper.getAccount(transaction.getAccountID()).getAccountName().toUpperCase());
                 } else {
                     holder.tv2.setText("");
@@ -155,7 +157,12 @@ public class ListTransactionAdapter extends BaseAdapter {
                     e.printStackTrace();
                 } finally {
                 }
-                holder.tv3.setText(NumberFormat.getInstance().format(transaction.getCash()));
+                holder.tv3.setText(NumberFormat.getInstance().format(transaction.getCash()) + ConstantValue.SETTING_CURRENCY);
+                if(transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                    holder.tv3.setTextColor(Color.RED);
+                }else {
+                    holder.tv3.setTextColor(Color.parseColor("#33ad34"));
+                }
                 break;
         }
 

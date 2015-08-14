@@ -63,7 +63,7 @@ public class AccountFragment extends Fragment {
         for(int i=0;i<listAccount.size();i++){
             total += listAccount.get(i).getCash();
         }
-        mTotalMoney.setText(NumberFormat.getInstance().format(total));
+        mTotalMoney.setText(NumberFormat.getInstance().format(total) + ConstantValue.SETTING_CURRENCY);
     }
     @Override
     public void onResume() {
