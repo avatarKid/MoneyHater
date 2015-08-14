@@ -237,7 +237,8 @@ public class NewTransactionActivity extends ActionBarActivity {
         }
         Budget budget = (Budget) spTransactionBudget.getSelectedItem();
         if (budget != null) {
-            transaction.setBudgetID(budget.getBudgetID());
+            if (budget.getImageID()==-1) transaction.setBudgetID(-1);
+            else transaction.setBudgetID(budget.getBudgetID());
         }
     }
 }
