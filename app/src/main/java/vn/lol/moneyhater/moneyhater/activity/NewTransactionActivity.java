@@ -165,14 +165,17 @@ public class NewTransactionActivity extends ActionBarActivity {
         String[] arr = getResources().getStringArray(R.array.category);
         CategoryAdapter ca = new CategoryAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,arr);
         spCategories.setAdapter(ca);
+        spCategories.setSelection(arr.length - 1);
 
         // add item to Account spinner
         ArrayAdapter<Account> adapterAccount = new ArrayAdapter<Account>(this, android.R.layout.simple_spinner_dropdown_item, listAccount);
         spTransactionAccount.setAdapter(adapterAccount);
 
         // add item to Budget spinner
+        listBudget.add(new Budget("Other",-1,-1));
         ArrayAdapter<Budget> adapterBudget = new ArrayAdapter<Budget>(this, android.R.layout.simple_spinner_dropdown_item, listBudget);
         spTransactionBudget.setAdapter(adapterBudget);
+        spTransactionBudget.setSelection(listBudget.size()-1);
 
         // fill today to edit text
         etAddTransactionDate.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
@@ -233,7 +236,8 @@ public class NewTransactionActivity extends ActionBarActivity {
         }
         Budget budget = (Budget) spTransactionBudget.getSelectedItem();
         if (budget != null) {
-            transaction.setBudgetID(budget.getBudgetID());
+            if (budget.getImageID()==-1) transaction.setBudgetID(-1);
+            else transaction.setBudgetID(budget.getBudgetID());
         }
     }
 }

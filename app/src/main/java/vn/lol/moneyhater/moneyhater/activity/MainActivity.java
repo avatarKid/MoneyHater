@@ -2,7 +2,10 @@ package vn.lol.moneyhater.moneyhater.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Vector;
 
 import vn.lol.moneyhater.momeyhater.R;
@@ -107,6 +111,9 @@ public class MainActivity extends ActionBarActivity
                 tranFrag.onActivityResult(requestCode, resultCode, data);
                 break;
             case ConstantValue.REQUEST_CODE_SETTING:
+                if (resultCode == ConstantValue.RESULT_COODE_LANGUAGE || resultCode == ConstantValue.RESULT_COODE_CURRENCY){
+                    restartActivity();
+                }
                 if (resultCode == ConstantValue.RESULT_COODE_BACKUP) {
                     String fileName = data.getStringExtra(ConstantValue.DROPBOX_FILE);
                     mDb.importDatabase(fileName);
@@ -134,6 +141,23 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void initView() {
+        SharedPreferences sharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        int languageCode = Integer.parseInt(sharedPrefs.getString("pref_language", "1"));
+
+        Configuration config = new Configuration();
+        switch (languageCode) {
+            case 1: //English
+                config.locale = Locale.ENGLISH;
+                break;
+            case 2: // Vietnamese
+                config.locale = new Locale("vi");
+                break;
+            default:
+                break;
+        }
+        getApplicationContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
         mDb = new DatabaseHelper(getApplicationContext());
         mDropbox = new DropboxBackup(this);
         mViewPager = (ViewPager) findViewById(R.id.pager);

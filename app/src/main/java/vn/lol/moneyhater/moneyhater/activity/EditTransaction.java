@@ -36,14 +36,13 @@ import vn.lol.moneyhater.moneyhater.model.Transaction;
 
 public class EditTransaction extends AppCompatActivity {
 
+    static final int DIALOG_ID = 0;
     Transaction transaction;
     int transactionID;
     DatabaseHelper mDbHelper;
-
     ArrayList<Budget> listBudget;
     ArrayList<Category> listCategory;
     ArrayList<Account> listAccount;
-
     EditText etTransactionName;
     EditText etTransactionMoney;
     Switch swTransactionType;
@@ -51,17 +50,22 @@ public class EditTransaction extends AppCompatActivity {
     Spinner spTransactionBudget;
     Spinner spTransactionCategory;
     EditText edTransactionDate;
-
     double oldCash = 0;
     int oldAccountID = 0;
     int oldBudgetID = 0;
     int oldType = 0;
     double newCash = 0;
-
     int mDay, mMonth, mYear;
-    static final int DIALOG_ID = 0;
-
     Button btSave, btDelete;
+    private DatePickerDialog.OnDateSetListener dpickerListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            mYear = year;
+            mMonth = monthOfYear;
+            mDay = dayOfMonth;
+            edTransactionDate.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,36 +138,36 @@ public class EditTransaction extends AppCompatActivity {
             double newAccountMoney = newAccount.getCash();
             double oldAccountMoney = oldAccount.getCash();
             transaction.setAccountID(newAccount.getAccountID());
-            if(newAccount.getAccountID() == oldAccountID){ // if not change Account
-                if(transaction.getType() == oldType){ // if not change Type of Transaction
-                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+            if (newAccount.getAccountID() == oldAccountID) { // if not change Account
+                if (transaction.getType() == oldType) { // if not change Type of Transaction
+                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
                         newAccountMoney = newAccountMoney + oldCash - newCash;
-                    }else {
+                    } else {
                         newAccountMoney = newAccountMoney - oldCash + newCash;
                     }
                 } else { // change Type of Transaction
-                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
                         newAccountMoney = newAccountMoney + oldCash + newCash;
-                    }else {
+                    } else {
                         newAccountMoney = newAccountMoney - oldCash - newCash;
                     }
                 }
                 newAccount.setCash(newAccountMoney);
                 mDbHelper.updateAccount(newAccount);
             } else { // if Change account
-                if(transaction.getType() == oldType){ // if not change Type of Transaction
-                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                if (transaction.getType() == oldType) { // if not change Type of Transaction
+                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
                         newAccountMoney -= newCash;
                         oldAccountMoney += oldCash;
-                    }else {
+                    } else {
                         newAccountMoney += newCash;
                         oldAccountMoney -= oldCash;
                     }
                 } else { // change Type of Transaction
-                    if(oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
                         newAccountMoney += newCash;
                         oldAccountMoney += oldCash;
-                    }else {
+                    } else {
                         newAccountMoney -= newCash;
                         oldAccountMoney -= oldCash;
                     }
@@ -214,11 +218,11 @@ public class EditTransaction extends AppCompatActivity {
         //Category
         try {
             String[] arr = getResources().getStringArray(R.array.category);
-            CategoryAdapter ca = new CategoryAdapter(getApplicationContext(), android.R.layout.simple_spinner_item,arr);
+            CategoryAdapter ca = new CategoryAdapter(getApplicationContext(), android.R.layout.simple_spinner_item, arr);
             spTransactionCategory.setAdapter(ca);
             spTransactionCategory.setSelection(transaction.getCategoryID());
         } catch (Resources.NotFoundException e) {
-            Log.e("Loi nay","Loi nay");
+            Log.e("Loi nay", "Loi nay");
             e.printStackTrace();
         }
 
@@ -266,6 +270,7 @@ public class EditTransaction extends AppCompatActivity {
         spTransactionAccount.setAdapter(adapterAccount);
 
         // add item to Budget spinner
+        listBudget.add(new Budget("Other", -1, -1));
         ArrayAdapter<Budget> adapterBudget = new ArrayAdapter<Budget>(this, android.R.layout.simple_spinner_dropdown_item, listBudget);
         spTransactionBudget.setAdapter(adapterBudget);
 
@@ -274,7 +279,11 @@ public class EditTransaction extends AppCompatActivity {
         etTransactionMoney.setText(NumberFormat.getInstance().format(transaction.getCash()));
         swTransactionType.setChecked(transaction.getType() == 0 ? false : true);
         spTransactionAccount.setSelection(adapterAccount.getPosition(currentAccount));
-        spTransactionBudget.setSelection(adapterBudget.getPosition(currentBudget));
+        if (transaction.getBudgetID() == -1) {
+            spTransactionBudget.setSelection(listBudget.size()-1);
+        } else {
+            spTransactionBudget.setSelection(adapterBudget.getPosition(currentBudget));
+        }
         edTransactionDate.setText(transaction.getCalendar().get(Calendar.DAY_OF_MONTH) + "/"
                 + (transaction.getCalendar().get(Calendar.MONTH) + 1) + "/"
                 + transaction.getCalendar().get(Calendar.YEAR));
@@ -283,10 +292,10 @@ public class EditTransaction extends AppCompatActivity {
     /*
     * update money in budget and account when delete transaction
     * */
-    public void updateMoneyOnDelete(){
+    public void updateMoneyOnDelete() {
         //update money in account
         Account account = mDbHelper.getAccount(transaction.getAccountID());
-        if(null != account) {
+        if (null != account) {
             double accountMoney = account.getCash();
             if (transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
                 accountMoney += transaction.getCash();
@@ -311,17 +320,6 @@ public class EditTransaction extends AppCompatActivity {
         }
         return null;
     }
-
-    private DatePickerDialog.OnDateSetListener dpickerListener = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            mYear = year;
-            mMonth = monthOfYear;
-            mDay = dayOfMonth;
-            edTransactionDate.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
-        }
-    };
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
