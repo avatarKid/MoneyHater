@@ -9,6 +9,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
+
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.BudgetGroup;
@@ -77,8 +79,8 @@ public class ListBudgetExpandableAdapter  extends BaseExpandableListAdapter {
         TextView current = (TextView) convertView.findViewById(R.id.tv_budget_subtrack);
         name.setText(group.getBudget().getBudgetName());
         name.setChecked(isExpanded);
-        cash.setText(group.getBudget().getCash() + "");
-        current.setText(group.getCurrentCast() + "");
+        cash.setText(NumberFormat.getInstance().format(group.getBudget().getCash()));
+        current.setText(NumberFormat.getInstance().format(group.getCurrentCast()));
         if(group.getCurrentCast() < 0){
             current.setTextColor(activity.getResources().getColor(R.color.red_light));
         }
@@ -99,11 +101,11 @@ public class ListBudgetExpandableAdapter  extends BaseExpandableListAdapter {
 
         name.setText(children.getTransactionName());
         if(children.getType() == ConstantValue.TRANSACTION_TYPE_INCOME){
-            cash.setText("+ " + children.getCash());
+            cash.setText("+ " + NumberFormat.getInstance().format(children.getCash()));
             name.setTextColor(activity.getResources().getColor(R.color.green));
             cash.setTextColor(activity.getResources().getColor(R.color.green));
         }else {
-            cash.setText("- " + children.getCash());
+            cash.setText("- " + NumberFormat.getInstance().format(children.getCash()));
             name.setTextColor(activity.getResources().getColor(R.color.red_light));
             cash.setTextColor(activity.getResources().getColor(R.color.red_light));
         }

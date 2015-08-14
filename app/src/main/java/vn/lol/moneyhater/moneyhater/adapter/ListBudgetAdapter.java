@@ -33,7 +33,7 @@ public class ListBudgetAdapter extends ArrayAdapter<Budget> {
         TextView tvName = (TextView) rowView.findViewById(R.id.tvBudgetName);
         TextView tvMoney = (TextView) rowView.findViewById(R.id.tvBudgetMoney);
         tvName.setText(mBudgets.get(position).getBudgetName()+ "");
-        tvMoney.setText(NumberFormat.getInstance().format(mBudgets.get(position).getCash())+ "");
+        tvMoney.setText(NumberFormat.getInstance().format(mBudgets.get(position).getCash()));
         return rowView;
     }
 }
