@@ -47,6 +47,9 @@ import vn.lol.moneyhater.moneyhater.Util.ListFiles;
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceClickListener {
 
     private final String TAG = this.getClass().getName();
+    // In the class declaration section:
+    private DropboxAPI<AndroidAuthSession> mDBApi;
+    private ArrayList<String> mLstFiles;
     private final Handler handler = new Handler() {
         public void handleMessage(Message message) {
             try {
@@ -56,14 +59,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 pref.setEntries(cs);
                 pref.setEntryValues(cs);
             } catch (Exception e) {
-                Log.e(TAG,"handleMessage");
+                Log.e(TAG, "handleMessage");
                 e.printStackTrace();
             }
         }
     };
-    // In the class declaration section:
-    private DropboxAPI<AndroidAuthSession> mDBApi;
-    private ArrayList<String> mLstFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             if (session.isLinked()) {
                 ListFiles listFiles = new ListFiles(mDBApi, ConstantValue.DROPBOX_FILE_DIR, handler);
                 listFiles.execute();
+            } else {
+                CheckBoxPreference pref = (CheckBoxPreference) findPreference("pref_backup");
+                pref.setChecked(false);
             }
         } catch (Exception e) {
             Log.e(TAG, "Create dropboxAPI exception");
@@ -122,29 +125,30 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                             .setMessage("What do you want?")
                             .setPositiveButton("Restore", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    final String fileName = getApplicationContext().getFilesDir().getPath().toString()+((ListPreference)pref).getValue();
+                                    final String fileName = getApplicationContext().getFilesDir().getPath().toString() + ((ListPreference) pref).getValue();
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
                                             try {
                                                 File file = new File(fileName);
                                                 FileOutputStream outputStream = new FileOutputStream(file);
-                                                DropboxAPI.DropboxFileInfo info = mDBApi.getFile(((ListPreference)pref).getValue(), null, outputStream, null);
+                                                DropboxAPI.DropboxFileInfo info = mDBApi.getFile(((ListPreference) pref).getValue(), null, outputStream, null);
                                                 outputStream.close();
                                                 Log.i("DbExampleLog", "The file's rev is: " + info.getMetadata().rev);
                                             } catch (FileNotFoundException e) {
-                                                Log.e(TAG,"FileNotFoundException");
+                                                Log.e(TAG, "FileNotFoundException");
                                                 e.printStackTrace();
                                             } catch (DropboxException e) {
-                                                Log.e(TAG,"DropboxException");
+                                                Log.e(TAG, "DropboxException");
                                                 e.printStackTrace();
                                             } catch (IOException e) {
-                                                Log.e(TAG,"IOException");
+                                                Log.e(TAG, "IOException");
                                                 e.printStackTrace();
                                             }
                                             Intent i = new Intent();
-                                            i.putExtra(ConstantValue.DROPBOX_FILE,fileName);
+                                            i.putExtra(ConstantValue.DROPBOX_FILE, fileName);
                                             setResult(ConstantValue.RESULT_COODE_BACKUP, i);
+                                            Toast.makeText(getApplicationContext(), "Backup OK", Toast.LENGTH_SHORT).show();
                                             finish();
                                         }
                                     }).start();
@@ -162,13 +166,13 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                                         @Override
                                         public void run() {
                                             try {
-                                                mDBApi.delete(((ListPreference)pref).getValue());
-                                                mLstFiles.remove(((ListPreference)pref).getValue());
+                                                mDBApi.delete(((ListPreference) pref).getValue());
+                                                mLstFiles.remove(((ListPreference) pref).getValue());
                                                 CharSequence[] cs = mLstFiles.toArray(new CharSequence[mLstFiles.size()]);
-                                                ((ListPreference)pref).setEntries(cs);
-                                                ((ListPreference)pref).setEntryValues(cs);
+                                                ((ListPreference) pref).setEntries(cs);
+                                                ((ListPreference) pref).setEntryValues(cs);
                                             } catch (DropboxException e) {
-                                                Log.e(TAG,"DELETE FILE ERROR");
+                                                Log.e(TAG, "DELETE FILE ERROR");
                                                 e.printStackTrace();
                                             }
                                         }
@@ -211,18 +215,25 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
         final AndroidAuthSession session = (AndroidAuthSession) mDBApi.getSession();
-        if (session.authenticationSuccessful()) {
-            try {
-                session.finishAuthentication();
-                String tokens = session.getOAuth2AccessToken();
+        if (!session.isLinked()) {
+            if (session.authenticationSuccessful()) {
+                try {
+                    session.finishAuthentication();
+                    String tokens = session.getOAuth2AccessToken();
 //                AccessTokenPair tokenPair = session.getAccessTokenPair();
-                SharedPreferences prefs = getSharedPreferences(ConstantValue.DROPBOX_SHARE_PREFERENCE, 0);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString(ConstantValue.DROPBOX_APP_KEY, "oauth2:");
-                editor.putString(ConstantValue.DROPBOX_APP_SECRET, tokens);
-                editor.commit();
-            } catch (Exception e) {
-                Toast.makeText(this, "Error during Dropbox auth", Toast.LENGTH_SHORT).show();
+                    SharedPreferences prefs = getSharedPreferences(ConstantValue.DROPBOX_SHARE_PREFERENCE, 0);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString(ConstantValue.DROPBOX_APP_KEY, "oauth2:");
+                    editor.putString(ConstantValue.DROPBOX_APP_SECRET, tokens);
+                    editor.commit();
+                    ListFiles listFiles = new ListFiles(mDBApi, ConstantValue.DROPBOX_FILE_DIR, handler);
+                    listFiles.execute();
+                } catch (Exception e) {
+                    Toast.makeText(this, "Error during Dropbox auth", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                CheckBoxPreference pref = (CheckBoxPreference) findPreference("pref_backup");
+                pref.setChecked(false);
             }
         }
     }

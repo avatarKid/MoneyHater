@@ -73,12 +73,15 @@ public class DropboxBackup {
                                 file.length(), null, null);
                         Log.i(TAG, "The uploaded file's rev is: " + response.rev);
 
-                        Log.i(TAG, session.authenticationSuccessful() + "");
+                        showToast("Upload Backup File OK!");
+
                     } catch (FileNotFoundException e) {
                         Log.e(TAG, "backupFile FileNotFoundException");
+                        showToast("Upload Backup File FAIL!");
                         e.printStackTrace();
                     } catch (DropboxException e) {
                         Log.e(TAG, "backupFile DropboxException");
+                        showToast("Upload Backup File FAIL!");
                         e.printStackTrace();
                     }
                 }
@@ -87,6 +90,19 @@ public class DropboxBackup {
             session.startOAuth2Authentication(mMainActivity);
         }
         Log.i(TAG, session.authenticationSuccessful() + "");
+    }
+
+    private void showToast(final String a) {
+        try {
+            mMainActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mMainActivity.getApplicationContext(), a, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void resumeOK() {
