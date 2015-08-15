@@ -35,7 +35,8 @@
 
     <PreferenceCategory android:title="@string/pref_category_about">
         <Preference
-            android:title="@string/pref_about"/>
+            android:title="@string/pref_about"
+            android:key="pref_about"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -64,11 +64,13 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             }
         }
     };
+    private Intent aboutIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting);
+        aboutIntent = new Intent(this,AboutActivity.class);
         // And later in some initialization function:
         try {
             AppKeyPair appKeyPair = new AppKeyPair(ConstantValue.DROPBOX_APP_KEY, ConstantValue.DROPBOX_APP_SECRET);
@@ -89,6 +91,14 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 CheckBoxPreference pref = (CheckBoxPreference) findPreference("pref_backup");
                 pref.setChecked(false);
             }
+            Preference btnAbout = findPreference("pref_about");
+            btnAbout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivity(aboutIntent);
+                    return false;
+                }
+            });
         } catch (Exception e) {
             Log.e(TAG, "Create dropboxAPI exception");
             e.printStackTrace();
@@ -205,8 +215,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     public boolean onPreferenceClick(Preference preference) {
 
         switch (preference.getKey()) {
-            case "list_backup_file":
-
+            case "pref_about":
+//                startActivity(aboutIntent);
                 break;
         }
 
