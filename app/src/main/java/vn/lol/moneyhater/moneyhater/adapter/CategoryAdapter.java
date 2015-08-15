@@ -69,7 +69,7 @@ public class CategoryAdapter extends ArrayAdapter {
             TextView textView = (TextView) super.getView(position, convertView, parent);
             textView.setTextColor(Color.BLACK);
             textView.setText(arrCategories[position]);
-            textView.setPadding(20,10,10,10);
+//            textView.setPadding(20,10,10,10);
             textView.setCompoundDrawablesWithIntrinsicBounds(arrImage[position], null, null, null);
             textView.setCompoundDrawablePadding(50);
             return textView;

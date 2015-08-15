@@ -117,6 +117,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.remove(ConstantValue.DROPBOX_APP_KEY);
                         editor.remove(ConstantValue.DROPBOX_APP_SECRET);
+                        editor.commit();
+                        ListPreference prefList = (ListPreference) findPreference("list_backup_file");
+                        CharSequence[] cs = new CharSequence[0];
+                        prefList.setEntries(cs);
+                        prefList.setEntryValues(cs);
                     }
                     break;
                 case "list_backup_file":
@@ -148,7 +153,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                                             Intent i = new Intent();
                                             i.putExtra(ConstantValue.DROPBOX_FILE, fileName);
                                             setResult(ConstantValue.RESULT_COODE_BACKUP, i);
-                                            Toast.makeText(getApplicationContext(), "Backup OK", Toast.LENGTH_SHORT).show();
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getApplicationContext(), "Backup OK", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
                                             finish();
                                         }
                                     }).start();
