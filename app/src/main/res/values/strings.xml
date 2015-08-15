@@ -47,6 +47,12 @@
     <string name="title_activity_edit_budget">Edit Budget</string>
     <string name="title_activity_choose_category">Choose category</string>
     <string name="other">Other</string>
+    <string name="tv_total_account">Total</string>
+    <string name="lb_chart_month">In Month</string>
+    <string name="lb_chart_year">In Year</string>
+    <string name="lb_account_name">Name</string>
+    <string name="lb_account_total_money">Total Money</string>
+    <string name="lb_account_type">Type</string>
 
     <!-- Account screen-->
 

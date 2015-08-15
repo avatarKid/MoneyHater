@@ -61,12 +61,12 @@
         <item>2</item>
     </string-array>
     <string name="pref_category_display">trưng bày</string>
-    <string name="pref_category_about">về</string>
+    <string name="pref_category_about">Giới thiệu</string>
     <string name="pref_category_system">Hệ thống</string>
     <string name="pref_category_backup">Sao lưu</string>
     <string name="pref_setting_language">Ngôn ngữ</string>
     <string name="pref_category_currency">Ngoại tệ</string>
-    <string name="pref_about">Về tiền Hater</string>
+    <string name="pref_about">Money Hater</string>
     <string name="pref_title_system_sync_settings">Thiết lập hệ thống đồng bộ</string>
 
     <!-- Example settings for Notifications -->

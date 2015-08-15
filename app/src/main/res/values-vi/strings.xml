@@ -3,7 +3,7 @@
     <string name="app_name">MoneyHater</string>
 
     <string name="title_section1">Giao dịch</string>
-    <string name="title_section2">Trương mục</string>
+    <string name="title_section2">Tài khoản</string>
     <string name="title_section3">Ngân sách</string>
     <string name="title_section4">Đồ thị</string>
 
@@ -14,8 +14,8 @@
     <string name="action_settings">Cài đặt</string>
 
     <!-- Transaction screen-->
-    <string name="tvInCome">Lợi tức</string>
-    <string name="tvExpense">Kinh phí</string>
+    <string name="tvInCome">Thu nhập</string>
+    <string name="tvExpense">Chi tiêu</string>
     <string name="tvIncomeCash">0</string>
     <string name="tvExpenseCash">0</string>
     <string name="tvSumCash">0</string>
@@ -35,17 +35,23 @@
     <string name="title_activity_new_transaction">Thêm giao dịch</string>
 
     <string name="hello_world">Chào thế giới!</string>
-    <string name="lbAddTransName">Tên</string>
-    <string name="lbAddTransAccountName">Trương mục</string>
+    <string name="lbAddTransName">Tên giao dịch</string>
+    <string name="lbAddTransAccountName">Tài khoản</string>
     <string name="lbAddTransBudgetName">Ngân sách</string>
     <string name="lbAddTransactionDate">Ngày</string>
-    <string name="lbAddTransactionCategory">Category</string>
+    <string name="lbAddTransactionCategory">Hạng mục</string>
     <string name="pref_lst_files">Danh sách các tập tin đã sao lưu</string>
     <string name="pref_backup_option">Sở thích sao lưu</string>
     <string name="action_backup">Sao lưu</string>
     <string name="title_activity_edit_transaction">Chỉnh sửa giao dịch</string>
     <string name="title_activity_edit_account">Chỉnh sửa tài khoản</string>
-    <string name="title_activity_edit_budget">EditBudgetActivity</string>
+    <string name="title_activity_edit_budget">Chỉnh sửa ngân sách</string>
     <string name="title_activity_choose_category">Chọn thể loại</string>
     <string name="other">Khác</string>
+    <string name="tv_total_account">Tổng</string>
+    <string name="lb_chart_month">Theo Tháng</string>
+    <string name="lb_chart_year">Theo Năm</string>
+    <string name="lb_account_name">Tên</string>
+    <string name="lb_account_total_money">Tổng tiền</string>
+    <string name="lb_account_type">Loại</string>
 </resources>

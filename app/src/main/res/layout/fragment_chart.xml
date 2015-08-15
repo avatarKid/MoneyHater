@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:text="In Month"
+        android:text="@string/lb_chart_month"
         android:textAppearance="?android:attr/textAppearanceMedium"
         />
     <vn.lol.moneyhater.moneyhater.view.BarGraph
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:text="In Year"
+        android:text="@string/lb_chart_year"
         android:textAppearance="?android:attr/textAppearanceMedium"
         />
     <vn.lol.moneyhater.moneyhater.view.LineGraph
