@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.view.Bar;
 import vn.lol.moneyhater.moneyhater.view.BarGraph;
@@ -23,7 +24,7 @@ import vn.lol.moneyhater.moneyhater.view.LineGraph;
 import vn.lol.moneyhater.moneyhater.view.LinePoint;
 
 public class ChartFragment extends Fragment {
-    private DatabaseHelper mDbHelper;
+    private XmlHelper mDbHelper;
     float [] lMoneyExpense;
     float [] lMoneyIncome;
     private int [] lPointMoneyE;
@@ -145,35 +146,35 @@ public class ChartFragment extends Fragment {
 
     private void GetDatabase() {
         //Get database
-        try {
-            mDbHelper = new DatabaseHelper(getActivity());
-            Cursor cs = mDbHelper.getTransactionInMonth(month);
-            cs.moveToFirst();
-            bMoneyIncome = 0;
-            bMoneyExpense = 0;
-            if (cs.getCount() == 1) {
-                bMoneyIncome = cs.getFloat(0);
-                bMoneyExpense = cs.getFloat(1);
-            }
-            Cursor cs2 = mDbHelper.getTransactionInYear(year);
-            cs2.moveToFirst();
-            if (cs2.getCount() == 2) {
-                for(int i =0;i<12;i++){
-                    lMoneyExpense[i] = cs2.getFloat(i);
-
-                }
-                cs2.moveToNext();
-                for(int i =0;i<12;i++){
-                    lMoneyIncome[i] = cs2.getFloat(i);
-
-                }
-            }
-
-        }catch (Exception e){
-            Toast.makeText(getActivity(),
-                    "Error get Database", Toast.LENGTH_SHORT)
-                    .show();
-        }
+//        try {
+//            mDbHelper = new XmlHelper(getActivity());
+//            Cursor cs = mDbHelper.getTransactionInMonth(month);
+//            cs.moveToFirst();
+//            bMoneyIncome = 0;
+//            bMoneyExpense = 0;
+//            if (cs.getCount() == 1) {
+//                bMoneyIncome = cs.getFloat(0);
+//                bMoneyExpense = cs.getFloat(1);
+//            }
+//            Cursor cs2 = mDbHelper.getTransactionInYear(year);
+//            cs2.moveToFirst();
+//            if (cs2.getCount() == 2) {
+//                for(int i =0;i<12;i++){
+//                    lMoneyExpense[i] = cs2.getFloat(i);
+//
+//                }
+//                cs2.moveToNext();
+//                for(int i =0;i<12;i++){
+//                    lMoneyIncome[i] = cs2.getFloat(i);
+//
+//                }
+//            }
+//
+//        }catch (Exception e){
+//            Toast.makeText(getActivity(),
+//                    "Error get Database", Toast.LENGTH_SHORT)
+//                    .show();
+//        }
     }
 
 

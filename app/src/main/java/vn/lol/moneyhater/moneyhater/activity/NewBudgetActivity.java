@@ -1,5 +1,6 @@
 package vn.lol.moneyhater.moneyhater.activity;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,12 +15,13 @@ import android.widget.Toast;
 import java.text.NumberFormat;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.Budget;
 
 public class NewBudgetActivity extends ActionBarActivity {
-    private DatabaseHelper mDbHelper;
+    private XmlHelper mDbHelper;
     EditText budgetName ,budgetCash;
     String current = "";
     @Override
@@ -56,7 +58,8 @@ public class NewBudgetActivity extends ActionBarActivity {
             }
         });
 
-        mDbHelper = new DatabaseHelper(getApplicationContext());
+        Intent intent = getIntent();
+        mDbHelper = (XmlHelper) intent.getSerializableExtra(ConstantValue.DB_HELPER);
         Button btAddAcc = (Button) findViewById(R.id.bt_add);
         btAddAcc.setOnClickListener(new View.OnClickListener() {
             @Override

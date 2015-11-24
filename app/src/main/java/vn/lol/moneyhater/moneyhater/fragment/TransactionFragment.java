@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
 import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.activity.EditTransaction;
@@ -32,7 +32,7 @@ import vn.lol.moneyhater.moneyhater.model.TransactionDate;
 
 public class TransactionFragment extends Fragment {
     private ListTransactionAdapter mAdapterTransaction;
-    DatabaseHelper mDbHelper;
+    XmlHelper mDbHelper;
     ListView mlistTransaction;
     TextView tvIncome, tvExpense, tvSumaryTransaction;
     ArrayList<TransactionDate> listTransaction;
@@ -45,7 +45,7 @@ public class TransactionFragment extends Fragment {
         // Init
         View rootView = inflater.inflate(R.layout.fragment_transaction, container,
                 false);
-        mDbHelper = (DatabaseHelper) container.getTag(R.id.TAG_DB_HELPER);
+        mDbHelper = (XmlHelper) container.getTag(R.id.TAG_DB_HELPER);
         listTransaction = new ArrayList<TransactionDate>();
         listDate = new ArrayList<>();
         mlistTransaction = (ListView) rootView.findViewById(R.id.lvTransaction);
@@ -61,6 +61,7 @@ public class TransactionFragment extends Fragment {
                 int transactionID = ((Transaction) listTransaction.get(position)).getTransactionID();
                 Intent intent = new Intent(getActivity(), EditTransaction.class);
                 intent.putExtra(ConstantValue.EDIT_TRANSACTION, mDbHelper.getTransaction(transactionID));
+                intent.putExtra(ConstantValue.DB_HELPER,mDbHelper);
                 getActivity().startActivityForResult(intent, ConstantValue.REQUEST_CODE_EDIT_TRANSACTION);
             }
         });

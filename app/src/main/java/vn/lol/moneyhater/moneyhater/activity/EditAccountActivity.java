@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
 import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.ListTransactionAdapter;
@@ -30,7 +30,7 @@ import vn.lol.moneyhater.moneyhater.model.TransactionDate;
 
 public class EditAccountActivity extends ActionBarActivity {
 
-    private DatabaseHelper mDbHelper;
+    private XmlHelper mDbHelper;
     private Account accountEdit;
     private ListTransactionAdapter mAdapterTransactionAcc;
     private ArrayList<TransactionDate> listTransactionAcc;
@@ -48,8 +48,9 @@ public class EditAccountActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_account);
 
-        mDbHelper = new DatabaseHelper(getApplicationContext());
+
         Intent intent = getIntent();
+        mDbHelper = (XmlHelper) intent.getSerializableExtra(ConstantValue.DB_HELPER);
         accountID = intent.getIntExtra(ConstantValue.ACCOUNT_ID,0);
         accountEdit = mDbHelper.getAccount(accountID);
         editAccName = (EditText) findViewById(R.id.editAccountName);

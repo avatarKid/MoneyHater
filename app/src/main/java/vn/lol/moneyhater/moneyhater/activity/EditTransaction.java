@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.CategoryAdapter;
 import vn.lol.moneyhater.moneyhater.model.Account;
@@ -39,7 +39,7 @@ public class EditTransaction extends AppCompatActivity {
     static final int DIALOG_ID = 0;
     Transaction transaction;
     int transactionID;
-    DatabaseHelper mDbHelper;
+    XmlHelper mDbHelper;
     ArrayList<Budget> listBudget;
     ArrayList<Category> listCategory;
     ArrayList<Account> listAccount;
@@ -71,7 +71,9 @@ public class EditTransaction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_transaction);
-
+        // load DB
+        Intent intent = getIntent();
+        mDbHelper = (XmlHelper) intent.getSerializableExtra(ConstantValue.DB_HELPER);
         init();
         btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,11 +278,9 @@ public class EditTransaction extends AppCompatActivity {
             }
         });
 
-        // load DB
-        mDbHelper = new DatabaseHelper(getApplicationContext());
         listAccount = mDbHelper.getAllAccounts();
         listBudget = mDbHelper.getAllBudgets();
-        listCategory = mDbHelper.getAllCategory();
+//        listCategory = mDbHelper.get();
         Account currentAccount = mDbHelper.getAccount(transaction.getAccountID());
         Budget currentBudget = mDbHelper.getBudget(transaction.getBudgetID());
 

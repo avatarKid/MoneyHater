@@ -20,7 +20,7 @@ public class Account implements Serializable {
     }
 
     public Account() {
-
+        mCash=0.0;
     }
 
     @Override

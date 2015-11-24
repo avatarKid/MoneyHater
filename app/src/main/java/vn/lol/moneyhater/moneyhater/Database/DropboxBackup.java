@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
-import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session;
 
@@ -60,14 +59,14 @@ public class DropboxBackup {
         }
     }
 
-    public void backupFile(DatabaseHelper dbHelper) {
+    public void backupFile(XmlHelper dbHelper) {
         final AndroidAuthSession session = (AndroidAuthSession) mDBApi.getSession();
         if (session.isLinked()) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        File file = new File(DatabaseHelper.DB_FILEPATH);
+                        File file = new File(DataManager.xmlFile);
                         FileInputStream inputStream = new FileInputStream(file);
                         DropboxAPI.Entry response = mDBApi.putFile("/Backup " + new SimpleDateFormat("dd-MM-yyyy HHmmss").format(new Date()), inputStream,
                                 file.length(), null, null);

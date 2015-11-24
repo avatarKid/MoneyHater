@@ -22,7 +22,8 @@ import java.util.Calendar;
 import java.util.Collections;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+//import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
@@ -42,9 +43,9 @@ public class ListTransactionAdapter extends BaseAdapter {
 
     private ArrayList<TransactionDate> mData = new ArrayList<TransactionDate>();
     private LayoutInflater mInflater;
-    private DatabaseHelper databaseHelper;
+    private XmlHelper databaseHelper;
 
-    public ListTransactionAdapter(Activity activity, ArrayList<TransactionDate> lstTrans, DatabaseHelper mDBHelper) {
+    public ListTransactionAdapter(Activity activity, ArrayList<TransactionDate> lstTrans, XmlHelper mDBHelper) {
         mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mData = lstTrans;
         databaseHelper = mDBHelper;

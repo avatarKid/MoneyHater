@@ -18,7 +18,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.activity.EditAccountActivity;
 import vn.lol.moneyhater.moneyhater.adapter.ListAccountAdapter;
@@ -27,7 +27,7 @@ import vn.lol.moneyhater.moneyhater.model.Account;
 
 public class AccountFragment extends Fragment {
     private ListAccountAdapter mAdapterAccount;
-    private DatabaseHelper mDbHelper;
+    private XmlHelper mDbHelper;
     private ArrayList<Account> listAccount;
     ListView mlistAccount;
     TextView mTotalMoney;
@@ -36,7 +36,7 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account, container,
                 false);
-        mDbHelper= (DatabaseHelper) container.getTag(R.id.TAG_DB_HELPER);
+        mDbHelper= (XmlHelper) container.getTag(R.id.TAG_DB_HELPER);
         mlistAccount = (ListView)rootView.findViewById(R.id.lvAccount);
         mTotalMoney = (TextView) rootView.findViewById(R.id.tvAccTotalMoney);
         displayListAccount();
@@ -45,6 +45,7 @@ public class AccountFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), EditAccountActivity.class);
                 intent.putExtra(ConstantValue.ACCOUNT_ID,listAccount.get(i).getAccountID());
+                intent.putExtra(ConstantValue.DB_HELPER,mDbHelper);
                 startActivity(intent);
             }
         });

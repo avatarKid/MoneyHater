@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.CategoryAdapter;
 import vn.lol.moneyhater.moneyhater.fragment.TransactionFragment;
@@ -49,7 +49,7 @@ public class NewTransactionActivity extends ActionBarActivity {
     ArrayList<Budget> listBudget;
     ArrayList<Category> listCategory;
     ArrayList<Account> listAccount;
-    DatabaseHelper mDbHelper;
+    XmlHelper mDbHelper;
     int mDay, mMonth, mYear;
 
     static final int DIALOG_ID = 0;
@@ -149,10 +149,11 @@ public class NewTransactionActivity extends ActionBarActivity {
         });
 
         //Load data from DB
-        mDbHelper = new DatabaseHelper(getApplicationContext());
+        Intent intent = getIntent();
+        mDbHelper = (XmlHelper) intent.getSerializableExtra(ConstantValue.DB_HELPER);
         listAccount = mDbHelper.getAllAccounts();
         listBudget = mDbHelper.getAllBudgets();
-        listCategory = mDbHelper.getAllCategory();
+//        listCategory = mDbHelper.getAllCategory();
 
 
         // set adaptor Categories

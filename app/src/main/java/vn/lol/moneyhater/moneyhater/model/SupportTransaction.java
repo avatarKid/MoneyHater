@@ -1,5 +1,6 @@
 package vn.lol.moneyhater.moneyhater.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.Locale;
 /**
  * Created by huy on 7/24/2015.
  */
-public class SupportTransaction implements TransactionDate {
+public class SupportTransaction implements TransactionDate,Serializable {
     public String day;
     public String month;
     public String year;

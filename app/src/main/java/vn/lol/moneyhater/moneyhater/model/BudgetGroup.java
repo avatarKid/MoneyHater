@@ -1,5 +1,6 @@
 package vn.lol.moneyhater.moneyhater.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
@@ -7,7 +8,7 @@ import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 /**
  * Created by Aoko on 8/13/2015.
  */
-public class BudgetGroup {
+public class BudgetGroup implements Serializable {
     ArrayList<Transaction> children;
     Budget budget;
 

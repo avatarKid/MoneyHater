@@ -19,28 +19,38 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
+//import javax.xml.stream.XMLEventFactory;
+//import javax.xml.stream.XMLEventWriter;
+//import javax.xml.stream.XMLOutputFactory;
+//import javax.xml.stream.XMLStreamException;
+//import javax.xml.stream.events.XMLEvent;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
 import vn.lol.moneyhater.moneyhater.Database.DropboxBackup;
+import vn.lol.moneyhater.moneyhater.Database.DataManager;
 import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.FragmentPageAdapter;
 import vn.lol.moneyhater.moneyhater.fragment.AccountFragment;
 import vn.lol.moneyhater.moneyhater.fragment.BudgetFragment;
-import vn.lol.moneyhater.moneyhater.fragment.ChartFragment;
 import vn.lol.moneyhater.moneyhater.fragment.TransactionFragment;
 import vn.lol.moneyhater.moneyhater.fragment.NavigationDrawerFragment;
+import vn.lol.moneyhater.moneyhater.model.Account;
+import vn.lol.moneyhater.moneyhater.model.Budget;
+import vn.lol.moneyhater.moneyhater.model.Category;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
-
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, ViewPager.OnPageChangeListener {
@@ -51,8 +61,9 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
     private Button mButtonAdd;
     private int StateSeleced = 0;
-    private DatabaseHelper mDb;
+    private XmlHelper mDb;
     private DropboxBackup mDropbox;
+    private DataManager dataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,22 +92,25 @@ public class MainActivity extends ActionBarActivity
                 switch (StateSeleced) {
                     case 0:
                         if (mDb.getAllAccounts().isEmpty()) {
-                            Toast.makeText(getApplicationContext(),"Please add an Account first!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Please add an Account first!", Toast.LENGTH_SHORT).show();
                             break;
                         }
                         intent = new Intent(MainActivity.this, NewTransactionActivity.class);
+                        intent.putExtra(ConstantValue.DB_HELPER,mDb);
                         startActivityForResult(intent, ConstantValue.REQUEST_CODE_ADD_TRANSACTION);
                         break;
                     case 1:
                         //Account
                         //Toast.makeText(getBaseContext(),"Account",Toast.LENGTH_SHORT).show();
                         intent = new Intent(MainActivity.this, NewAccountActivity.class);
+                        intent.putExtra(ConstantValue.DB_HELPER,mDb);
                         startActivity(intent);
                         break;
                     case 2:
                         //Budget
                         //Toast.makeText(getBaseContext(),"Budget",Toast.LENGTH_SHORT).show();
                         intent = new Intent(MainActivity.this, NewBudgetActivity.class);
+                        intent.putExtra(ConstantValue.DB_HELPER,mDb);
                         startActivity(intent);
                         break;
                 }
@@ -136,7 +150,7 @@ public class MainActivity extends ActionBarActivity
         fragments.add(Fragment.instantiate(this, TransactionFragment.class.getName()));
         fragments.add(Fragment.instantiate(this, AccountFragment.class.getName()));
         fragments.add(Fragment.instantiate(this, BudgetFragment.class.getName()));
-        fragments.add(Fragment.instantiate(this, ChartFragment.class.getName()));
+//        fragments.add(Fragment.instantiate(this, ChartFragment.class.getName()));
 
         this.mPagerAdapter = new FragmentPageAdapter(super.getSupportFragmentManager(), fragments);
         //
@@ -162,13 +176,111 @@ public class MainActivity extends ActionBarActivity
         }
         getApplicationContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
-        mDb = new DatabaseHelper(getApplicationContext());
+        dataManager = new DataManager(getApplicationContext());
+        dataManager.readDataXml();
+        mDb = new XmlHelper(dataManager.getAllAccounts(), dataManager.getAllBudgets(), dataManager.getAllTransactions());
+
+
+//        XmlHelper xh = new XmlHelper(getApplicationContext());
+//        xh.setAllAccounts(allAccounts);
+//        xh.setAllBudgets(allBudgets);
+//        xh.setAllTransactions(allTransactions);
+//        xh.writeXml();
+
         mDropbox = new DropboxBackup(this);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setPageMargin(60);
         mViewPager.setTag(R.id.TAG_DB_HELPER, mDb);
         mPagerAdapter = new FragmentPageAdapter(getSupportFragmentManager());
     }
+
+    private void addLeaf(XmlSerializer serializer, String tagName, String value) throws IOException {
+        serializer.startTag("", tagName);
+        serializer.text(value);
+        serializer.endTag("", tagName);
+    }
+
+    private void parseXML(XmlPullParser parser) throws XmlPullParserException,IOException
+    {
+        ArrayList<Account> allAccounts = new ArrayList<>();
+        ArrayList<Budget> allBudgets = new ArrayList<>();
+        ArrayList<Category> allCategory = new ArrayList<>();
+        ArrayList<Transaction> allTransactions = new ArrayList<>();
+//        ArrayList<product> products = null;
+        int eventType = parser.getEventType();
+        Account curAcc = null;
+        Budget curBudget = null;
+        Transaction curTran = null;
+
+//        while (eventType != XmlPullParser.END_DOCUMENT){
+//            String nameTag = null;
+//            switch (eventType){
+//                case XmlPullParser.START_TAG:
+//                    switch (parser.getName()){
+//                        case "Account":
+//                            nameTag = parser.getName();
+//                            curAcc = new Account();
+//                            break;
+//                        case "Budget":
+//                            curBudget = new Budget();
+//                            nameTag = parser.getName();
+//                            break;
+//                        case "Transaction":
+//                            curTran = new Transaction()
+//                            nameTag = parser.getName();
+//                            break;
+//
+//                    }
+//                    nameTag = parser.getName();
+//                    if (nameTag == "product"){
+//                        currentProduct = new Product();
+//                    } else if (currentProduct != null){
+//                        if (nameTag == "productname"){
+//                            currentProduct.name = parser.nextText();
+//                        } else if (nameTag == "productcolor"){
+//                            currentProduct.color = parser.nextText();
+//                        } else if (nameTag == "productquantity"){
+//                            currentProduct.quantity= parser.nextText();
+//                        }
+//                    }
+//                    break;
+//                case XmlPullParser.END_TAG:
+//                    nameTag = parser.getName();
+//                    if (nameTag.equalsIgnoreCase("product") && currentProduct != null){
+//                        products.add(currentProduct);
+//                    }
+//            }
+//            eventType = parser.next();
+//        }
+
+//        printProducts(products);
+    }
+
+//    private void addAtribute(XMLEventFactory xef, XMLEventWriter xew, String name, String value)
+//            throws XMLStreamException {
+//        XMLEvent xe;
+//        xe = xef.createAttribute(name, value);
+//        xew.add(xe);
+//    }
+//    private void addLeaf(XMLEventFactory xef, XMLEventWriter xew,String name, String value) throws XMLStreamException {
+//        XMLEvent xe;
+//        xe = xef.createStartElement("", "", name);
+//        xew.add(xe);
+//        xe = xef.createCharacters(value);
+//        xew.add(xe);
+//        xe = xef.createEndElement("", "", name);
+//        xew.add(xe);
+//    }
+//    private void startElement(XMLEventFactory xef, XMLEventWriter xew, String elementName) throws XMLStreamException {
+//        XMLEvent xe;
+//        xe = xef.createStartElement("", "", elementName);
+//        xew.add(xe);
+//    }
+//    private static void endElement(XMLEventFactory xef, XMLEventWriter xew, String elementName) throws XMLStreamException {
+//        XMLEvent xe;
+//        xe = xef.createEndElement("", "", elementName);
+//        xew.add(xe);
+//    }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -253,6 +365,12 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        dataManager.writeXml();
+    }
+
+    @Override
     public void onPageSelected(int position) {
         handleButtonState(position + 1);
         StateSeleced = position;
@@ -268,7 +386,7 @@ public class MainActivity extends ActionBarActivity
     protected void onStop() {
         super.onStop();
         try {
-            mDb.close();
+//            mDb.close();
         } catch (Exception e) {
             Log.e(TAG, "onStop");
             e.printStackTrace();

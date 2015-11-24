@@ -1,5 +1,6 @@
 package vn.lol.moneyhater.moneyhater.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -17,7 +18,8 @@ import android.widget.Toast;
 import java.text.NumberFormat;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.Account;
 
 /**
@@ -25,7 +27,7 @@ import vn.lol.moneyhater.moneyhater.model.Account;
  */
 public class NewAccountActivity extends ActionBarActivity {
 
-    private DatabaseHelper mDbHelper;
+    private XmlHelper mDbHelper;
     EditText accountName;
     EditText accountCash;
     RadioButton radioCard;
@@ -38,7 +40,8 @@ public class NewAccountActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_account);
 
-        mDbHelper = new DatabaseHelper(getApplicationContext());
+        Intent intent = getIntent();
+        mDbHelper = (XmlHelper) intent.getSerializableExtra(ConstantValue.DB_HELPER);
         accountName = (EditText) findViewById(R.id.etAccountName);
         accountCash = (EditText) findViewById(R.id.etCash);
         radioCard = (RadioButton) findViewById(R.id.rbtCard);

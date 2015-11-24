@@ -1,9 +1,11 @@
 package vn.lol.moneyhater.moneyhater.model;
 
+import java.io.Serializable;
+
 /**
  * Created by huy on 7/28/2015.
  */
-public class Budget {
+public class Budget implements Serializable {
     private int mBudgetID;
     private String mBudgetName;
     private int mImageID;
