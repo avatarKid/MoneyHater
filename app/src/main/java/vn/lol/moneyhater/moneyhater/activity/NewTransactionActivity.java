@@ -150,7 +150,10 @@ public class NewTransactionActivity extends ActionBarActivity {
 
         //Load data from DB
         Intent intent = getIntent();
-        mDbHelper = (XmlHelper) intent.getSerializableExtra(ConstantValue.DB_HELPER);
+
+        // get global XML helper
+        mDbHelper = (XmlHelper)getApplicationContext();
+
         listAccount = mDbHelper.getAllAccounts();
         listBudget = mDbHelper.getAllBudgets();
 //        listCategory = mDbHelper.getAllCategory();

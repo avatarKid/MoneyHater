@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,11 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account, container,
                 false);
-        mDbHelper= (XmlHelper) container.getTag(R.id.TAG_DB_HELPER);
+
+        // get global XML helper
+        mDbHelper= (XmlHelper)getActivity().getApplicationContext();
+
+
         mlistAccount = (ListView)rootView.findViewById(R.id.lvAccount);
         mTotalMoney = (TextView) rootView.findViewById(R.id.tvAccTotalMoney);
         displayListAccount();
@@ -45,7 +50,7 @@ public class AccountFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), EditAccountActivity.class);
                 intent.putExtra(ConstantValue.ACCOUNT_ID,listAccount.get(i).getAccountID());
-                intent.putExtra(ConstantValue.DB_HELPER,mDbHelper);
+//                intent.putExtra(ConstantValue.DB_HELPER,mDbHelper);
                 startActivity(intent);
             }
         });
@@ -55,6 +60,7 @@ public class AccountFragment extends Fragment {
 
     public void displayListAccount(){
         listAccount = mDbHelper.getAllAccounts();
+        Log.e("Account list at list:", mDbHelper.getAllAccounts().size() + "");
         mAdapterAccount = new ListAccountAdapter(getActivity(),listAccount);
 
         mAdapterAccount.notifyDataSetChanged();

@@ -59,7 +59,10 @@ public class NewBudgetActivity extends ActionBarActivity {
         });
 
         Intent intent = getIntent();
-        mDbHelper = (XmlHelper) intent.getSerializableExtra(ConstantValue.DB_HELPER);
+
+        // get global XML helper
+        mDbHelper= (XmlHelper)getApplicationContext();
+
         Button btAddAcc = (Button) findViewById(R.id.bt_add);
         btAddAcc.setOnClickListener(new View.OnClickListener() {
             @Override

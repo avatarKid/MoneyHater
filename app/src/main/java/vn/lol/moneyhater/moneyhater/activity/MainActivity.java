@@ -96,21 +96,21 @@ public class MainActivity extends ActionBarActivity
                             break;
                         }
                         intent = new Intent(MainActivity.this, NewTransactionActivity.class);
-                        intent.putExtra(ConstantValue.DB_HELPER,mDb);
+//                        intent.putExtra(ConstantValue.DB_HELPER,mDb);
                         startActivityForResult(intent, ConstantValue.REQUEST_CODE_ADD_TRANSACTION);
                         break;
                     case 1:
                         //Account
                         //Toast.makeText(getBaseContext(),"Account",Toast.LENGTH_SHORT).show();
                         intent = new Intent(MainActivity.this, NewAccountActivity.class);
-                        intent.putExtra(ConstantValue.DB_HELPER,mDb);
+//                        intent.putExtra(ConstantValue.DB_HELPER,mDb);
                         startActivity(intent);
                         break;
                     case 2:
                         //Budget
                         //Toast.makeText(getBaseContext(),"Budget",Toast.LENGTH_SHORT).show();
                         intent = new Intent(MainActivity.this, NewBudgetActivity.class);
-                        intent.putExtra(ConstantValue.DB_HELPER,mDb);
+//                        intent.putExtra(ConstantValue.DB_HELPER,mDb);
                         startActivity(intent);
                         break;
                 }
@@ -178,10 +178,17 @@ public class MainActivity extends ActionBarActivity
                 getBaseContext().getResources().getDisplayMetrics());
         dataManager = new DataManager(getApplicationContext());
         dataManager.readDataXml();
-        mDb = new XmlHelper(dataManager.getAllAccounts(), dataManager.getAllBudgets(), dataManager.getAllTransactions());
 
+        // get glogal XmlHelper
+        mDb = (XmlHelper)getApplicationContext();
+        mDb.setAllAccounts(dataManager.getAllAccounts());
+        mDb.setAllBudgets(dataManager.getAllBudgets());
+        mDb.setAllTransactions(dataManager.getAllTransactions());
 
-//        XmlHelper xh = new XmlHelper(getApplicationContext());
+//        mDb = new XmlHelper(dataManager.getAllAccounts(), dataManager.getAllBudgets(), dataManager.getAllTransactions());
+
+//
+//        XmlHelper xh = (XmlHelper)getApplicationContext();
 //        xh.setAllAccounts(allAccounts);
 //        xh.setAllBudgets(allBudgets);
 //        xh.setAllTransactions(allTransactions);
@@ -367,6 +374,9 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onPause() {
         super.onPause();
+        dataManager.setAllTransactions(mDb.getAllTransactions());
+        dataManager.setAllBudgets(mDb.getAllBudgets());
+        dataManager.setAllAccounts(mDb.getAllAccounts());
         dataManager.writeXml();
     }
 

@@ -73,7 +73,10 @@ public class EditTransaction extends AppCompatActivity {
         setContentView(R.layout.activity_edit_transaction);
         // load DB
         Intent intent = getIntent();
-        mDbHelper = (XmlHelper) intent.getSerializableExtra(ConstantValue.DB_HELPER);
+
+        // get global XML helper
+        mDbHelper= (XmlHelper)getApplicationContext();
+
         init();
         btDelete.setOnClickListener(new View.OnClickListener() {
             @Override

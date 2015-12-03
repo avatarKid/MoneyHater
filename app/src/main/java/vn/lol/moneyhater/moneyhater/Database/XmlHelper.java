@@ -1,5 +1,6 @@
 package vn.lol.moneyhater.moneyhater.Database;
 
+import android.app.Application;
 import android.content.Context;
 import android.util.Xml;
 
@@ -21,10 +22,17 @@ import vn.lol.moneyhater.moneyhater.model.Transaction;
 /**
  * Created by huybu on 11/24/2015.
  */
-public class XmlHelper implements Serializable {
+public class XmlHelper extends Application {
     private ArrayList<Account> allAccounts;
     private ArrayList<Budget> allBudgets;
     private ArrayList<Transaction> allTransactions;
+
+    public XmlHelper(){
+        this.allAccounts = new ArrayList<>();
+        this.allBudgets = new ArrayList<>();
+        this.allTransactions = new ArrayList<>();
+    }
+
 
     public void setAllAccounts(ArrayList<Account> allAccounts) {
         this.allAccounts = allAccounts;

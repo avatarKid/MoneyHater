@@ -40,8 +40,10 @@ public class NewAccountActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_account);
 
-        Intent intent = getIntent();
-        mDbHelper = (XmlHelper) intent.getSerializableExtra(ConstantValue.DB_HELPER);
+//        Intent intent = getIntent();
+        mDbHelper = (XmlHelper)getApplicationContext();
+
+
         accountName = (EditText) findViewById(R.id.etAccountName);
         accountCash = (EditText) findViewById(R.id.etCash);
         radioCard = (RadioButton) findViewById(R.id.rbtCard);
@@ -112,6 +114,7 @@ public class NewAccountActivity extends ActionBarActivity {
                 Double.parseDouble(accountCash.getText().toString().replaceAll("[,]", "")),
                 accountType);
         mDbHelper.insertAccount(newAccount);
+        Log.e("Account list:", mDbHelper.getAllAccounts().size() + "");
 
     }
 

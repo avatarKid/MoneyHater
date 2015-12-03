@@ -1,6 +1,7 @@
 package vn.lol.moneyhater.moneyhater.Database;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -155,6 +156,7 @@ public class DataManager {
     }
 
     public void writeXml() {
+        Log.e("write :", "XML");
         XmlSerializer serializer = Xml.newSerializer();
         serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
         StringWriter writer = new StringWriter();

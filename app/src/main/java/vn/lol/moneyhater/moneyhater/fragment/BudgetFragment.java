@@ -36,7 +36,10 @@ public class BudgetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_budget, container,
                 false);
-        mDbHelper= (XmlHelper) container.getTag(R.id.TAG_DB_HELPER);
+
+        // get global XML helper
+        mDbHelper= (XmlHelper)getActivity().getApplicationContext();
+
         mlistBudget = (ExpandableListView) rootView.findViewById(R.id.lvBudget);
         CreateData();
         displayLisBudget();
@@ -84,7 +87,7 @@ public class BudgetFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), EditBudgetActivity.class);
                 intent.putExtra(ConstantValue.BUDGET_ID, listBudget.get(position).getBudgetID());
-                intent.putExtra(ConstantValue.DB_HELPER,mDbHelper);
+//                intent.putExtra(ConstantValue.DB_HELPER,mDbHelper);
                 startActivity(intent);
                 return true;
             }

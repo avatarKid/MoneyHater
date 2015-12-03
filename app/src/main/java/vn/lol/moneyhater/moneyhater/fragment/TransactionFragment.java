@@ -45,7 +45,10 @@ public class TransactionFragment extends Fragment {
         // Init
         View rootView = inflater.inflate(R.layout.fragment_transaction, container,
                 false);
-        mDbHelper = (XmlHelper) container.getTag(R.id.TAG_DB_HELPER);
+
+        // get global XML helper
+        mDbHelper= (XmlHelper)getActivity().getApplicationContext();
+
         listTransaction = new ArrayList<TransactionDate>();
         listDate = new ArrayList<>();
         mlistTransaction = (ListView) rootView.findViewById(R.id.lvTransaction);
@@ -61,7 +64,7 @@ public class TransactionFragment extends Fragment {
                 int transactionID = ((Transaction) listTransaction.get(position)).getTransactionID();
                 Intent intent = new Intent(getActivity(), EditTransaction.class);
                 intent.putExtra(ConstantValue.EDIT_TRANSACTION, mDbHelper.getTransaction(transactionID));
-                intent.putExtra(ConstantValue.DB_HELPER,mDbHelper);
+//                intent.putExtra(ConstantValue.DB_HELPER,mDbHelper);
                 getActivity().startActivityForResult(intent, ConstantValue.REQUEST_CODE_EDIT_TRANSACTION);
             }
         });

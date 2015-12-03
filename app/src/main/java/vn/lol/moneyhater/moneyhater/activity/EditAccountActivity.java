@@ -50,7 +50,9 @@ public class EditAccountActivity extends ActionBarActivity {
 
 
         Intent intent = getIntent();
-        mDbHelper = (XmlHelper) intent.getSerializableExtra(ConstantValue.DB_HELPER);
+        // get global XML helper
+        mDbHelper= (XmlHelper)getApplicationContext();
+
         accountID = intent.getIntExtra(ConstantValue.ACCOUNT_ID,0);
         accountEdit = mDbHelper.getAccount(accountID);
         editAccName = (EditText) findViewById(R.id.editAccountName);
