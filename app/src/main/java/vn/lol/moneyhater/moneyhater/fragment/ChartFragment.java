@@ -10,13 +10,16 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import vn.lol.moneyhater.momeyhater.R;
 import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
 import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
+import vn.lol.moneyhater.moneyhater.model.Transaction;
 import vn.lol.moneyhater.moneyhater.view.Bar;
 import vn.lol.moneyhater.moneyhater.view.BarGraph;
 import vn.lol.moneyhater.moneyhater.view.Line;
@@ -51,7 +54,23 @@ public class ChartFragment extends Fragment {
         year = c.get(Calendar.YEAR);
         maxMoney = 0;
         try {
+            // get global XML helper
+            mDbHelper= (XmlHelper)getActivity().getApplicationContext();
+//            SimpleDateFormat dayFormat = new SimpleDateFormat("MM", Locale.US);
+//            for (Transaction tran :
+//                    mDbHelper.getAllTransactions()) {
+//
+//                Toast.makeText(getActivity(),
+//                        tran.getYear()+"-"+tran.getMonth(),
+//                        Toast.LENGTH_SHORT)
+//                        .show();
+//            }
+//            Toast.makeText(getActivity(),
+//                    mDbHelper.getAllTransactions().size()+"",
+//                    Toast.LENGTH_SHORT)
+//                    .show();
             GetDatabase();
+
             SetupBar(rootView);
             SetupPointLine(rootView);
         }catch (Exception e){
@@ -146,35 +165,27 @@ public class ChartFragment extends Fragment {
 
     private void GetDatabase() {
         //Get database
-//        try {
-//            mDbHelper = new XmlHelper(getActivity());
-//            Cursor cs = mDbHelper.getTransactionInMonth(month);
-//            cs.moveToFirst();
-//            bMoneyIncome = 0;
-//            bMoneyExpense = 0;
-//            if (cs.getCount() == 1) {
-//                bMoneyIncome = cs.getFloat(0);
-//                bMoneyExpense = cs.getFloat(1);
-//            }
-//            Cursor cs2 = mDbHelper.getTransactionInYear(year);
-//            cs2.moveToFirst();
-//            if (cs2.getCount() == 2) {
-//                for(int i =0;i<12;i++){
-//                    lMoneyExpense[i] = cs2.getFloat(i);
-//
-//                }
-//                cs2.moveToNext();
-//                for(int i =0;i<12;i++){
-//                    lMoneyIncome[i] = cs2.getFloat(i);
-//
-//                }
-//            }
-//
-//        }catch (Exception e){
-//            Toast.makeText(getActivity(),
-//                    "Error get Database", Toast.LENGTH_SHORT)
-//                    .show();
-//        }
+        try {
+            float [][] cs;
+            cs = mDbHelper.getTransactionInYear(year);
+            if (cs!=null){
+                for(int i =0;i<12;i++){
+                    lMoneyExpense[i] = cs[ConstantValue.TRANSACTION_TYPE_EXPENSE][i];
+                    lMoneyIncome[i] = cs[ConstantValue.TRANSACTION_TYPE_INCOME][i];
+                }
+            }
+            float [] cs2;
+            cs2 = mDbHelper.getTransactionInMonth(month, year);
+            if (cs2!=null){
+                bMoneyIncome = cs2[ConstantValue.TRANSACTION_TYPE_INCOME];
+                bMoneyExpense = cs2[ConstantValue.TRANSACTION_TYPE_EXPENSE];
+            }
+
+        }catch (Exception e){
+            Toast.makeText(getActivity(),
+                    "Error get Database", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
 

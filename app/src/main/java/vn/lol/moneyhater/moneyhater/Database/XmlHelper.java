@@ -13,8 +13,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
+import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.Budget;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
@@ -219,5 +222,38 @@ public class XmlHelper extends Application {
             if (tran.getBudgetID()==budgetID) al.add(tran);
         }
         return al;
+    }
+
+    public float[][] getTransactionInYear(int year){
+        float[][] data = new float[2][12];
+        SimpleDateFormat dayFormat = new SimpleDateFormat("MM", Locale.US);
+        for (Transaction tran :
+                allTransactions) {
+            if (tran.getYear().equalsIgnoreCase(year+"")){
+                int in = Integer.parseInt(dayFormat.format(tran.getTime()));
+                if(tran.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                    data[ConstantValue.TRANSACTION_TYPE_EXPENSE][in-1]+= (float)tran.getCash();
+                }else{
+                    data[ConstantValue.TRANSACTION_TYPE_INCOME][in-1]+= (float)tran.getCash();
+                }
+            }
+        }
+        return data;
+    }
+
+    public float[] getTransactionInMonth(int month,int year){
+        float[] data = new float[2];
+        SimpleDateFormat dayFormat = new SimpleDateFormat("MM", Locale.US);
+        for (Transaction tran :
+                allTransactions) {
+            if (tran.getYear().equalsIgnoreCase(year+"") && dayFormat.format(tran.getTime()).equalsIgnoreCase(month+"")){
+                if(tran.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                    data[ConstantValue.TRANSACTION_TYPE_EXPENSE]+=(float)tran.getCash();
+                }else{
+                    data[ConstantValue.TRANSACTION_TYPE_INCOME]+=(float)tran.getCash();
+                }
+            }
+        }
+        return data;
     }
 }
