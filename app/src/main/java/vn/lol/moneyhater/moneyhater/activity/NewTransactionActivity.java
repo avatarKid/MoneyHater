@@ -46,7 +46,7 @@ public class NewTransactionActivity extends ActionBarActivity {
     DatePicker dpTransactionDate;
     Button btAddNewTransaction;
     Transaction transaction = new Transaction();
-    ArrayList<Budget> listBudget;
+    ArrayList<Budget> listBudget = new ArrayList<Budget>();
     ArrayList<Category> listCategory;
     ArrayList<Account> listAccount;
     XmlHelper mDbHelper;
@@ -238,7 +238,7 @@ public class NewTransactionActivity extends ActionBarActivity {
         }
         Budget budget = (Budget) spTransactionBudget.getSelectedItem();
         if (budget != null) {
-            if (budget.getImageID()==-1) transaction.setBudgetID(-1);
+            if (budget.getBudgetID()==-1) transaction.setBudgetID(-1);
             else transaction.setBudgetID(budget.getBudgetID());
         }
 

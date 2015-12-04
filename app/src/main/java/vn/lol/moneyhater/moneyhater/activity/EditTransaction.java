@@ -40,7 +40,7 @@ public class EditTransaction extends AppCompatActivity {
     Transaction transaction;
     int transactionID;
     XmlHelper mDbHelper;
-    ArrayList<Budget> listBudget;
+    ArrayList<Budget> listBudget = new ArrayList<Budget>();
     ArrayList<Category> listCategory;
     ArrayList<Account> listAccount;
     EditText etTransactionName;

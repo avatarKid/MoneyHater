@@ -103,7 +103,9 @@ public class XmlHelper extends Application {
     }
 
     public ArrayList<Budget> getAllBudgets() {
-        return allBudgets;
+        ArrayList<Budget> a = new ArrayList<Budget>();
+        a =  (ArrayList<Budget>)this.allBudgets.clone();
+        return a;
     }
 
     public Budget getBudget(int id) {
@@ -115,6 +117,7 @@ public class XmlHelper extends Application {
 
     public boolean insertBudget(Budget budget) {
         try {
+            budget.setBudgetID(allBudgets.size());
             allBudgets.add(budget);
         } catch (Exception e) {
             return false;

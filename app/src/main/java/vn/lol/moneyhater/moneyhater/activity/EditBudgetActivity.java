@@ -38,7 +38,7 @@ public class EditBudgetActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_edit_budget, menu);
 
         Intent intent = getIntent();
-        mDbHelper = (XmlHelper) intent.getSerializableExtra(ConstantValue.DB_HELPER);
+        mDbHelper = (XmlHelper)getApplicationContext();
         id = intent.getIntExtra(ConstantValue.BUDGET_ID, 0);
         budget = mDbHelper.getBudget(id);
         name = (EditText) findViewById(R.id.et_edit_bud_name);
