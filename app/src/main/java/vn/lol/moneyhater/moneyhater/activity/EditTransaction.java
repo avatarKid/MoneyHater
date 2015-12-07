@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
+import vn.lol.moneyhater.moneyhater.Database.DataManager;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.CategoryAdapter;
 import vn.lol.moneyhater.moneyhater.model.Account;
@@ -39,7 +39,7 @@ public class EditTransaction extends AppCompatActivity {
     static final int DIALOG_ID = 0;
     Transaction transaction;
     int transactionID;
-    XmlHelper mDbHelper;
+    DataManager mDbHelper;
     ArrayList<Budget> listBudget = new ArrayList<Budget>();
     ArrayList<Category> listCategory;
     ArrayList<Account> listAccount;
@@ -75,7 +75,7 @@ public class EditTransaction extends AppCompatActivity {
         Intent intent = getIntent();
 
         // get global XML helper
-        mDbHelper= (XmlHelper)getApplicationContext();
+        mDbHelper= (DataManager)getApplicationContext();
 
         init();
         btDelete.setOnClickListener(new View.OnClickListener() {

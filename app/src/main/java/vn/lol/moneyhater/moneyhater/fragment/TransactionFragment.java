@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
-import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
+import vn.lol.moneyhater.moneyhater.Database.DataManager;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.activity.EditTransaction;
 import vn.lol.moneyhater.moneyhater.adapter.ListTransactionAdapter;
@@ -32,7 +30,7 @@ import vn.lol.moneyhater.moneyhater.model.TransactionDate;
 
 public class TransactionFragment extends Fragment {
     private ListTransactionAdapter mAdapterTransaction;
-    XmlHelper mDbHelper;
+    DataManager mDbHelper;
     ListView mlistTransaction;
     TextView tvIncome, tvExpense, tvSumaryTransaction;
     ArrayList<TransactionDate> listTransaction;
@@ -47,7 +45,7 @@ public class TransactionFragment extends Fragment {
                 false);
 
         // get global XML helper
-        mDbHelper= (XmlHelper)getActivity().getApplicationContext();
+        mDbHelper= (DataManager)getActivity().getApplicationContext();
 
         listTransaction = new ArrayList<TransactionDate>();
         listDate = new ArrayList<>();

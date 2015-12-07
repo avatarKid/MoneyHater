@@ -37,9 +37,9 @@ import java.util.Vector;
 //import javax.xml.stream.events.XMLEvent;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
-import vn.lol.moneyhater.moneyhater.Database.DropboxBackup;
 import vn.lol.moneyhater.moneyhater.Database.DataManager;
+import vn.lol.moneyhater.moneyhater.Database.DropboxBackup;
+import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
 import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.FragmentPageAdapter;
@@ -62,9 +62,9 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
     private Button mButtonAdd;
     private int StateSeleced = 0;
-    private XmlHelper mDb;
+    private DataManager mDb;
     private DropboxBackup mDropbox;
-    private DataManager dataManager;
+    private XmlHelper dataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,19 +177,19 @@ public class MainActivity extends ActionBarActivity
         }
         getApplicationContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
-        dataManager = new DataManager(getApplicationContext());
+        dataManager = new XmlHelper(getApplicationContext());
         dataManager.readDataXml();
 
-        // get glogal XmlHelper
-        mDb = (XmlHelper)getApplicationContext();
+        // get glogal DataManager
+        mDb = (DataManager)getApplicationContext();
         mDb.setAllAccounts(dataManager.getAllAccounts());
         mDb.setAllBudgets(dataManager.getAllBudgets());
         mDb.setAllTransactions(dataManager.getAllTransactions());
 
-//        mDb = new XmlHelper(dataManager.getAllAccounts(), dataManager.getAllBudgets(), dataManager.getAllTransactions());
+//        mDb = new DataManager(dataManager.getAllAccounts(), dataManager.getAllBudgets(), dataManager.getAllTransactions());
 
 //
-//        XmlHelper xh = (XmlHelper)getApplicationContext();
+//        DataManager xh = (DataManager)getApplicationContext();
 //        xh.setAllAccounts(allAccounts);
 //        xh.setAllBudgets(allBudgets);
 //        xh.setAllTransactions(allTransactions);

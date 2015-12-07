@@ -59,14 +59,14 @@ public class DropboxBackup {
         }
     }
 
-    public void backupFile(XmlHelper dbHelper) {
+    public void backupFile(DataManager dbHelper) {
         final AndroidAuthSession session = (AndroidAuthSession) mDBApi.getSession();
         if (session.isLinked()) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        File file = new File(DataManager.xmlFile);
+                        File file = new File(XmlHelper.xmlFile);
                         FileInputStream inputStream = new FileInputStream(file);
                         DropboxAPI.Entry response = mDBApi.putFile("/Backup " + new SimpleDateFormat("dd-MM-yyyy HHmmss").format(new Date()), inputStream,
                                 file.length(), null, null);

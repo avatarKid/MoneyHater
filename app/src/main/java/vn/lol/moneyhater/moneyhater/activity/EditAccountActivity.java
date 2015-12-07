@@ -17,20 +17,18 @@ import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
+import vn.lol.moneyhater.moneyhater.Database.DataManager;
 import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.ListTransactionAdapter;
 import vn.lol.moneyhater.moneyhater.model.Account;
-import vn.lol.moneyhater.moneyhater.model.Transaction;
 import vn.lol.moneyhater.moneyhater.model.TransactionDate;
 
 public class EditAccountActivity extends ActionBarActivity {
 
-    private XmlHelper mDbHelper;
+    private DataManager mDbHelper;
     private Account accountEdit;
     private ListTransactionAdapter mAdapterTransactionAcc;
     private ArrayList<TransactionDate> listTransactionAcc;
@@ -51,7 +49,7 @@ public class EditAccountActivity extends ActionBarActivity {
 
         Intent intent = getIntent();
         // get global XML helper
-        mDbHelper= (XmlHelper)getApplicationContext();
+        mDbHelper= (DataManager)getApplicationContext();
 
         accountID = intent.getIntExtra(ConstantValue.ACCOUNT_ID,0);
         accountEdit = mDbHelper.getAccount(accountID);

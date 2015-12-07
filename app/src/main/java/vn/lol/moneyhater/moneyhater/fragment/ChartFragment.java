@@ -1,6 +1,5 @@
 package vn.lol.moneyhater.moneyhater.fragment;
 
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,16 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
-import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
+import vn.lol.moneyhater.moneyhater.Database.DataManager;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
-import vn.lol.moneyhater.moneyhater.model.Transaction;
 import vn.lol.moneyhater.moneyhater.view.Bar;
 import vn.lol.moneyhater.moneyhater.view.BarGraph;
 import vn.lol.moneyhater.moneyhater.view.Line;
@@ -27,7 +22,7 @@ import vn.lol.moneyhater.moneyhater.view.LineGraph;
 import vn.lol.moneyhater.moneyhater.view.LinePoint;
 
 public class ChartFragment extends Fragment {
-    private XmlHelper mDbHelper;
+    private DataManager mDbHelper;
     float [] lMoneyExpense;
     float [] lMoneyIncome;
     private int [] lPointMoneyE;
@@ -55,7 +50,7 @@ public class ChartFragment extends Fragment {
         maxMoney = 0;
         try {
             // get global XML helper
-            mDbHelper= (XmlHelper)getActivity().getApplicationContext();
+            mDbHelper= (DataManager)getActivity().getApplicationContext();
 //            SimpleDateFormat dayFormat = new SimpleDateFormat("MM", Locale.US);
 //            for (Transaction tran :
 //                    mDbHelper.getAllTransactions()) {

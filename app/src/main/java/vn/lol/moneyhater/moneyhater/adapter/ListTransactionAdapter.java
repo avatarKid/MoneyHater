@@ -13,17 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 
 import vn.lol.moneyhater.momeyhater.R;
 //import vn.lol.moneyhater.moneyhater.Database.DatabaseHelper;
-import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
+import vn.lol.moneyhater.moneyhater.Database.DataManager;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
@@ -43,9 +40,9 @@ public class ListTransactionAdapter extends BaseAdapter {
 
     private ArrayList<TransactionDate> mData = new ArrayList<TransactionDate>();
     private LayoutInflater mInflater;
-    private XmlHelper databaseHelper;
+    private DataManager databaseHelper;
 
-    public ListTransactionAdapter(Activity activity, ArrayList<TransactionDate> lstTrans, XmlHelper mDBHelper) {
+    public ListTransactionAdapter(Activity activity, ArrayList<TransactionDate> lstTrans, DataManager mDBHelper) {
         mInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mData = lstTrans;
         databaseHelper = mDBHelper;

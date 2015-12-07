@@ -15,12 +15,12 @@ import android.widget.Toast;
 import java.text.NumberFormat;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
+import vn.lol.moneyhater.moneyhater.Database.DataManager;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.model.Budget;
 
 public class EditBudgetActivity extends ActionBarActivity {
-    private XmlHelper mDbHelper;
+    private DataManager mDbHelper;
     private Budget budget;
     private int id = 0;
     EditText name;
@@ -38,7 +38,7 @@ public class EditBudgetActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_edit_budget, menu);
 
         Intent intent = getIntent();
-        mDbHelper = (XmlHelper)getApplicationContext();
+        mDbHelper = (DataManager)getApplicationContext();
         id = intent.getIntExtra(ConstantValue.BUDGET_ID, 0);
         budget = mDbHelper.getBudget(id);
         name = (EditText) findViewById(R.id.et_edit_bud_name);

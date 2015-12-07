@@ -9,26 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
+import vn.lol.moneyhater.moneyhater.Database.DataManager;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
-import vn.lol.moneyhater.moneyhater.activity.EditAccountActivity;
 import vn.lol.moneyhater.moneyhater.activity.EditBudgetActivity;
-import vn.lol.moneyhater.moneyhater.adapter.ListBudgetAdapter;
 import vn.lol.moneyhater.moneyhater.adapter.ListBudgetExpandableAdapter;
-import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.Budget;
 import vn.lol.moneyhater.moneyhater.model.BudgetGroup;
 
 public class BudgetFragment extends Fragment {
     private ListBudgetExpandableAdapter mAdapterBudget;
     ExpandableListView mlistBudget;
-    private XmlHelper mDbHelper;
+    private DataManager mDbHelper;
     private ArrayList<Budget> listBudget;
     SparseArray<BudgetGroup> groups = new SparseArray<BudgetGroup>();
 
@@ -38,7 +33,7 @@ public class BudgetFragment extends Fragment {
                 false);
 
         // get global XML helper
-        mDbHelper= (XmlHelper)getActivity().getApplicationContext();
+        mDbHelper= (DataManager)getActivity().getApplicationContext();
 
         mlistBudget = (ExpandableListView) rootView.findViewById(R.id.lvBudget);
         CreateData();

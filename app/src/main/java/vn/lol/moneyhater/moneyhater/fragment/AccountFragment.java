@@ -3,15 +3,11 @@ package vn.lol.moneyhater.moneyhater.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,7 +15,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
+import vn.lol.moneyhater.moneyhater.Database.DataManager;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.activity.EditAccountActivity;
 import vn.lol.moneyhater.moneyhater.adapter.ListAccountAdapter;
@@ -28,7 +24,7 @@ import vn.lol.moneyhater.moneyhater.model.Account;
 
 public class AccountFragment extends Fragment {
     private ListAccountAdapter mAdapterAccount;
-    private XmlHelper mDbHelper;
+    private DataManager mDbHelper;
     private ArrayList<Account> listAccount;
     ListView mlistAccount;
     TextView mTotalMoney;
@@ -39,7 +35,7 @@ public class AccountFragment extends Fragment {
                 false);
 
         // get global XML helper
-        mDbHelper= (XmlHelper)getActivity().getApplicationContext();
+        mDbHelper= (DataManager)getActivity().getApplicationContext();
 
 
         mlistAccount = (ListView)rootView.findViewById(R.id.lvAccount);

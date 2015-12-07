@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -25,10 +24,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import vn.lol.moneyhater.momeyhater.R;
-import vn.lol.moneyhater.moneyhater.Database.XmlHelper;
+import vn.lol.moneyhater.moneyhater.Database.DataManager;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.CategoryAdapter;
-import vn.lol.moneyhater.moneyhater.fragment.TransactionFragment;
 import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.Budget;
 import vn.lol.moneyhater.moneyhater.model.Category;
@@ -49,7 +47,7 @@ public class NewTransactionActivity extends ActionBarActivity {
     ArrayList<Budget> listBudget = new ArrayList<Budget>();
     ArrayList<Category> listCategory;
     ArrayList<Account> listAccount;
-    XmlHelper mDbHelper;
+    DataManager mDbHelper;
     int mDay, mMonth, mYear;
 
     static final int DIALOG_ID = 0;
@@ -152,7 +150,7 @@ public class NewTransactionActivity extends ActionBarActivity {
         Intent intent = getIntent();
 
         // get global XML helper
-        mDbHelper = (XmlHelper)getApplicationContext();
+        mDbHelper = (DataManager)getApplicationContext();
 
         listAccount = mDbHelper.getAllAccounts();
         listBudget = mDbHelper.getAllBudgets();
