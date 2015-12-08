@@ -40,7 +40,6 @@ public class NewAccountActivity extends ActionBarActivity {
 //        Intent intent = getIntent();
         mDbHelper = (DataManager)getApplicationContext();
 
-
         accountName = (EditText) findViewById(R.id.etAccountName);
         accountCash = (EditText) findViewById(R.id.etCash);
         radioCard = (RadioButton) findViewById(R.id.rbtCard);

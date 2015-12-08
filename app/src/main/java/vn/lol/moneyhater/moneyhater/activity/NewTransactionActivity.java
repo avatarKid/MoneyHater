@@ -168,7 +168,9 @@ public class NewTransactionActivity extends ActionBarActivity {
         spTransactionAccount.setAdapter(adapterAccount);
 
         // add item to Budget spinner
-        listBudget.add(new Budget(getString(R.string.other),-1,-1));
+        Budget b = new Budget(getString(R.string.other),-1, 0);
+        b.setBudgetID(-1);
+        listBudget.add(b);
         ArrayAdapter<Budget> adapterBudget = new ArrayAdapter<Budget>(this, android.R.layout.simple_spinner_dropdown_item, listBudget);
         spTransactionBudget.setAdapter(adapterBudget);
         spTransactionBudget.setSelection(listBudget.size()-1);
@@ -222,22 +224,10 @@ public class NewTransactionActivity extends ActionBarActivity {
         Account account = (Account) spTransactionAccount.getSelectedItem();
         if (account != null) {
             transaction.setAccountID(account.getAccountID());
-            //Update account
-            double accountMoney = 0;
-            accountMoney = account.getCash();
-//            if(transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
-//                accountMoney -= transaction.getCash();
-//            } else {
-//                accountMoney += transaction.getCash();
-//            }
-//            account.setCash(accountMoney);
-//            mDbHelper.updateAccount(account);
-
         }
         Budget budget = (Budget) spTransactionBudget.getSelectedItem();
         if (budget != null) {
-            if (budget.getBudgetID()==-1) transaction.setBudgetID(-1);
-            else transaction.setBudgetID(budget.getBudgetID());
+             transaction.setBudgetID(budget.getBudgetID());
         }
 
         Intent returnIntent = new Intent();
