@@ -24,6 +24,7 @@ import vn.lol.moneyhater.moneyhater.Database.DataManager;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.activity.EditTransaction;
 import vn.lol.moneyhater.moneyhater.adapter.ListTransactionAdapter;
+import vn.lol.moneyhater.moneyhater.model.Account;
 import vn.lol.moneyhater.moneyhater.model.SupportTransaction;
 import vn.lol.moneyhater.moneyhater.model.Transaction;
 import vn.lol.moneyhater.moneyhater.model.TransactionDate;
@@ -182,9 +183,18 @@ public class TransactionFragment extends Fragment {
     * */
     public void loadData() {
         listTransaction.clear();
+
         for (Transaction transaction : mDbHelper.getAllTransactions()) {
-            addTransaction(transaction);
+            ArrayList<Account> listAccount = mDbHelper.getAllAccounts();
+            for(int i=0;i<listAccount.size();i++) {
+                if(listAccount.get(i).getIsDeleted() != 1){
+                    if(transaction.getAccountID() == listAccount.get(i).getAccountID()){
+                        addTransaction(transaction);
+                    }
+                }
+            }
         }
+
         if (!mDbHelper.getAllTransactions().isEmpty()) {
             mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction, mDbHelper);
             mlistTransaction.setAdapter(mAdapterTransaction);

@@ -153,6 +153,12 @@ public class NewTransactionActivity extends ActionBarActivity {
         mDbHelper = (DataManager)getApplicationContext();
 
         listAccount = mDbHelper.getAllAccounts();
+        ArrayList<Account> listAccountDisplay = new ArrayList<>();
+        for(int i=0;i<listAccount.size();i++) {
+            if(listAccount.get(i).getIsDeleted() != 1){
+                listAccountDisplay.add(listAccount.get(i));
+            }
+        }
         listBudget = mDbHelper.getAllBudgets();
 //        listCategory = mDbHelper.getAllCategory();
 
@@ -164,7 +170,7 @@ public class NewTransactionActivity extends ActionBarActivity {
         spCategories.setSelection(arr.length - 1);
 
         // add item to Account spinner
-        ArrayAdapter<Account> adapterAccount = new ArrayAdapter<Account>(this, android.R.layout.simple_spinner_dropdown_item, listAccount);
+        ArrayAdapter<Account> adapterAccount = new ArrayAdapter<Account>(this, android.R.layout.simple_spinner_dropdown_item, listAccountDisplay);
         spTransactionAccount.setAdapter(adapterAccount);
 
         // add item to Budget spinner
@@ -222,7 +228,7 @@ public class NewTransactionActivity extends ActionBarActivity {
         transaction.setType(swTransactionType.isChecked() ? ConstantValue.TRANSACTION_TYPE_INCOME : ConstantValue.TRANSACTION_TYPE_EXPENSE);
 
         Account account = (Account) spTransactionAccount.getSelectedItem();
-        if (account != null) {
+        if (account != null && account.getIsDeleted() != 1) {
             transaction.setAccountID(account.getAccountID());
         }
         Budget budget = (Budget) spTransactionBudget.getSelectedItem();

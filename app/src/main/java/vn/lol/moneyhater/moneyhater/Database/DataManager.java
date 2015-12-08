@@ -218,8 +218,7 @@ public class DataManager extends Application {
 
     public ArrayList<Transaction> getTransactionByAccountID(int accountID) {
         ArrayList<Transaction> al = new ArrayList<>();
-        for (Transaction tran :
-                allTransactions) {
+        for (Transaction tran : allTransactions) {
             if (tran.getAccountID()==accountID) al.add(tran);
         }
         return al;
@@ -241,14 +240,19 @@ public class DataManager extends Application {
     public float[][] getTransactionInYear(int year){
         float[][] data = new float[2][12];
         SimpleDateFormat dayFormat = new SimpleDateFormat("MM", Locale.US);
-        for (Transaction tran :
-                allTransactions) {
-            if (tran.getYear().equalsIgnoreCase(year+"")){
-                int in = Integer.parseInt(dayFormat.format(tran.getTime()));
-                if(tran.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE){
-                    data[ConstantValue.TRANSACTION_TYPE_EXPENSE][in-1]+= (float)tran.getCash();
-                }else{
-                    data[ConstantValue.TRANSACTION_TYPE_INCOME][in-1]+= (float)tran.getCash();
+        for (Transaction tran :allTransactions) {
+            for(int i=0;i<allAccounts.size();i++) {
+                if (allAccounts.get(i).getIsDeleted() != 1) {
+                    if (tran.getAccountID() == allAccounts.get(i).getAccountID()) {
+                        if (tran.getYear().equalsIgnoreCase(year + "")) {
+                            int in = Integer.parseInt(dayFormat.format(tran.getTime()));
+                            if (tran.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+                                data[ConstantValue.TRANSACTION_TYPE_EXPENSE][in - 1] += (float) tran.getCash();
+                            } else {
+                                data[ConstantValue.TRANSACTION_TYPE_INCOME][in - 1] += (float) tran.getCash();
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -258,13 +262,18 @@ public class DataManager extends Application {
     public float[] getTransactionInMonth(int month,int year){
         float[] data = new float[2];
         SimpleDateFormat dayFormat = new SimpleDateFormat("MM", Locale.US);
-        for (Transaction tran :
-                allTransactions) {
-            if (tran.getYear().equalsIgnoreCase(year+"") && dayFormat.format(tran.getTime()).equalsIgnoreCase(month+"")){
-                if(tran.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE){
-                    data[ConstantValue.TRANSACTION_TYPE_EXPENSE]+=(float)tran.getCash();
-                }else{
-                    data[ConstantValue.TRANSACTION_TYPE_INCOME]+=(float)tran.getCash();
+        for (Transaction tran : allTransactions) {
+            for(int i=0;i<allAccounts.size();i++) {
+                if(allAccounts.get(i).getIsDeleted() != 1){
+                    if(tran.getAccountID() == allAccounts.get(i).getAccountID()){
+                        if (tran.getYear().equalsIgnoreCase(year+"") && dayFormat.format(tran.getTime()).equalsIgnoreCase(month+"")){
+                            if(tran.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE){
+                                data[ConstantValue.TRANSACTION_TYPE_EXPENSE]+=(float)tran.getCash();
+                            }else{
+                                data[ConstantValue.TRANSACTION_TYPE_INCOME]+=(float)tran.getCash();
+                            }
+                        }
+                    }
                 }
             }
         }

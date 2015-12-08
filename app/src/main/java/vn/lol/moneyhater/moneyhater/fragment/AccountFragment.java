@@ -57,7 +57,7 @@ public class AccountFragment extends Fragment {
     }
 
     public void displayListAccount(){
-        ArrayList<Account> listAccountDisplay = new ArrayList<Account>();
+        ArrayList<Account> listAccountDisplay = new ArrayList<>();
         listAccount = mDbHelper.getAllAccounts();
         Log.e("Account list at list:", mDbHelper.getAllAccounts().size() + "");
         for(int i=0;i<listAccount.size();i++) {

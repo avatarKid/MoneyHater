@@ -218,13 +218,19 @@ public class EditTransaction extends AppCompatActivity {
         });
 
         listAccount = mDbHelper.getAllAccounts();
+        ArrayList<Account> listAccountDisplay = new ArrayList<>();
+        for(int i=0;i<listAccount.size();i++) {
+            if(listAccount.get(i).getIsDeleted() != 1){
+                listAccountDisplay.add(listAccount.get(i));
+            }
+        }
         listBudget = mDbHelper.getAllBudgets();
 //        listCategory = mDbHelper.get();
         Account currentAccount = mDbHelper.getAccount(transaction.getAccountID());
         Budget currentBudget = mDbHelper.getBudget(transaction.getBudgetID());
 
         // add item to Account spinner
-        ArrayAdapter<Account> adapterAccount = new ArrayAdapter<Account>(this, android.R.layout.simple_spinner_dropdown_item, listAccount);
+        ArrayAdapter<Account> adapterAccount = new ArrayAdapter<Account>(this, android.R.layout.simple_spinner_dropdown_item, listAccountDisplay);
         spTransactionAccount.setAdapter(adapterAccount);
 
         // add item to Budget spinner
