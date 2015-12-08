@@ -81,7 +81,7 @@ public class EditTransaction extends AppCompatActivity {
         btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateMoneyOnDelete();
+//                updateMoneyOnDelete();
                 Intent intent = new Intent();
                 intent.putExtra(ConstantValue.TRANSACTION_ID, transactionID);
                 setResult(ConstantValue.RESULT_CODE_DELETE_TRANSACTION, intent);
@@ -137,72 +137,75 @@ public class EditTransaction extends AppCompatActivity {
 
         //Type
         transaction.setType(swTransactionType.isChecked() ? ConstantValue.TRANSACTION_TYPE_INCOME : ConstantValue.TRANSACTION_TYPE_EXPENSE);
-        newCash = transaction.getCash();
 
-        //update Account
         Account newAccount = (Account) spTransactionAccount.getSelectedItem();
-        Account oldAccount = mDbHelper.getAccount(oldAccountID);
-
-        if (oldAccount == null && newAccount != null) {
-            double newAccountMoney = newAccount.getCash();
-            transaction.setAccountID(newAccount.getAccountID());
-
-            // change Type of Transaction
-            if (transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
-                newAccountMoney = newAccountMoney - newCash;
-            } else {
-                newAccountMoney = newAccountMoney + newCash;
-            }
-
-            newAccount.setCash(newAccountMoney);
-            mDbHelper.updateAccount(newAccount);
-
-        }
-        if (newAccount != null && oldAccount != null) {
-            double newAccountMoney = newAccount.getCash();
-            double oldAccountMoney = oldAccount.getCash();
-            transaction.setAccountID(newAccount.getAccountID());
-            if (newAccount.getAccountID() == oldAccountID) { // if not change Account
-                if (transaction.getType() == oldType) { // if not change Type of Transaction
-                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
-                        newAccountMoney = newAccountMoney + oldCash - newCash;
-                    } else {
-                        newAccountMoney = newAccountMoney - oldCash + newCash;
-                    }
-                } else { // change Type of Transaction
-                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
-                        newAccountMoney = newAccountMoney + oldCash + newCash;
-                    } else {
-                        newAccountMoney = newAccountMoney - oldCash - newCash;
-                    }
-                }
-                newAccount.setCash(newAccountMoney);
-                mDbHelper.updateAccount(newAccount);
-            } else { // if Change account
-                if (transaction.getType() == oldType) { // if not change Type of Transaction
-                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
-                        newAccountMoney -= newCash;
-                        oldAccountMoney += oldCash;
-                    } else {
-                        newAccountMoney += newCash;
-                        oldAccountMoney -= oldCash;
-                    }
-                } else { // change Type of Transaction
-                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
-                        newAccountMoney += newCash;
-                        oldAccountMoney += oldCash;
-                    } else {
-                        newAccountMoney -= newCash;
-                        oldAccountMoney -= oldCash;
-                    }
-                }
-                newAccount.setCash(newAccountMoney);
-                oldAccount.setCash(oldAccountMoney);
-                mDbHelper.updateAccount(newAccount);
-                mDbHelper.updateAccount(oldAccount);
-            }
-
-        }
+        transaction.setAccountID(newAccount.getAccountID());
+//        newCash = transaction.getCash();
+//
+//        //update Account
+//        Account newAccount = (Account) spTransactionAccount.getSelectedItem();
+//        Account oldAccount = mDbHelper.getAccount(oldAccountID);
+//
+//        if (oldAccount == null && newAccount != null) {
+//            double newAccountMoney = newAccount.getCash();
+//            transaction.setAccountID(newAccount.getAccountID());
+//
+//            // change Type of Transaction
+////            if (transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+////                newAccountMoney = newAccountMoney - newCash;
+////            } else {
+////                newAccountMoney = newAccountMoney + newCash;
+////            }
+////
+////            newAccount.setCash(newAccountMoney);
+////            mDbHelper.updateAccount(newAccount);
+//
+//        }
+//        if (newAccount != null && oldAccount != null) {
+//            double newAccountMoney = newAccount.getCash();
+//            double oldAccountMoney = oldAccount.getCash();
+//            transaction.setAccountID(newAccount.getAccountID());
+//            if (newAccount.getAccountID() == oldAccountID) { // if not change Account
+//                if (transaction.getType() == oldType) { // if not change Type of Transaction
+//                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+//                        newAccountMoney = newAccountMoney + oldCash - newCash;
+//                    } else {
+//                        newAccountMoney = newAccountMoney - oldCash + newCash;
+//                    }
+//                } else { // change Type of Transaction
+//                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+//                        newAccountMoney = newAccountMoney + oldCash + newCash;
+//                    } else {
+//                        newAccountMoney = newAccountMoney - oldCash - newCash;
+//                    }
+//                }
+//                newAccount.setCash(newAccountMoney);
+//                mDbHelper.updateAccount(newAccount);
+//            } else { // if Change account
+//                if (transaction.getType() == oldType) { // if not change Type of Transaction
+//                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+//                        newAccountMoney -= newCash;
+//                        oldAccountMoney += oldCash;
+//                    } else {
+//                        newAccountMoney += newCash;
+//                        oldAccountMoney -= oldCash;
+//                    }
+//                } else { // change Type of Transaction
+//                    if (oldType == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+//                        newAccountMoney += newCash;
+//                        oldAccountMoney += oldCash;
+//                    } else {
+//                        newAccountMoney -= newCash;
+//                        oldAccountMoney -= oldCash;
+//                    }
+//                }
+//                newAccount.setCash(newAccountMoney);
+//                oldAccount.setCash(oldAccountMoney);
+//                mDbHelper.updateAccount(newAccount);
+//                mDbHelper.updateAccount(oldAccount);
+//            }
+//
+//        }
 
         Budget budget = (Budget) spTransactionBudget.getSelectedItem();
         if (budget != null) {

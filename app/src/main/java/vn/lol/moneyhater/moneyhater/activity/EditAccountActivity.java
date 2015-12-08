@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.NumberFormat;
@@ -24,6 +25,7 @@ import vn.lol.moneyhater.moneyhater.Util.CommonFunction;
 import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.adapter.ListTransactionAdapter;
 import vn.lol.moneyhater.moneyhater.model.Account;
+import vn.lol.moneyhater.moneyhater.model.Transaction;
 import vn.lol.moneyhater.moneyhater.model.TransactionDate;
 
 public class EditAccountActivity extends ActionBarActivity {
@@ -35,7 +37,7 @@ public class EditAccountActivity extends ActionBarActivity {
     private int accountID = 0;
     private int accountType = 0;
     EditText editAccName;
-    EditText editCash;
+    TextView editCash;
     RadioButton radioCash;
     RadioButton radioCard;
     ListView listTransaction;
@@ -51,12 +53,24 @@ public class EditAccountActivity extends ActionBarActivity {
         // get global XML helper
         mDbHelper= (DataManager)getApplicationContext();
 
-        accountID = intent.getIntExtra(ConstantValue.ACCOUNT_ID,0);
+        accountID = intent.getIntExtra(ConstantValue.ACCOUNT_ID, 0);
         accountEdit = mDbHelper.getAccount(accountID);
         editAccName = (EditText) findViewById(R.id.editAccountName);
         editAccName.setText(accountEdit.getAccountName());
-        editCash = (EditText) findViewById(R.id.editCash);
-        editCash.setText(NumberFormat.getInstance().format(accountEdit.getCash()));
+        editCash = (TextView) findViewById(R.id.editCash);
+        double total = accountEdit.getCash();
+        ArrayList<Transaction> transactionsList = mDbHelper.getAllTransactions();
+        for (Transaction t: transactionsList) {
+            if(t.getAccountID() == accountEdit.getAccountID()){
+                if(t.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+                    total -= t.getCash();
+                }else {
+                    total += t.getCash();
+                }
+            }
+        }
+        editCash.setText(NumberFormat.getInstance().format(total));
+
 
         //List Transaction
         listTransaction = (ListView) findViewById(R.id.lvTransactionAcc);
@@ -67,33 +81,34 @@ public class EditAccountActivity extends ActionBarActivity {
             mAdapterTransactionAcc.notifyDataSetChanged();
         }
 
-        editCash.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-                if(!charSequence.toString().equals(""))
-                {
-                    if(!charSequence.toString().equals(current)){
-                        String cash = charSequence.toString().replaceAll("[,]", "");
-                        double parsed = Double.parseDouble(cash);
-                        String formated = NumberFormat.getInstance().format((parsed));
-                        current = formated;
-                        editCash.setText(formated);
-                        editCash.setSelection(editCash.getText().length());
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+//        editCash.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+//
+//                if(!charSequence.toString().equals(""))
+//                {
+//                    if(!charSequence.toString().equals(current)){
+//                        String cash = charSequence.toString().replaceAll("[,]", "");
+//                        double parsed = Double.parseDouble(cash);
+//                        String formated = NumberFormat.getInstance().format((parsed));
+//                        current = formated;
+//                        editCash.setText(formated);
+//                        editCash.setSelection(editCash.getText().length());
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
         accountType = accountEdit.getAccountTypeID();
         radioCash = (RadioButton) findViewById(R.id.rbtCash);
         radioCard = (RadioButton) findViewById(R.id.rbtCard);
@@ -125,7 +140,7 @@ public class EditAccountActivity extends ActionBarActivity {
                     }
                     if(!editAccName.getText().toString().isEmpty()) {
                         accountEdit.setAccountName(editAccName.getText().toString());
-                        accountEdit.setCash(Double.parseDouble(editCash.getText().toString().replaceAll("[,]", "")));
+                        //accountEdit.setCash(Double.parseDouble(editCash.getText().toString().replaceAll("[,]", "")));
                         accountEdit.setAccountTypeID(accountType);
                         mDbHelper.updateAccount(accountEdit);
                         finish();

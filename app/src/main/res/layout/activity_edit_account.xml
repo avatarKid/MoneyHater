@@ -57,15 +57,14 @@
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <EditText
+            <TextView
                 android:id="@+id/editCash"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-
+                android:layout_height="37dp"
                 android:layout_weight="3"
-                android:inputType="number"
-                android:numeric="integer"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="12pt"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout

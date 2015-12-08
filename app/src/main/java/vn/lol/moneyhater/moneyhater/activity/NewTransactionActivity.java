@@ -225,13 +225,13 @@ public class NewTransactionActivity extends ActionBarActivity {
             //Update account
             double accountMoney = 0;
             accountMoney = account.getCash();
-            if(transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
-                accountMoney -= transaction.getCash();
-            } else {
-                accountMoney += transaction.getCash();
-            }
-            account.setCash(accountMoney);
-            mDbHelper.updateAccount(account);
+//            if(transaction.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+//                accountMoney -= transaction.getCash();
+//            } else {
+//                accountMoney += transaction.getCash();
+//            }
+//            account.setCash(accountMoney);
+//            mDbHelper.updateAccount(account);
 
         }
         Budget budget = (Budget) spTransactionBudget.getSelectedItem();
