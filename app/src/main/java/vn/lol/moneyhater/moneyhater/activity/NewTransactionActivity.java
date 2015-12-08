@@ -235,7 +235,7 @@ public class NewTransactionActivity extends ActionBarActivity {
         if (budget != null) {
              transaction.setBudgetID(budget.getBudgetID());
         }
-
+        transaction.setCategoryID(spCategories.getSelectedItemPosition());
         Intent returnIntent = new Intent();
         returnIntent.putExtra(ConstantValue.NEW_TRANSACTION, transaction);
         setResult(RESULT_OK, returnIntent);
