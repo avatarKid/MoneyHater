@@ -2,6 +2,7 @@ package vn.lol.moneyhater.moneyhater.Database;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -190,7 +191,7 @@ public class DataManager extends Application {
         try {
             Transaction accIn = getTransaction(transaction.getTransactionID());
             accIn.setCash(transaction.getCash());
-            accIn.setDate(transaction.getDate());
+            accIn.setDate(transaction.getDateTime());
             accIn.setAccountID(transaction.getAccountID());
             accIn.setBudgetID(transaction.getBudgetID());
             accIn.setCategoryID(transaction.getCategoryID());
