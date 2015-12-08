@@ -20,12 +20,14 @@ import vn.lol.moneyhater.moneyhater.Util.ConstantValue;
 import vn.lol.moneyhater.moneyhater.activity.EditAccountActivity;
 import vn.lol.moneyhater.moneyhater.adapter.ListAccountAdapter;
 import vn.lol.moneyhater.moneyhater.model.Account;
+import vn.lol.moneyhater.moneyhater.model.Transaction;
 
 
 public class AccountFragment extends Fragment {
     private ListAccountAdapter mAdapterAccount;
     private DataManager mDbHelper;
     private ArrayList<Account> listAccount;
+
     ListView mlistAccount;
     TextView mTotalMoney;
 
@@ -55,17 +57,32 @@ public class AccountFragment extends Fragment {
     }
 
     public void displayListAccount(){
+        ArrayList<Account> listAccountDisplay = new ArrayList<Account>();
         listAccount = mDbHelper.getAllAccounts();
         Log.e("Account list at list:", mDbHelper.getAllAccounts().size() + "");
-        mAdapterAccount = new ListAccountAdapter(getActivity(),listAccount);
-
+        for(int i=0;i<listAccount.size();i++) {
+            if(listAccount.get(i).getIsDeleted() != 1){
+                listAccountDisplay.add(listAccount.get(i));
+            }
+        }
+        mAdapterAccount = new ListAccountAdapter(getActivity(), listAccountDisplay);
         mAdapterAccount.notifyDataSetChanged();
         mlistAccount.setAdapter(mAdapterAccount);
-
         double total = 0;
-        for(int i=0;i<listAccount.size();i++){
-            total += listAccount.get(i).getCash();
+        for(int i=0;i<listAccountDisplay.size();i++){
+            total += listAccountDisplay.get(i).getCash();
+            ArrayList<Transaction> transactionsList = mDbHelper.getAllTransactions();
+            for (Transaction t: transactionsList) {
+                if(t.getAccountID() == listAccountDisplay.get(i).getAccountID()){
+                    if(t.getType() == ConstantValue.TRANSACTION_TYPE_EXPENSE) {
+                        total -= t.getCash();
+                    }else {
+                        total += t.getCash();
+                    }
+                }
+            }
         }
+
         mTotalMoney.setText(NumberFormat.getInstance().format(total) + ConstantValue.SETTING_CURRENCY);
     }
     @Override

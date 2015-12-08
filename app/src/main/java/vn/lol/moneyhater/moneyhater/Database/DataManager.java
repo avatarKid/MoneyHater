@@ -97,7 +97,8 @@ public class DataManager extends Application {
         try {
             Account acc = getAccount(id);
             if (acc != null) {
-                allAccounts.remove(acc);
+                acc.setIsDeleted(1);
+                //allAccounts.remove(acc);
             }
         } catch (Exception ex) {
             return false;

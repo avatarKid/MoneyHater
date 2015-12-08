@@ -24,15 +24,17 @@ public class ListAccountAdapter extends ArrayAdapter<Account> {
     private final Activity activity;
     private final ArrayList<Account> mAccount;
     private DataManager mDbHelper;
+
     public ListAccountAdapter(Activity activity, ArrayList<Account> account) {
         super(activity, R.layout.item_account, account);
         this.activity = activity;
         this.mAccount = account;
-       mDbHelper= (DataManager)activity.getApplicationContext();
+        mDbHelper= (DataManager)activity.getApplicationContext();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         LayoutInflater inflater = activity.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.item_account, null, true);
         TextView tvName = (TextView) rowView.findViewById(R.id.tvAccName);
