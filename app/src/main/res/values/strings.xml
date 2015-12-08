@@ -53,6 +53,9 @@
     <string name="lb_account_name">Name</string>
     <string name="lb_account_total_money">Total Money</string>
     <string name="lb_account_type">Type</string>
+    <string name="message_delete_acc">Warning: Delete this account will cause to also delete its transactions.</string>
+    <string name="btn_delete_acc">Delete</string>
+    <string name="btn_cancel_acc">Cancel</string>
     <string name="title_activity_about">About</string>
     <string name="tvAbout">Team: Light of Life</string>
     <string name="tvMember">Hoàng Anh Tuấn SE02707 \nBùi Đắc Huy SE02612\nĐặng Tuấn Anh SE02636\nĐào Tuấn Anh SE02807\nNguyễn Duy Đăng SE02787</string>

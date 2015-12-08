@@ -1,5 +1,7 @@
 package vn.lol.moneyhater.moneyhater.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -155,10 +157,31 @@ public class EditAccountActivity extends ActionBarActivity {
         deleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDbHelper.deleteAccount(accountID);
-                finish();
+                alertMessage();
+//                mDbHelper.deleteAccount(accountID);
+//                finish();
             }
         });
+    }
+
+    public void alertMessage() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                    case DialogInterface.BUTTON_POSITIVE:
+                        mDbHelper.deleteAccount(accountID);
+                        finish();
+                        break;
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getResources().getString(R.string.message_delete_acc))
+                .setPositiveButton(getResources().getString(R.string.btn_delete_acc), dialogClickListener)
+                .setNegativeButton(getResources().getString(R.string.btn_cancel_acc), dialogClickListener)
+                .show();
     }
 
 

@@ -55,4 +55,7 @@
     <string name="lb_account_total_money">Tổng tiền</string>
     <string name="lb_account_type">Loại</string>
     <string name="title_activity_about">Giới thiệu</string>
+    <string name="message_delete_acc">Cảnh báo: Xóa tài khoản này sẽ xóa hết giao dịch của tài khoản.</string>
+    <string name="btn_delete_acc">Xóa</string>
+    <string name="btn_cancel_acc">Hủy</string>
 </resources>

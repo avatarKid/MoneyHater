@@ -27,6 +27,7 @@ public class AccountFragment extends Fragment {
     private ListAccountAdapter mAdapterAccount;
     private DataManager mDbHelper;
     private ArrayList<Account> listAccount;
+    private ArrayList<Account> listAccountDisplay;
 
     ListView mlistAccount;
     TextView mTotalMoney;
@@ -47,7 +48,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), EditAccountActivity.class);
-                intent.putExtra(ConstantValue.ACCOUNT_ID,listAccount.get(i).getAccountID());
+                intent.putExtra(ConstantValue.ACCOUNT_ID,listAccountDisplay.get(i).getAccountID());
 //                intent.putExtra(ConstantValue.DB_HELPER,mDbHelper);
                 startActivity(intent);
             }
@@ -57,14 +58,15 @@ public class AccountFragment extends Fragment {
     }
 
     public void displayListAccount(){
-        ArrayList<Account> listAccountDisplay = new ArrayList<>();
+        listAccountDisplay = new ArrayList<>();
         listAccount = mDbHelper.getAllAccounts();
-        Log.e("Account list at list:", mDbHelper.getAllAccounts().size() + "");
+        Log.e("Account list at XML:", listAccount.size() + "");
         for(int i=0;i<listAccount.size();i++) {
             if(listAccount.get(i).getIsDeleted() != 1){
                 listAccountDisplay.add(listAccount.get(i));
             }
         }
+        Log.e("Account list at list:",listAccountDisplay.size() + "");
         mAdapterAccount = new ListAccountAdapter(getActivity(), listAccountDisplay);
         mAdapterAccount.notifyDataSetChanged();
         mlistAccount.setAdapter(mAdapterAccount);
