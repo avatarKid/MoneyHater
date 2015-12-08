@@ -81,72 +81,79 @@ public class XmlHelper {
             int eventType = parser.getEventType();
             nameTag = null;
             while (eventType != XmlPullParser.END_DOCUMENT) {
-                switch (eventType) {
-                    case XmlPullParser.START_TAG:
-                        switch (parser.getName()) {
-                            case "Account":
-                                nameTag = parser.getName();
-                                curAcc = new Account();
-                                curAcc.setAccountID(Integer.parseInt(parser.getAttributeValue(null, "id")));
-                                break;
-                            case "Budget":
-                                curBudget = new Budget();
-                                nameTag = parser.getName();
-                                curBudget.setBudgetID(Integer.parseInt(parser.getAttributeValue(null, "id")));
-                                break;
-                            case "Transaction":
-                                curTran = new Transaction();
-                                nameTag = parser.getName();
-                                curTran.setTransactionID(Integer.parseInt(parser.getAttributeValue(null, "id")));
-                                break;
-                            case "name":
-                                if (isAccount()) curAcc.setAccountName(parser.nextText());
-                                if (isBudget()) curBudget.setBudgetName(parser.nextText());
-                                if (isTransaction()) curTran.setTransactionName(parser.nextText());
-                                break;
-                            case "cash":
-                                if (isAccount())
-                                    curAcc.setCash(Double.parseDouble(parser.nextText()));
-                                if (isBudget())
-                                    curBudget.setCash(Double.parseDouble(parser.nextText()));
-                                if (isTransaction())
-                                    curTran.setCash(Double.parseDouble(parser.nextText()));
-                                break;
-                            case "type_id":
-                                curAcc.setAccountTypeID(Integer.parseInt(parser.nextText()));
-                                break;
-                            case "image_id":
-                                curBudget.setImageID(Integer.parseInt(parser.nextText()));
-                                break;
-                            case "type":
-                                curTran.setType(Integer.parseInt(parser.nextText()));
-                                break;
-                            case "category_id":
-                                curTran.setCategoryID(Integer.parseInt(parser.nextText()));
-                                break;
-                            case "account_id":
-                                curTran.setAccountID(Integer.parseInt(parser.nextText()));
-                                break;
-                            case "budget_id":
-                                curTran.setBudgetID(Integer.parseInt(parser.nextText()));
-                                break;
-                            case "date":
-                                curTran.setDate((parser.nextText()));
-                                break;
-                        }
-                        break;
-                    case XmlPullParser.END_TAG:
-                        switch (parser.getName()) {
-                            case "Account":
-                                allAccounts.add(curAcc);
-                                break;
-                            case "Budget":
-                                allBudgets.add(curBudget);
-                                break;
-                            case "Transaction":
-                                allTransactions.add(curTran);
-                                break;
-                        }
+                try {
+                    switch (eventType) {
+                        case XmlPullParser.START_TAG:
+                            switch (parser.getName()) {
+                                case "Account":
+                                    nameTag = parser.getName();
+                                    curAcc = new Account();
+                                    curAcc.setAccountID(Integer.parseInt(parser.getAttributeValue(null, "id")));
+                                    break;
+                                case "Budget":
+                                    curBudget = new Budget();
+                                    nameTag = parser.getName();
+                                    curBudget.setBudgetID(Integer.parseInt(parser.getAttributeValue(null, "id")));
+                                    break;
+                                case "Transaction":
+                                    curTran = new Transaction();
+                                    nameTag = parser.getName();
+                                    curTran.setTransactionID(Integer.parseInt(parser.getAttributeValue(null, "id")));
+                                    break;
+                                case "name":
+                                    if (isAccount()) curAcc.setAccountName(parser.nextText());
+                                    if (isBudget()) curBudget.setBudgetName(parser.nextText());
+                                    if (isTransaction()) curTran.setTransactionName(parser.nextText());
+                                    break;
+                                case "cash":
+                                    if (isAccount())
+                                        curAcc.setCash(Double.parseDouble(parser.nextText()));
+                                    if (isBudget())
+                                        curBudget.setCash(Double.parseDouble(parser.nextText()));
+                                    if (isTransaction())
+                                        curTran.setCash(Double.parseDouble(parser.nextText()));
+                                    break;
+                                case "type_id":
+                                    curAcc.setAccountTypeID(Integer.parseInt(parser.nextText()));
+                                    break;
+                                case "image_id":
+                                    curBudget.setImageID(Integer.parseInt(parser.nextText()));
+                                    break;
+                                case "type":
+                                    curTran.setType(Integer.parseInt(parser.nextText()));
+                                    break;
+                                case "category_id":
+                                    curTran.setCategoryID(Integer.parseInt(parser.nextText()));
+                                    break;
+                                case "account_id":
+                                    curTran.setAccountID(Integer.parseInt(parser.nextText()));
+                                    break;
+                                case "budget_id":
+                                    curTran.setBudgetID(Integer.parseInt(parser.nextText()));
+                                    break;
+                                case "date":
+                                    curTran.setDate((parser.nextText()));
+                                    break;
+                                case "id_deleted":
+                                    curAcc.setIsDeleted(Integer.parseInt(parser.nextText()));
+                                    break;
+                            }
+                            break;
+                        case XmlPullParser.END_TAG:
+                            switch (parser.getName()) {
+                                case "Account":
+                                    allAccounts.add(curAcc);
+                                    break;
+                                case "Budget":
+                                    allBudgets.add(curBudget);
+                                    break;
+                                case "Transaction":
+                                    allTransactions.add(curTran);
+                                    break;
+                            }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 eventType = parser.next();
             }
@@ -172,6 +179,7 @@ public class XmlHelper {
                 addLeaf(serializer, "name", acc.getAccountName());
                 addLeaf(serializer, "type_id", acc.getAccountTypeID() + "");
                 addLeaf(serializer, "cash", acc.getCash() + "");
+                addLeaf(serializer, "id_deleted", acc.getIsDeleted() + "");
                 serializer.endTag("", "Account");
             }
             serializer.endTag("", "Accounts");

@@ -12,11 +12,23 @@ public class Account implements Serializable {
     private String mAccountName;
     private Double mCash;
     private int mAccountTypeID;
+    private int mIsDeleted;
+    public static int DELETED = 1;
+    public static int NOT_DELETED = 0;
+
+    public int getIsDeleted() {
+        return mIsDeleted;
+    }
+
+    public void setIsDeleted(int mIsDeleted) {
+        this.mIsDeleted = mIsDeleted;
+    }
 
     public Account(String accountName, Double cash, int accountTypeID) {
         mAccountName = accountName;
         mCash = cash;
         mAccountTypeID = accountTypeID;
+        mIsDeleted = NOT_DELETED;
     }
 
     public Account() {
