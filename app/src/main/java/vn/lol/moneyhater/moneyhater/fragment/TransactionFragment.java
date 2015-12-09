@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,12 +74,30 @@ public class TransactionFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadData();
+//        loadData();
+//        Log.e("resume", "run");
+//        if(mAdapterTransaction != null) {
+//            mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction, mDbHelper);
+//            mlistTransaction.setAdapter(mAdapterTransaction);
+//            mAdapterTransaction.notifyDataSetChanged();
+//        }
     }
 
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        Log.e("at", "111");
+//        if(mDbHelper != null && !listTransaction.isEmpty()) {
+//            Log.e("at", "run");
+//            loadData();
+//            mAdapterTransaction = new ListTransactionAdapter(getActivity(), listTransaction, mDbHelper);
+//            mlistTransaction.setAdapter(mAdapterTransaction);
+//        }
+//    }
+
     /*
-    * Add transaction to list
-    * */
+            * Add transaction to list
+            * */
     public void addTransaction(Transaction item) {
         boolean dateExist = false;
         String date = item.getDate();
@@ -141,6 +160,7 @@ public class TransactionFragment extends Fragment {
             }
         }
         calculateIncomeAndExpense();
+
     }
 
     public void updateTransaction(Transaction transaction) {
@@ -183,6 +203,7 @@ public class TransactionFragment extends Fragment {
     * Load data onCreate
     * */
     public void loadData() {
+        Log.e("Load fata", "LOAD");
         listTransaction.clear();
 
         for (Transaction transaction : mDbHelper.getAllTransactions()) {

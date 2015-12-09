@@ -62,9 +62,9 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
     private Button mButtonAdd;
     private int StateSeleced = 0;
-    private DataManager mDb;
+    private DataManager dataManager;
     private DropboxBackup mDropbox;
-    private XmlHelper dataManager;
+    private XmlHelper xmlHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +92,7 @@ public class MainActivity extends ActionBarActivity
                 Intent intent;
                 switch (StateSeleced) {
                     case 0:
-                        if (mDb.getAllAccounts().isEmpty()) {
+                        if (dataManager.getAllAccounts().isEmpty()) {
                             Toast.makeText(getApplicationContext(), "Please add an Account first!", Toast.LENGTH_SHORT).show();
                             break;
                         }
@@ -135,7 +135,7 @@ public class MainActivity extends ActionBarActivity
                 }
                 if (resultCode == ConstantValue.RESULT_COODE_BACKUP) {
                     String fileName = data.getStringExtra(ConstantValue.DROPBOX_FILE);
-                    mDb.importDatabase(fileName);
+                    dataManager.importDatabase(fileName);
                     restartActivity();
                 }
                 break;
@@ -177,14 +177,14 @@ public class MainActivity extends ActionBarActivity
         }
         getApplicationContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
-        dataManager = new XmlHelper(getApplicationContext());
-        dataManager.readDataXml();
+        xmlHelper = new XmlHelper(getApplicationContext());
+        xmlHelper.readDataXml();
 
         // get glogal DataManager
-        mDb = (DataManager)getApplicationContext();
-        mDb.setAllAccounts(dataManager.getAllAccounts());
-        mDb.setAllBudgets(dataManager.getAllBudgets());
-        mDb.setAllTransactions(dataManager.getAllTransactions());
+        dataManager = (DataManager)getApplicationContext();
+        dataManager.setAllAccounts(xmlHelper.getAllAccounts());
+        dataManager.setAllBudgets(xmlHelper.getAllBudgets());
+        dataManager.setAllTransactions(xmlHelper.getAllTransactions());
 
 //        mDb = new DataManager(dataManager.getAllAccounts(), dataManager.getAllBudgets(), dataManager.getAllTransactions());
 
@@ -198,7 +198,7 @@ public class MainActivity extends ActionBarActivity
         mDropbox = new DropboxBackup(this);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setPageMargin(60);
-        mViewPager.setTag(R.id.TAG_DB_HELPER, mDb);
+        mViewPager.setTag(R.id.TAG_DB_HELPER, dataManager);
         mPagerAdapter = new FragmentPageAdapter(getSupportFragmentManager());
     }
 
@@ -361,7 +361,7 @@ public class MainActivity extends ActionBarActivity
             return true;
         }
         if (id == R.id.action_backup) {
-            mDropbox.backupFile(mDb);
+            mDropbox.backupFile(dataManager);
         }
 
         return super.onOptionsItemSelected(item);
@@ -375,10 +375,10 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onPause() {
         super.onPause();
-        dataManager.setAllTransactions(mDb.getAllTransactions());
-        dataManager.setAllBudgets(mDb.getAllBudgets());
-        dataManager.setAllAccounts(mDb.getAllAccounts());
-        dataManager.writeXml();
+        xmlHelper.setAllTransactions(dataManager.getAllTransactions());
+        xmlHelper.setAllBudgets(dataManager.getAllBudgets());
+        xmlHelper.setAllAccounts(dataManager.getAllAccounts());
+        xmlHelper.writeXml();
     }
 
     @Override
